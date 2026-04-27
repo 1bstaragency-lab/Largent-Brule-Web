@@ -82,6 +82,19 @@ export default function ProductPage() {
       {/* ── MOBILE LAYOUT (hidden on lg+) ── */}
       <div className="lg:hidden">
 
+        {/* Centered Logo - Script */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-16">
+          <Link href="/" className="relative block w-full h-full">
+            <Image 
+              src="/logo_script_final.png" 
+              alt="L'ARGENT BRÛLÉ" 
+              fill
+              className="object-contain"
+              priority
+            />
+          </Link>
+        </div>
+
         {/* Full-bleed image */}
         <div className="w-full aspect-square bg-[#f2f2f2]">
           <div className="relative w-full h-full">
@@ -210,7 +223,7 @@ export default function ProductPage() {
           {/* Verification Signature */}
           <div className="pt-24 pb-12 text-center">
             <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V4.9
+              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V5.0
             </p>
           </div>
         </div>

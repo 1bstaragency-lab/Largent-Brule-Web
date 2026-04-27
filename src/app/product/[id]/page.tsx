@@ -14,8 +14,8 @@ const productData: Record<string, any> = {
     price: "310 USD",
     image: "/bomber_final_studio.jpg",
     colors: [
-      { name: "WINE", hex: "#4b1b1b" },
-      { name: "CHARCOAL", hex: "#2f2f2f" }
+      { name: "WINE", hex: "#4b1b1b", image: "/bomber_final_studio.jpg" },
+      { name: "CHARCOAL", hex: "#2f2f2f", image: "/bomber_charcoal_studio.png" }
     ],
     sizes: ["S", "M", "L", "XL"],
     details: [
@@ -85,7 +85,7 @@ export default function ProductPage() {
         <div className="w-full aspect-square bg-[#f6f6f6] p-10">
           <div className="relative w-full h-full">
             <Image
-              src={product.image}
+              src={product.colors[selectedColor]?.image || product.image}
               alt={product.name}
               fill
               className="object-contain mix-blend-multiply"
@@ -209,7 +209,7 @@ export default function ProductPage() {
           {/* Verification Signature */}
           <div className="pt-24 pb-12 text-center">
             <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V5.8
+              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V6.0
             </p>
           </div>
         </div>
@@ -222,7 +222,7 @@ export default function ProductPage() {
         <div className="w-full lg:w-[60%] bg-[#f6f6f6] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center p-4 pt-40 lg:p-12">
           <div className="relative w-full aspect-[3/4] lg:h-full lg:aspect-auto">
             <Image
-              src={product.image}
+              src={product.colors[selectedColor]?.image || product.image}
               alt={product.name}
               fill
               className="object-contain mix-blend-multiply"
@@ -347,7 +347,7 @@ export default function ProductPage() {
 
             <div className="pt-24 pb-12 text-center">
               <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-                L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V5.8
+                L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V6.0
               </p>
             </div>
           </div>

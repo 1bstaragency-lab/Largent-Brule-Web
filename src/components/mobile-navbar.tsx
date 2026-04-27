@@ -50,36 +50,40 @@ export function MobileNavbar() {
             </div>
           </div>
 
-          <nav className="flex-1 overflow-y-auto px-10 pt-10 pb-10 space-y-12">
-            <div className="space-y-6">
-              {[
-                "COLLECTIONS",
-                "LOOKBOOK",
-                "OUR STORY",
-                "CAMPAIGNS",
-                "FAQ",
-                "WOMEN",
-                "MEN",
-                "STORE LOCATOR",
-                "SIGN IN",
-                "REGISTER"
-              ].map((item) => (
-                <Link 
-                  key={item}
-                  href={item === "SIGN IN" ? "/auth" : "#"} 
-                  onClick={() => setIsOpen(false)} 
-                  className="block text-[12px] font-bold uppercase tracking-[0.4em] hover:text-[#4a0404] transition-colors"
-                >
-                  {item}
-                </Link>
-              ))}
-            </div>
+          <nav className="flex-1 overflow-y-auto flex flex-col items-center justify-center space-y-10 px-10">
+            {[
+              "COLLECTIONS",
+              "LOOKBOOK",
+              "OUR STORY",
+              "CAMPAIGNS",
+              "FAQ",
+              "WOMEN",
+              "MEN",
+              "STORE LOCATOR",
+              "SIGN IN",
+              "REGISTER"
+            ].map((item) => (
+              <Link 
+                key={item}
+                href={item === "SIGN IN" ? "/auth" : "#"} 
+                onClick={() => setIsOpen(false)} 
+                className="text-[14px] font-bold uppercase tracking-[0.5em] text-black hover:text-[#4a0404] transition-all duration-300"
+              >
+                {item}
+              </Link>
+            ))}
           </nav>
 
-          <div className="p-10 border-t border-neutral-50 bg-neutral-50/50">
-            <p className="text-[9px] font-medium uppercase tracking-widest text-neutral-400">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | V2.0
-            </p>
+          {/* Footer Logo Anchor */}
+          <div className="p-12 border-t border-neutral-100/50 flex justify-center">
+            <div className="relative w-40 h-10 opacity-40">
+              <Image 
+                src="/logo_script_final.png" 
+                alt="L'ARGENT BRÛLÉ" 
+                fill
+                className="object-contain"
+              />
+            </div>
           </div>
         </div>
       )}

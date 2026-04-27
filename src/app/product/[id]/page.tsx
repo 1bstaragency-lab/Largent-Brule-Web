@@ -14,8 +14,8 @@ const productData: Record<string, any> = {
     price: "310 USD",
     image: "/bomber_final_studio.jpg",
     colors: [
-      { name: "BURGUNDY", hex: "#4a0404" },
-      { name: "CHARCOAL", hex: "#333333" }
+      { name: "WINE", hex: "#4b1b1b" },
+      { name: "CHARCOAL", hex: "#2f2f2f" }
     ],
     sizes: ["S", "M", "L", "XL"],
     details: [
@@ -209,7 +209,7 @@ export default function ProductPage() {
           {/* Verification Signature */}
           <div className="pt-24 pb-12 text-center">
             <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V5.6
+              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V5.7
             </p>
           </div>
         </div>
@@ -347,7 +347,7 @@ export default function ProductPage() {
 
             <div className="pt-24 pb-12 text-center">
               <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-                L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V5.6
+                L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V5.7
               </p>
             </div>
           </div>

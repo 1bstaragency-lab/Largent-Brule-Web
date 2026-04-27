@@ -14,8 +14,8 @@ const productData: Record<string, any> = {
     price: "310 USD",
     image: "/bomber_final_studio.jpg",
     colors: [
-      { name: "BLACK", hex: "#000000" },
-      { name: "MILITARY", hex: "#3a3d2e" }
+      { name: "BURGUNDY", hex: "#4a0404" },
+      { name: "CHARCOAL", hex: "#333333" }
     ],
     sizes: ["S", "M", "L", "XL"],
     details: [
@@ -36,8 +36,7 @@ const productData: Record<string, any> = {
     price: "240 USD",
     image: "/pants_leather_studio.png",
     colors: [
-      { name: "BLACK", hex: "#000000" },
-      { name: "COGNAC", hex: "#4b3621" }
+      { name: "BLACK", hex: "#000000" }
     ],
     sizes: ["30", "32", "34", "36", "38"],
     details: [
@@ -210,7 +209,7 @@ export default function ProductPage() {
           {/* Verification Signature */}
           <div className="pt-24 pb-12 text-center">
             <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V5.5
+              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V5.6
             </p>
           </div>
         </div>
@@ -348,7 +347,7 @@ export default function ProductPage() {
 
             <div className="pt-24 pb-12 text-center">
               <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-                L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V5.5
+                L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V5.6
               </p>
             </div>
           </div>

@@ -1,12 +1,14 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { cn } from "@/lib/utils";
 import { ChevronRight, Plus } from "lucide-react";
 import { useCart } from "@/components/cart-drawer";
+import styles from "./product.module.css";
 
 const productData: Record<string, any> = {
   bomber: {
@@ -74,50 +76,42 @@ export default function ProductPage() {
     }, 2000);
   };
 
-  if (!product) return <div className="p-20 text-center">Product not found</div>;
+  if (!product) return <div>Product not found</div>;
 
   return (
-    <div className="flex flex-col lg:flex-row w-full bg-white min-h-screen">
-      
-      {/* MONUMENTAL HERO IMAGE - HEADER ON MOBILE */}
-      <div className="w-full lg:w-[60%] bg-[#f6f6f6] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center p-4 lg:p-12">
-        <div className="relative w-full h-[120vw] sm:h-[80vh] lg:h-full">
+    <div className={styles.productPageRoot}>
+      {/* MONUMENTAL IMAGE HEADER */}
+      <div className={styles.heroImageSection}>
+        <div className="relative w-full h-full">
           <Image
             src={product.image}
             alt={product.name}
             fill
-            className="object-contain mix-blend-multiply"
+            className="object-contain"
             priority
           />
         </div>
       </div>
 
-      {/* TECHNICAL DETAILS - VERTICAL ON MOBILE */}
-      <div className="w-full lg:w-[40%] bg-white px-8 py-16 lg:px-20 lg:py-32">
-        <div className="max-w-xl mx-auto lg:mx-0 space-y-20">
-          
-          {/* Clinical Info */}
-          <div className="space-y-6">
-            <h1 className="text-[15px] lg:text-[17px] font-bold uppercase tracking-[0.2em] leading-tight text-black">
-              {product.name}
-            </h1>
-            <p className="text-[15px] lg:text-[17px] font-bold tracking-[0.1em] text-black">
-              {product.price}
-            </p>
+      {/* TECHNICAL DETAILS COLUMN */}
+      <div className={styles.detailsSection}>
+        <div className="max-w-xl mx-auto lg:mx-0">
+          {/* Header */}
+          <div className={styles.clinicalHeader}>
+            <h1>{product.name}</h1>
+            <p>{product.price}</p>
           </div>
 
-          {/* Color Selection */}
-          <div className="space-y-6">
-            <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-400">
-              COLOR: {product.colors[selectedColor].name}
-            </p>
+          {/* Color Selector */}
+          <div className="space-y-6 mb-16">
+            <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-neutral-400">COLOR: {product.colors[selectedColor].name}</p>
             <div className="flex gap-4">
               {product.colors.map((color: any, i: number) => (
                 <button
                   key={i}
                   onClick={() => setSelectedColor(i)}
                   className={cn(
-                    "w-10 h-10 border transition-all p-0.5",
+                    "w-8 h-8 border transition-all p-0.5",
                     selectedColor === i ? "border-black" : "border-neutral-100"
                   )}
                 >
@@ -127,20 +121,15 @@ export default function ProductPage() {
             </div>
           </div>
 
-          {/* Size Selection - Celine Grid */}
-          <div className="space-y-6">
-            <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-400">
-              SELECT SIZE
-            </p>
-            <div className="grid grid-cols-4 gap-3 max-w-sm">
+          {/* Size Selector */}
+          <div className="mb-16">
+            <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-neutral-400">SELECT SIZE</p>
+            <div className={styles.sizeGrid}>
               {product.sizes.map((size: string) => (
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
-                  className={cn(
-                    "h-12 border text-[11px] font-bold tracking-widest flex items-center justify-center transition-all",
-                    selectedSize === size ? "border-black bg-black text-white" : "border-neutral-200 text-black hover:border-black"
-                  )}
+                  className={cn(styles.sizeButton, selectedSize === size && styles.sizeButtonSelected)}
                 >
                   {size}
                 </button>
@@ -148,8 +137,8 @@ export default function ProductPage() {
             </div>
           </div>
 
-          {/* Action Blocks */}
-          <div className="space-y-4 pt-10">
+          {/* Action Buttons */}
+          <div className={styles.actionBlock}>
             <div className="relative w-full h-[60px]">
               <LiquidButton
                 onClick={() => addItem({ id, name: product.name, price: product.price, image: product.image })}
@@ -158,12 +147,12 @@ export default function ProductPage() {
                 ADD TO BAG
               </LiquidButton>
             </div>
-            <button className="w-full h-[60px] border border-black flex items-center justify-center bg-white hover:bg-neutral-50 transition-colors">
+            <button className={cn(styles.actionButton, styles.payButton)}>
                <span className="text-[12px] font-bold tracking-[0.4em] uppercase"> PAY</span>
             </button>
           </div>
 
-          {/* Technical Details - Accordions */}
+          {/* Minimalist Accordions */}
           <div className="border-t border-neutral-100 divide-y divide-neutral-100 mt-20">
             <div>
               <button
@@ -174,7 +163,7 @@ export default function ProductPage() {
                 <Plus size={14} strokeWidth={1} className={cn("transition-transform duration-300", activeAccordion === 'details' && "rotate-45")} />
               </button>
               <div className={cn("overflow-hidden transition-all duration-500", activeAccordion === 'details' ? "max-h-[500px] pb-12" : "max-h-0")}>
-                <ul className="space-y-4 text-[11px] text-neutral-500 font-medium tracking-[0.1em] leading-relaxed">
+                <ul className="space-y-4 text-[11px] text-neutral-400 font-medium tracking-[0.1em] leading-relaxed">
                   {product.details.map((d: string, i: number) => <li key={i}>{d}</li>)}
                 </ul>
               </div>
@@ -211,10 +200,9 @@ export default function ProductPage() {
             </div>
           </div>
 
-          {/* Verification Signature */}
-          <div className="pt-24 pb-12 text-center">
+          <div className="pt-24 text-center">
             <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V4.0 FRESH
+              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V3.3
             </p>
           </div>
         </div>

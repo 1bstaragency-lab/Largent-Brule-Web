@@ -1,0 +1,115 @@
+.productPageRoot {
+  display: block;
+  width: 100%;
+  background-color: #fff;
+  min-height: 100vh;
+}
+
+.heroImageSection {
+  width: 100%;
+  background-color: #f6f6f6;
+  display: block;
+  position: relative;
+  height: 140vw;
+}
+
+.heroImageSection img {
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.detailsSection {
+  width: 100%;
+  padding: 80px 32px 100px;
+  box-sizing: border-box;
+}
+
+.clinicalHeader {
+  margin-bottom: 60px;
+}
+
+.clinicalHeader h1 {
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+.clinicalHeader p {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.sizeGrid {
+  display: grid;
+  grid-template-cols: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.sizeButton {
+  height: 50px;
+  border: 1px solid #e5e5e5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  background: #fff;
+}
+
+.sizeButtonSelected {
+  border-color: #000;
+  background-color: #000 !important;
+  color: #fff !important;
+}
+
+.actionBlock {
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.actionButton {
+  width: 100%;
+  height: 60px;
+  border: 1px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+}
+
+.bagButton {
+  background-color: #000;
+  color: #fff;
+}
+
+.payButton {
+  background-color: #fff;
+  color: #000;
+}
+
+@media (min-width: 1024px) {
+  .productPageRoot {
+    display: flex;
+  }
+  .heroImageSection {
+    width: 60%;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+  }
+  .detailsSection {
+    width: 40%;
+    padding: 120px 80px;
+  }
+}

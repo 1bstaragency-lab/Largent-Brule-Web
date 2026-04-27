@@ -11,7 +11,7 @@ export function CartToggle() {
     <button 
       onClick={() => setIsOpen(true)}
       className={cn(
-        "fixed top-20 lg:top-12 right-6 lg:right-10 z-[3000] flex items-center gap-4 group transition-all duration-1000 p-2 px-4 rounded-full border border-white/10 shadow-lg",
+        "fixed top-28 lg:top-12 right-6 lg:right-10 z-[3000] flex items-center gap-4 group transition-all duration-1000 p-2 px-4 rounded-full border border-white/10 shadow-lg",
         showAdded 
           ? "bg-[#4a0404] opacity-0 scale-95" 
           : "bg-[#4a0404]/80 backdrop-blur-md hover:bg-[#4a0404] text-white opacity-100 scale-100"

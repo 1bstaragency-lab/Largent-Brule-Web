@@ -95,7 +95,7 @@ export default function ProductPage() {
 
       {/* TECHNICAL DETAILS - CELINE WHITESPACE SPEC */}
       <div className="w-full lg:w-[40%] bg-white">
-        <div className="px-8 py-20 lg:px-20 lg:py-32 space-y-24">
+        <div className="px-8 pt-32 pb-20 lg:px-20 lg:py-32 space-y-24">
           {/* Header */}
           <div className="space-y-6">
             <h1 className="text-[14px] lg:text-[16px] font-bold uppercase tracking-[0.2em] leading-tight text-black">{product.name}</h1>
@@ -205,7 +205,7 @@ export default function ProductPage() {
 
           <div className="pt-20 text-center">
             <p className="text-[8px] text-neutral-300 uppercase tracking-[0.5em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V2.8
+              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V2.9
             </p>
           </div>
         </div>

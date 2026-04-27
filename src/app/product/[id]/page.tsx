@@ -78,16 +78,16 @@ export default function ProductPage() {
   if (!product) return <div>Product not found</div>;
 
   return (
-    <div className="w-full bg-white flex flex-col lg:flex-row min-h-screen">
+    <div className="w-full bg-white flex flex-col lg:flex-row min-h-screen overflow-x-hidden">
       
-      {/* MONUMENTAL IMAGE - FULL VIEWPORT MOBILE */}
+      {/* MONUMENTAL IMAGE - UN-CROPPED FULL SCALE */}
       <div className="w-full lg:w-[60%] bg-[#f6f6f6] flex items-center justify-center lg:sticky lg:top-0 lg:h-screen">
-        <div className="relative w-full h-[125vw] lg:h-full">
+        <div className="relative w-full h-[140vw] lg:h-full">
           <Image
             src={product.image}
             alt={product.name}
             fill
-            className="object-cover lg:object-contain mix-blend-multiply"
+            className="object-contain lg:object-contain mix-blend-multiply"
             priority
           />
         </div>
@@ -121,16 +121,16 @@ export default function ProductPage() {
             </div>
           </div>
 
-          {/* Size Selector */}
+          {/* Size Selector - Spacious Grid */}
           <div className="space-y-6">
             <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-neutral-400">SELECT SIZE</p>
-            <div className="flex flex-wrap gap-2">
+            <div className="grid grid-cols-4 gap-3 max-w-[320px]">
               {product.sizes.map((size: string) => (
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
                   className={cn(
-                    "min-w-[60px] h-11 border text-[10px] font-bold tracking-[0.3em] flex items-center justify-center transition-all",
+                    "h-12 border text-[10px] font-bold tracking-[0.3em] flex items-center justify-center transition-all",
                     selectedSize === size ? "border-black bg-black text-white" : "border-neutral-200 text-black hover:border-black"
                   )}
                 >
@@ -205,7 +205,7 @@ export default function ProductPage() {
 
           <div className="pt-20 text-center">
             <p className="text-[8px] text-neutral-300 uppercase tracking-[0.5em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V2.9
+              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V3.0
             </p>
           </div>
         </div>

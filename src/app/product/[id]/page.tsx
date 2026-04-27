@@ -8,6 +8,7 @@ import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { cn } from "@/lib/utils";
 import { ChevronRight, Plus } from "lucide-react";
 import { useCart } from "@/components/cart-drawer";
+import styles from "./product.module.css";
 
 const productData: Record<string, any> = {
   bomber: {
@@ -78,119 +79,25 @@ export default function ProductPage() {
   if (!product) return <div>Product not found</div>;
 
   return (
-    <div className="product-page-root">
-      <style jsx>{`
-        .product-page-root {
-          display: flex;
-          flex-direction: column;
-          width: 100%;
-          background-color: #fff;
-          min-height: 100vh;
-        }
-
-        .product-hero-image {
-          width: 100%;
-          background-color: #f6f6f6;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          position: relative;
-          height: 140vw;
-        }
-
-        .product-details-container {
-          width: 100%;
-          padding: 80px 32px 100px;
-          box-sizing: border-box;
-        }
-
-        @media (min-width: 1024px) {
-          .product-page-root {
-            flex-direction: row;
-          }
-          .product-hero-image {
-            width: 60%;
-            height: 100vh;
-            position: sticky;
-            top: 0;
-          }
-          .product-details-container {
-            width: 40%;
-            padding: 120px 80px;
-          }
-        }
-
-        .clinical-header {
-          margin-bottom: 60px;
-        }
-
-        .clinical-header h1 {
-          font-size: 15px;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.2em;
-          line-height: 1.4;
-          margin-bottom: 16px;
-        }
-
-        .clinical-header p {
-          font-size: 16px;
-          font-weight: 700;
-          letter-spacing: 0.05em;
-        }
-
-        .size-grid {
-          display: grid;
-          grid-template-cols: repeat(4, 1fr);
-          gap: 12px;
-          margin-top: 24px;
-        }
-
-        .action-block {
-          margin-top: 60px;
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-        }
-
-        .size-button {
-          height: 50px;
-          border: 1px solid #e5e5e5;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 11px;
-          font-weight: 700;
-          letter-spacing: 0.2em;
-          transition: all 0.3s ease;
-          background: #fff;
-        }
-
-        .size-button.selected {
-          border-color: #000;
-          background-color: #000;
-          color: #fff;
-        }
-      `}</style>
-
-      {/* MONUMENTAL IMAGE - NO SQUEEZING POSSIBLE */}
-      <div className="product-hero-image">
+    <div className={styles.productPageRoot}>
+      {/* MONUMENTAL IMAGE HEADER */}
+      <div className={styles.heroImageSection}>
         <div className="relative w-full h-full">
           <Image
             src={product.image}
             alt={product.name}
             fill
-            className="object-contain mix-blend-multiply"
+            className="object-contain"
             priority
           />
         </div>
       </div>
 
-      {/* TECHNICAL DETAILS - FULL WIDTH MANDATE */}
-      <div className="product-details-container">
+      {/* TECHNICAL DETAILS COLUMN */}
+      <div className={styles.detailsSection}>
         <div className="max-w-xl mx-auto lg:mx-0">
           {/* Header */}
-          <div className="clinical-header">
+          <div className={styles.clinicalHeader}>
             <h1>{product.name}</h1>
             <p>{product.price}</p>
           </div>
@@ -217,12 +124,12 @@ export default function ProductPage() {
           {/* Size Selector */}
           <div className="mb-16">
             <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-neutral-400">SELECT SIZE</p>
-            <div className="size-grid">
+            <div className={styles.sizeGrid}>
               {product.sizes.map((size: string) => (
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
-                  className={cn("size-button", selectedSize === size && "selected")}
+                  className={cn(styles.sizeButton, selectedSize === size && styles.sizeButtonSelected)}
                 >
                   {size}
                 </button>
@@ -231,7 +138,7 @@ export default function ProductPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="action-block">
+          <div className={styles.actionBlock}>
             <div className="relative w-full h-[60px]">
               <LiquidButton
                 onClick={() => addItem({ id, name: product.name, price: product.price, image: product.image })}
@@ -240,7 +147,7 @@ export default function ProductPage() {
                 ADD TO BAG
               </LiquidButton>
             </div>
-            <button className="w-full h-[60px] border border-black flex items-center justify-center bg-white hover:bg-neutral-50 transition-colors">
+            <button className={cn(styles.actionButton, styles.payButton)}>
                <span className="text-[12px] font-bold tracking-[0.4em] uppercase"> PAY</span>
             </button>
           </div>
@@ -295,7 +202,7 @@ export default function ProductPage() {
 
           <div className="pt-24 text-center">
             <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V3.2
+              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V3.3
             </p>
           </div>
         </div>

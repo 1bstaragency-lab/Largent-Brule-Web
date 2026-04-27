@@ -14,10 +14,10 @@ export default function AuthPage() {
         {/* Logo */}
         <div className="w-full flex justify-center animate-in fade-in zoom-in duration-1000">
           <Image 
-            src="/logo_cafe.png" 
+            src="/logo_cafe_v2.png" 
             alt="Café L'argent Brûlé" 
-            width={300} 
-            height={150} 
+            width={400} 
+            height={200} 
             className="object-contain"
           />
         </div>

@@ -221,7 +221,9 @@ export default function ProductPage() {
                 disabled={isChecking || showSoldOut}
                 className="w-full flex justify-between items-center text-[11px] font-bold uppercase tracking-widest hover:opacity-50 transition-opacity disabled:opacity-100"
               >
-                {isChecking ? "CHECKING ARCHIVE..." : showSoldOut ? "SOLD OUT" : "CHECK AVAILABILITY IN STORE"}
+                {isChecking ? "CHECKING ARCHIVE..." : showSoldOut ? (
+                  <span className="text-[#4a0404] animate-pulse">SOLD OUT</span>
+                ) : "CHECK AVAILABILITY IN STORE"}
                 {!isChecking && !showSoldOut && <ChevronRight size={14} />}
               </button>
               {showSoldOut && (

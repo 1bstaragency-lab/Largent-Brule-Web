@@ -78,11 +78,11 @@ export default function ProductPage() {
   if (!product) return <div>Product not found</div>;
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-white w-full overflow-x-hidden">
+    <div className="w-full bg-white flex flex-col lg:flex-row min-h-screen">
       
-      {/* MONUMENTAL IMAGE - SAFARI-SPEC FULL SCALE */}
-      <div className="w-full lg:w-[60%] bg-[#f6f6f6] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center">
-        <div className="relative w-full h-[100vw] sm:h-[60vh] lg:h-full">
+      {/* MONUMENTAL IMAGE - FULL WIDTH MOBILE */}
+      <div className="w-full lg:w-[60%] bg-[#f6f6f6] flex items-center justify-center lg:sticky lg:top-0 lg:h-screen">
+        <div className="relative w-full h-[100vw] lg:h-full">
           <Image
             src={product.image}
             alt={product.name}
@@ -93,13 +93,13 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* TECHNICAL DETAILS - SAFARI-SPEC FLUSH LEFT */}
-      <div className="w-full lg:w-[40%] bg-white px-6 py-10 lg:px-16 lg:pt-16">
-        <div className="space-y-10 max-w-xl mx-auto lg:mx-0">
+      {/* TECHNICAL DETAILS - FULL WIDTH MOBILE */}
+      <div className="w-full lg:w-[40%] bg-white">
+        <div className="px-6 py-12 lg:px-16 lg:py-20 space-y-12">
           {/* Header */}
-          <div className="space-y-4 text-left">
-            <h1 className="text-[15px] lg:text-[16px] font-bold uppercase tracking-[0.15em] leading-tight text-black">{product.name}</h1>
-            <p className="text-[15px] lg:text-[16px] font-bold tracking-tight text-black">{product.price}</p>
+          <div className="space-y-4">
+            <h1 className="text-[15px] lg:text-[17px] font-bold uppercase tracking-[0.15em] leading-tight text-black">{product.name}</h1>
+            <p className="text-[16px] lg:text-[18px] font-bold tracking-tight text-black">{product.price}</p>
           </div>
 
           {/* Color Selector */}
@@ -121,7 +121,7 @@ export default function ProductPage() {
             </div>
           </div>
 
-          {/* Size Selector - Celine Spec */}
+          {/* Size Selector */}
           <div className="space-y-4">
             <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-400">SELECT SIZE</p>
             <div className="flex flex-wrap gap-2">
@@ -141,7 +141,7 @@ export default function ProductPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="space-y-3 pt-6">
+          <div className="space-y-4 pt-6">
             <div className="relative w-full h-[55px]">
               <LiquidButton
                 onClick={() => addItem({ id, name: product.name, price: product.price, image: product.image })}
@@ -155,8 +155,8 @@ export default function ProductPage() {
             </button>
           </div>
 
-          {/* Minimalist Accordions */}
-          <div className="border-t border-neutral-100 divide-y divide-neutral-100 mt-12">
+          {/* Accordions */}
+          <div className="border-t border-neutral-100 divide-y divide-neutral-100 mt-16">
             <div>
               <button
                 onClick={() => setActiveAccordion(activeAccordion === 'details' ? null : 'details')}
@@ -203,9 +203,9 @@ export default function ProductPage() {
             </div>
           </div>
 
-          <div className="pt-10 text-center">
+          <div className="pt-12 text-center">
             <p className="text-[9px] text-neutral-400 uppercase tracking-[0.4em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V2.5
+              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V2.6
             </p>
           </div>
         </div>

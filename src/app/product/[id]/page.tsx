@@ -205,7 +205,7 @@ export default function ProductPage() {
 
           <div className="pt-10 text-center">
             <p className="text-[9px] text-neutral-400 uppercase tracking-[0.4em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | V2.4
+              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V2.5
             </p>
           </div>
         </div>

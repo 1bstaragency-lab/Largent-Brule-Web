@@ -31,35 +31,30 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased flex flex-col lg:flex-row min-h-screen bg-white`}>
+      <body className={`${inter.variable} font-sans antialiased bg-white overflow-x-hidden`}>
         <CartProvider>
-          {/* Global Bag Toggle - Upper Right */}
-          <CartToggle />
-
-          {/* Top Announcement Bar - Script Marquee */}
-          <div className="h-[35px] w-full bg-[#f6f6f6] border-b border-border flex items-center overflow-hidden fixed top-0 z-[2000]">
-            <div className="marquee-container">
-              <div className="marquee-content script-font text-[18px] text-black">
-                {[...Array(10)].map((_, i) => (
-                  <span key={i} className="px-8">
-                    L&apos;argent Brûlé | Limited Edition Drop &nbsp; —
-                  </span>
-                ))}
-              </div>
+          {/* Announcement Bar */}
+          <div className="h-[35px] w-full border-b border-neutral-100 bg-white flex items-center justify-center overflow-hidden fixed top-0 z-[110]">
+            <div className="marquee-content whitespace-nowrap flex">
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em] px-10">L&apos;argent Brûlé / Limited Edition Drop — L&apos;argent Brûlé / Limited Edition Drop — L&apos;argent Brûlé / Limited Edition Drop</span>
             </div>
           </div>
 
-          <div className="flex flex-col lg:flex-row w-full mt-[35px]">
-            {/* Navigation: Sidebar for Desktop, MobileNavbar for Mobile */}
-            <div className="lg:hidden">
-              <MobileNavbar />
-            </div>
-            <div className="hidden lg:block lg:fixed lg:left-0 lg:top-[35px] lg:h-[calc(100vh-35px)]">
+          <CartToggle />
+
+          <div className="mt-[35px] w-full">
+            {/* Desktop Sidebar - Absolute Fixed */}
+            <div className="hidden lg:block fixed left-0 top-[35px] w-64 h-[calc(100vh-35px)] border-r border-neutral-100 z-[90]">
               <Sidebar />
             </div>
 
+            {/* Mobile Navbar */}
+            <div className="lg:hidden">
+              <MobileNavbar />
+            </div>
+
             {/* Main Content Area */}
-            <main className="flex-1 lg:ml-64 min-h-[calc(100vh-35px)]">
+            <main className="w-full lg:pl-64 min-h-[calc(100vh-35px)]">
               {children}
             </main>
           </div>

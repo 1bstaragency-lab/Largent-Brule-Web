@@ -146,17 +146,17 @@ export default function ProductPage() {
 
           {/* ADD TO BAG */}
           <div className="space-y-3">
+            <button className="w-full h-[52px] border border-black flex items-center justify-center hover:bg-neutral-50 transition-colors bg-white">
+               <span className="text-[12px] font-bold tracking-[0.3em] uppercase"> PAY</span>
+            </button>
             <div className="relative w-full h-[52px]">
               <LiquidButton
                 onClick={() => addItem({ id, name: product.name, price: product.price, image: product.image })}
-                className="w-full h-full bg-black text-white text-[11px] font-bold tracking-[0.3em] uppercase"
+                className="w-full h-full bg-black text-white text-[11px] font-bold tracking-[0.4em] uppercase"
               >
-                ADD TO BAG
+                ADD TO SELECTION
               </LiquidButton>
             </div>
-            <button className="w-full h-[52px] border border-black text-[11px] font-bold tracking-[0.3em] uppercase hover:bg-neutral-50 transition-colors">
-               PAY
-            </button>
           </div>
 
           {/* Fine print */}

@@ -82,7 +82,7 @@ export function MobileNavbar() {
 
           <div className="p-10 border-t border-neutral-50 bg-neutral-50/50">
             <p className="text-[9px] font-medium uppercase tracking-widest text-neutral-400">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE
+              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | V2.0
             </p>
           </div>
         </div>

@@ -21,42 +21,27 @@ export function Sidebar() {
         </Link>
       </div>
 
-      <nav className="space-y-8 flex-1">
-        <div className="space-y-2">
-          <Link href="/" className="block text-[11px] font-bold uppercase tracking-widest hover:opacity-50 transition-opacity">
-            COLLECTIONS
+      <nav className="space-y-6 flex-1 overflow-y-auto">
+        {[
+          "COLLECTIONS",
+          "LOOKBOOK",
+          "OUR STORY",
+          "CAMPAIGNS",
+          "FAQ",
+          "WOMEN",
+          "MEN",
+          "STORE LOCATOR",
+          "SIGN IN",
+          "REGISTER"
+        ].map((item) => (
+          <Link 
+            key={item}
+            href={item === "SIGN IN" ? "/auth" : "#"} 
+            className="block text-[11px] font-bold uppercase tracking-[0.4em] hover:text-[#4a0404] transition-colors"
+          >
+            {item}
           </Link>
-          <Link href="#" className="block text-[11px] font-bold uppercase tracking-widest hover:opacity-50 transition-opacity">
-            LOOKBOOK
-          </Link>
-          <Link href="#" className="block text-[11px] font-bold uppercase tracking-widest hover:opacity-50 transition-opacity">
-            OUR STORY
-          </Link>
-          <Link href="#" className="block text-[11px] font-bold uppercase tracking-widest hover:opacity-50 transition-opacity">
-            CAMPAIGNS
-          </Link>
-          <Link href="#" className="block text-[11px] font-bold uppercase tracking-widest hover:opacity-50 transition-opacity">
-            FAQ
-          </Link>
-        </div>
-
-        <div className="space-y-2 pt-4">
-          <Link href="#" className="block text-[10px] uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">
-            WOMEN
-          </Link>
-          <Link href="#" className="block text-[10px] uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">
-            MEN
-          </Link>
-        </div>
-
-        <div className="space-y-2 pt-4">
-          <Link href="#" className="block text-[10px] uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">
-            STORE LOCATOR
-          </Link>
-          <Link href="/auth" className="block text-[10px] uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">
-            SIGN IN / REGISTER
-          </Link>
-        </div>
+        ))}
       </nav>
 
       <div className="mt-auto">

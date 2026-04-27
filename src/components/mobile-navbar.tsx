@@ -50,32 +50,29 @@ export function MobileNavbar() {
             </div>
           </div>
 
-          <nav className="flex-1 overflow-y-auto px-10 pt-16 pb-10 space-y-12">
-            <div className="space-y-8">
-              <Link href="/" onClick={() => setIsOpen(false)} className="block text-[14px] font-bold uppercase tracking-[0.3em]">
-                COLLECTIONS
-              </Link>
-              <Link href="#" onClick={() => setIsOpen(false)} className="block text-[14px] font-bold uppercase tracking-[0.3em]">
-                LOOKBOOK
-              </Link>
-              <Link href="#" onClick={() => setIsOpen(false)} className="block text-[14px] font-bold uppercase tracking-[0.3em]">
-                OUR STORY
-              </Link>
-              <Link href="#" onClick={() => setIsOpen(false)} className="block text-[14px] font-bold uppercase tracking-[0.3em]">
-                CAMPAIGNS
-              </Link>
-            </div>
-
-            <div className="pt-12 border-t border-neutral-100 space-y-6">
-              <Link href="#" onClick={() => setIsOpen(false)} className="block text-[10px] font-bold uppercase tracking-[0.2em] opacity-40">
-                STORE LOCATOR
-              </Link>
-              <Link href="/auth" onClick={() => setIsOpen(false)} className="block text-[10px] font-bold uppercase tracking-[0.2em] opacity-40">
-                SIGN IN
-              </Link>
-              <Link href="#" onClick={() => setIsOpen(false)} className="block text-[10px] font-bold uppercase tracking-[0.2em] opacity-40">
-                FAQ
-              </Link>
+          <nav className="flex-1 overflow-y-auto px-10 pt-10 pb-10 space-y-12">
+            <div className="space-y-6">
+              {[
+                "COLLECTIONS",
+                "LOOKBOOK",
+                "OUR STORY",
+                "CAMPAIGNS",
+                "FAQ",
+                "WOMEN",
+                "MEN",
+                "STORE LOCATOR",
+                "SIGN IN",
+                "REGISTER"
+              ].map((item) => (
+                <Link 
+                  key={item}
+                  href={item === "SIGN IN" ? "/auth" : "#"} 
+                  onClick={() => setIsOpen(false)} 
+                  className="block text-[12px] font-bold uppercase tracking-[0.4em] hover:text-[#4a0404] transition-colors"
+                >
+                  {item}
+                </Link>
+              ))}
             </div>
           </nav>
 

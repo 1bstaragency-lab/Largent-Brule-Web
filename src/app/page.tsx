@@ -23,25 +23,27 @@ export default function Home() {
   return (
     <div className="p-4 sm:p-10 pb-40 overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative w-full h-[90vh] mb-20 overflow-hidden bg-black flex items-center justify-center">
+      <section className="relative w-full h-[90vh] mb-20 overflow-hidden bg-[#050505] flex items-center justify-center">
         <Image
           src="/hero_final_lock_v10.jpg"
           alt="L'argent Brûlé Editorial"
           fill
-          className="object-cover brightness-90"
+          className="object-cover brightness-75"
           priority
         />
         <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none p-2">
-          <GooeyText 
-            texts={["L'ARGENT", "BRÛLÉ"]} 
-            morphTime={2}
-            cooldownTime={1}
-            className="font-bold text-white text-2xl sm:text-5xl md:text-9xl tracking-[0.1em] md:tracking-[0.2em] uppercase"
-            textClassName="text-white text-center"
-          />
+          <div style={{ transform: 'scale(0.8)' }} className="lg:scale-100 transition-transform duration-1000">
+            <GooeyText 
+              texts={["L'ARGENT", "BRÛLÉ"]} 
+              morphTime={2}
+              cooldownTime={1}
+              className="font-bold text-white text-3xl lg:text-9xl tracking-[0.2em] uppercase"
+              textClassName="text-white text-center"
+            />
+          </div>
         </div>
         <div className="absolute bottom-6 right-6 z-20">
-          <p className="text-[8px] font-bold text-white/20 tracking-[0.4em] uppercase">ARCHIVE V4.2</p>
+          <p className="text-[8px] font-bold text-white/30 tracking-[0.4em] uppercase">ARCHIVE V4.3 LOCK</p>
         </div>
       </section>
 

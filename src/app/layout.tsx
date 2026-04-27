@@ -11,6 +11,17 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 export const metadata: Metadata = {
   title: "L'argent Brûlé | Official Flagship",
   description: "Luxury technical apparel for the volatile era.",
+  openGraph: {
+    title: "L'argent Brûlé | Official Flagship",
+    description: "Luxury technical apparel for the volatile era.",
+    images: ["/logo_red_script.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "L'argent Brûlé | Official Flagship",
+    description: "Luxury technical apparel for the volatile era.",
+    images: ["/logo_red_script.png"],
+  },
 };
 
 export default function RootLayout({

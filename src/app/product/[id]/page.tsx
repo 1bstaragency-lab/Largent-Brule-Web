@@ -78,28 +78,28 @@ export default function ProductPage() {
   if (!product) return <div>Product not found</div>;
 
   return (
-    <div style={{ display: "block", width: "100%", minHeight: "100vh", backgroundColor: "white" }}>
+    <div className="flex flex-col lg:flex-row min-h-screen bg-white w-full overflow-x-hidden">
       
-      {/* MONUMENTAL IMAGE - FORCED FULL WIDTH */}
-      <div style={{ display: "block", width: "100%", backgroundColor: "#f0eeeb" }}>
-        <div style={{ position: "relative", width: "100%", paddingBottom: "125%" }}>
+      {/* MONUMENTAL IMAGE - Vertical on Mobile, Left-Anchor on Desktop */}
+      <div className="w-full lg:w-[60%] bg-[#f0eeeb] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center">
+        <div className="relative w-full h-[80vw] sm:h-[60vh] lg:h-full">
           <Image
             src={product.image}
             alt={product.name}
             fill
-            style={{ objectFit: "cover" }}
+            className="object-cover lg:object-contain mix-blend-multiply"
             priority
           />
         </div>
       </div>
 
-      {/* TECHNICAL DETAILS - FORCED FULL WIDTH */}
-      <div style={{ display: "block", width: "100%", padding: "24px", boxSizing: "border-box" }}>
-        <div className="space-y-8">
+      {/* TECHNICAL DETAILS - Full Width on Mobile, Right-Anchor on Desktop */}
+      <div className="w-full lg:w-[40%] bg-white px-6 py-10 lg:px-14 lg:pt-14">
+        <div className="space-y-8 max-w-xl mx-auto lg:mx-0">
           {/* Name + Price */}
-          <div className="space-y-2">
-            <p className="text-[14px] uppercase tracking-[0.1em] font-bold leading-tight">{product.name}</p>
-            <p className="text-[16px] font-bold tracking-tight">{product.price}</p>
+          <div className="space-y-2 text-left">
+            <p className="text-[14px] lg:text-[15px] uppercase tracking-[0.1em] font-bold leading-tight">{product.name}</p>
+            <p className="text-[16px] lg:text-[18px] font-bold tracking-tight">{product.price}</p>
           </div>
 
           {/* Color */}
@@ -122,15 +122,15 @@ export default function ProductPage() {
 
           {/* Sizes - Celine Horizontal Spec */}
           <div className="space-y-4">
-            <p className="text-[10px] font-bold uppercase tracking-[0.3em]">SELECT SIZE</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em]">SELECT SIZE</p>
             <div className="flex flex-wrap gap-2">
               {product.sizes.map((size: string) => (
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
                   className={cn(
-                    "min-w-[60px] h-12 border text-[11px] font-bold tracking-widest flex items-center justify-center transition-all",
-                    selectedSize === size ? "border-black bg-black text-white" : "border-neutral-300 text-black"
+                    "min-w-[64px] h-12 border text-[11px] font-bold tracking-widest flex items-center justify-center transition-all",
+                    selectedSize === size ? "border-black bg-black text-white" : "border-neutral-300 text-black hover:border-black"
                   )}
                 >
                   {size}
@@ -149,7 +149,7 @@ export default function ProductPage() {
                 onClick={() => addItem({ id, name: product.name, price: product.price, image: product.image })}
                 className="w-full h-full bg-black text-white text-[11px] font-bold tracking-[0.4em] uppercase"
               >
-                ADD TO SELECTION
+                ADD TO CART
               </LiquidButton>
             </div>
           </div>
@@ -164,11 +164,11 @@ export default function ProductPage() {
                 DETAILS
                 <Plus size={16} className={cn("transition-transform duration-300", activeAccordion === 'details' && "rotate-45")} />
               </button>
-              {activeAccordion === 'details' && (
-                <ul className="pb-8 space-y-3 text-[11px] text-neutral-500 font-medium tracking-wide">
+              <div className={cn("overflow-hidden transition-all duration-500", activeAccordion === 'details' ? "max-h-[500px] pb-6" : "max-h-0")}>
+                <ul className="pb-4 space-y-3 text-[11px] text-neutral-500 font-medium tracking-wide">
                   {product.details.map((d: string, i: number) => <li key={i}>{d}</li>)}
                 </ul>
-              )}
+              </div>
             </div>
 
             <div>
@@ -194,18 +194,16 @@ export default function ProductPage() {
                 SHIPPING & RETURNS
                 <Plus size={16} className={cn("transition-transform duration-300", activeAccordion === 'shipping' && "rotate-45")} />
               </button>
-              {activeAccordion === 'shipping' && (
-                <div className="pb-8 space-y-4">
-                  <p className="text-[11px] text-neutral-500 leading-relaxed uppercase tracking-[0.1em]">
-                    10-14 DAY WHITE GLOVE SHIPPING. PACKED WITH CARE. NO RETURNS. THIS GARMENT IS PERFECT.
-                  </p>
-                </div>
-              )}
+              <div className={cn("overflow-hidden transition-all duration-500", activeAccordion === 'shipping' ? "max-h-[500px] pb-6" : "max-h-0")}>
+                <p className="text-[11px] text-neutral-500 leading-relaxed uppercase tracking-[0.1em]">
+                  10-14 DAY WHITE GLOVE SHIPPING. PACKED WITH CARE. NO RETURNS. THIS GARMENT IS PERFECT.
+                </p>
+              </div>
             </div>
           </div>
 
-          <p className="text-[9px] text-neutral-400 uppercase tracking-widest text-center pt-6">
-            ARCHIVE FLAGSHIP V2.2
+          <p className="text-[9px] text-neutral-400 uppercase tracking-[0.3em] text-center pt-10">
+            L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V2.3
           </p>
         </div>
       </div>

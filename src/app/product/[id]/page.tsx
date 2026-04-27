@@ -77,13 +77,13 @@ export default function ProductPage() {
   if (!product) return <div className="p-20 text-center">Product not found</div>;
 
   return (
-    <div className="w-full bg-white min-h-screen">
+    <div className="w-full bg-white min-h-screen pt-32 lg:pt-0">
 
       {/* ── MOBILE LAYOUT (hidden on lg+) ── */}
       <div className="lg:hidden">
 
-        {/* Full-bleed image */}
-        <div className="w-full aspect-square bg-[#f2f2f2]">
+        {/* Full-bleed image - Miniaturized for Poise */}
+        <div className="w-full aspect-square bg-[#f6f6f6] p-20">
           <div className="relative w-full h-full">
             <Image
               src={product.image}
@@ -210,7 +210,7 @@ export default function ProductPage() {
           {/* Verification Signature */}
           <div className="pt-24 pb-12 text-center">
             <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V5.2
+              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V5.3
             </p>
           </div>
         </div>
@@ -348,7 +348,7 @@ export default function ProductPage() {
 
             <div className="pt-24 pb-12 text-center">
               <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-                L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V4.0 FRESH
+                L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V5.3
               </p>
             </div>
           </div>

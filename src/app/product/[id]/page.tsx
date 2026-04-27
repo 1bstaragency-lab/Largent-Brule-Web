@@ -27,7 +27,8 @@ const productData: Record<string, any> = {
       "STRUCTURED COLLAR",
       "SILVER-TONE ZIP CLOSURE",
       "RIBBED CUFFS AND HEM",
-      "MADE IN FRANCE",
+      "MADE IN LOS ANGELES",
+      "SKETCHED, FRAMED AND SAMPLES MADE IN FRANCE DESIGN STUDIO",
       "REF: 2LB-BJ-NYL-001"
     ]
   },
@@ -47,7 +48,8 @@ const productData: Record<string, any> = {
       "MULTI-POCKET CONSTRUCTION",
       "SILVER-TONE RIVETS",
       "CUSTOM 'LB' ENGRAVED BUTTON",
-      "MADE IN ITALY",
+      "MADE IN LOS ANGELES",
+      "SKETCHED, FRAMED AND SAMPLES MADE IN FRANCE DESIGN STUDIO",
       "REF: 2LB-CP-LMB-004"
     ]
   }

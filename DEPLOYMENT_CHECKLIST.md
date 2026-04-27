@@ -1,12 +1,12 @@
 # L'argent Brûlé Digital Flagship - Deployment Checklist
 
 ## 1. Environment Variables
-To start selling, create a `.env.local` (or add to your deployment platform like Vercel/Netlify) with these keys:
+To start selling via Shopify, create a `.env.local` (or add to your deployment platform) with these keys:
 
 ```bash
-# Stripe Keys (Get these from your Stripe Dashboard)
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
-STRIPE_SECRET_KEY=sk_test_...
+# Shopify Storefront (Get these from Shopify Admin > Develop Apps)
+NEXT_PUBLIC_SHOPIFY_STORE_DOMAIN=your-store.myshopify.com
+NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN=your_token_here
 
 # Brand Info
 NEXT_PUBLIC_SITE_URL=https://your-domain.com

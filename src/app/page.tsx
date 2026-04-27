@@ -1,65 +1,72 @@
 import Image from "next/image";
+import Link from "next/link";
+import { GooeyText } from "@/components/ui/gooey-text-morphing";
+
+const products = [
+  {
+    id: "bomber",
+    name: "CROPPED BOMBER JACKET",
+    price: "310 USD",
+    image: "/bomber_final_studio.jpg",
+    tag: "NEW"
+  },
+  {
+    id: "pants",
+    name: "CARGO LEATHER PANTS",
+    price: "240 USD",
+    image: "/pants_leather_studio.png",
+    tag: "NEW"
+  }
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+    <div className="p-10 pb-40">
+      {/* Hero Section */}
+      <section className="relative w-full h-[90vh] mb-20 overflow-hidden bg-black flex items-center justify-center">
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
+          src="/hero_final_lock_v10.jpg"
+          alt="L'argent Brûlé Editorial"
+          fill
+          className="object-cover brightness-90"
           priority
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+        <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
+          <GooeyText 
+            texts={["L'ARGENT", "BRÛLÉ"]} 
+            morphTime={2}
+            cooldownTime={1}
+            className="font-bold text-white text-8xl md:text-9xl tracking-[0.2em] uppercase"
+            textClassName="text-white text-center"
+          />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </section>
+
+      {/* Section Header */}
+      <div className="mb-14">
+        <h2 className="text-[14px] uppercase font-bold tracking-[0.3em]">NEW</h2>
+      </div>
+
+      {/* Product Grid */}
+      <div className="grid grid-cols-2 gap-10 max-w-[1000px]">
+        {products.map((product) => (
+          <Link key={product.id} href={`/product/${product.id}`} className="group block space-y-5">
+            <div className="aspect-[1/1.35] bg-white relative overflow-hidden flex items-center justify-center p-10 border border-transparent group-hover:border-border transition-colors">
+              <Image 
+                src={product.image} 
+                alt={product.name} 
+                fill 
+                className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-700"
+              />
+            </div>
+            <div className="space-y-2 text-[11px] tracking-wide">
+              <p className="font-bold uppercase">{product.name}</p>
+              <p className="font-medium">{product.price}</p>
+              <p className="font-bold text-[10px] opacity-60 uppercase">{product.tag}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

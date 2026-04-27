@@ -55,7 +55,7 @@ export function Sidebar() {
           <Link href="#" className="block text-[10px] uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">
             STORE LOCATOR
           </Link>
-          <Link href="#" className="block text-[10px] uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">
+          <Link href="/auth" className="block text-[10px] uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity">
             SIGN IN / REGISTER
           </Link>
         </div>

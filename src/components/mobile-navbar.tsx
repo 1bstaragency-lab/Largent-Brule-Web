@@ -55,7 +55,7 @@ export function MobileNavbar() {
             <Link href="#" onClick={() => setIsOpen(false)} className="block text-xs uppercase tracking-widest opacity-60">
               STORE LOCATOR
             </Link>
-            <Link href="#" onClick={() => setIsOpen(false)} className="block text-xs uppercase tracking-widest opacity-60">
+            <Link href="/auth" onClick={() => setIsOpen(false)} className="block text-xs uppercase tracking-widest opacity-60">
               SIGN IN / REGISTER
             </Link>
           </div>

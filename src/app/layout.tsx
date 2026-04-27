@@ -42,19 +42,19 @@ export default function RootLayout({
 
           <CartToggle />
 
-          <div className="mt-[35px] w-full">
-            {/* Desktop Sidebar - Absolute Fixed */}
-            <div className="hidden lg:block fixed left-0 top-[35px] w-64 h-[calc(100vh-35px)] border-r border-neutral-100 z-[90]">
+          <div className="mt-[35px] grid grid-cols-1 lg:grid-cols-[256px_1fr] w-full min-h-[calc(100vh-35px)]">
+            {/* Desktop Sidebar */}
+            <div className="hidden lg:block border-r border-neutral-100 bg-white sticky top-[35px] h-[calc(100vh-35px)] overflow-y-auto">
               <Sidebar />
             </div>
 
-            {/* Mobile Navbar */}
-            <div className="lg:hidden">
+            {/* Mobile Navbar Overlay */}
+            <div className="lg:hidden absolute top-0 left-0 w-full z-[100]">
               <MobileNavbar />
             </div>
 
             {/* Main Content Area */}
-            <main className="w-full lg:pl-64 min-h-[calc(100vh-35px)]">
+            <main className="w-full bg-white relative">
               {children}
             </main>
           </div>

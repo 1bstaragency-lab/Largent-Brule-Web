@@ -80,9 +80,9 @@ export default function ProductPage() {
   return (
     <div className="flex flex-col lg:flex-row min-h-screen bg-white w-full overflow-x-hidden">
       
-      {/* MONUMENTAL IMAGE - Vertical on Mobile, Left-Anchor on Desktop */}
-      <div className="w-full lg:w-[60%] bg-[#f0eeeb] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center">
-        <div className="relative w-full h-[80vw] sm:h-[60vh] lg:h-full">
+      {/* MONUMENTAL IMAGE - SAFARI-SPEC FULL SCALE */}
+      <div className="w-full lg:w-[60%] bg-[#f6f6f6] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center">
+        <div className="relative w-full h-[100vw] sm:h-[60vh] lg:h-full">
           <Image
             src={product.image}
             alt={product.name}
@@ -93,44 +93,45 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* TECHNICAL DETAILS - Full Width on Mobile, Right-Anchor on Desktop */}
-      <div className="w-full lg:w-[40%] bg-white px-6 py-10 lg:px-14 lg:pt-14">
-        <div className="space-y-8 max-w-xl mx-auto lg:mx-0">
-          {/* Name + Price */}
-          <div className="space-y-2 text-left">
-            <p className="text-[14px] lg:text-[15px] uppercase tracking-[0.1em] font-bold leading-tight">{product.name}</p>
-            <p className="text-[16px] lg:text-[18px] font-bold tracking-tight">{product.price}</p>
+      {/* TECHNICAL DETAILS - SAFARI-SPEC FLUSH LEFT */}
+      <div className="w-full lg:w-[40%] bg-white px-6 py-10 lg:px-16 lg:pt-16">
+        <div className="space-y-10 max-w-xl mx-auto lg:mx-0">
+          {/* Header */}
+          <div className="space-y-4 text-left">
+            <h1 className="text-[15px] lg:text-[16px] font-bold uppercase tracking-[0.15em] leading-tight text-black">{product.name}</h1>
+            <p className="text-[15px] lg:text-[16px] font-bold tracking-tight text-black">{product.price}</p>
           </div>
 
-          {/* Color */}
+          {/* Color Selector */}
           <div className="space-y-4">
-            <p className="text-[10px] font-bold uppercase tracking-[0.3em]">{product.colors[selectedColor].name}</p>
-            <div className="flex gap-3">
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-400">COLOR: {product.colors[selectedColor].name}</p>
+            <div className="flex gap-2">
               {product.colors.map((color: any, i: number) => (
                 <button
                   key={i}
                   onClick={() => setSelectedColor(i)}
                   className={cn(
-                    "w-10 h-10 border-2 transition-all",
-                    selectedColor === i ? "border-black" : "border-transparent ring-1 ring-neutral-200"
+                    "w-10 h-10 border transition-all p-0.5",
+                    selectedColor === i ? "border-black" : "border-neutral-200"
                   )}
-                  style={{ backgroundColor: color.hex }}
-                />
+                >
+                  <div className="w-full h-full" style={{ backgroundColor: color.hex }} />
+                </button>
               ))}
             </div>
           </div>
 
-          {/* Sizes - Celine Horizontal Spec */}
+          {/* Size Selector - Celine Spec */}
           <div className="space-y-4">
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em]">SELECT SIZE</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-400">SELECT SIZE</p>
             <div className="flex flex-wrap gap-2">
               {product.sizes.map((size: string) => (
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
                   className={cn(
-                    "min-w-[64px] h-12 border text-[11px] font-bold tracking-widest flex items-center justify-center transition-all",
-                    selectedSize === size ? "border-black bg-black text-white" : "border-neutral-300 text-black hover:border-black"
+                    "min-w-[65px] h-12 border text-[11px] font-bold tracking-widest flex items-center justify-center transition-all",
+                    selectedSize === size ? "border-black bg-black text-white" : "border-neutral-200 text-black hover:border-black"
                   )}
                 >
                   {size}
@@ -139,33 +140,33 @@ export default function ProductPage() {
             </div>
           </div>
 
-          {/* Action Block */}
-          <div className="space-y-3 pt-4">
-            <button className="w-full h-[55px] border border-black flex items-center justify-center bg-white hover:bg-neutral-50 transition-colors">
-               <span className="text-[12px] font-bold tracking-[0.4em] uppercase"> PAY</span>
-            </button>
+          {/* Action Buttons */}
+          <div className="space-y-3 pt-6">
             <div className="relative w-full h-[55px]">
               <LiquidButton
                 onClick={() => addItem({ id, name: product.name, price: product.price, image: product.image })}
-                className="w-full h-full bg-black text-white text-[11px] font-bold tracking-[0.4em] uppercase"
+                className="w-full h-full bg-black text-white text-[12px] font-bold tracking-[0.4em] uppercase"
               >
-                ADD TO CART
+                ADD TO BAG
               </LiquidButton>
             </div>
+            <button className="w-full h-[55px] border border-black flex items-center justify-center bg-white hover:bg-neutral-50 transition-colors">
+               <span className="text-[12px] font-bold tracking-[0.4em] uppercase"> PAY</span>
+            </button>
           </div>
 
-          {/* Accordions */}
-          <div className="border-t border-neutral-200 divide-y divide-neutral-200 mt-10">
+          {/* Minimalist Accordions */}
+          <div className="border-t border-neutral-100 divide-y divide-neutral-100 mt-12">
             <div>
               <button
                 onClick={() => setActiveAccordion(activeAccordion === 'details' ? null : 'details')}
                 className="w-full py-6 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.3em]"
               >
                 DETAILS
-                <Plus size={16} className={cn("transition-transform duration-300", activeAccordion === 'details' && "rotate-45")} />
+                <Plus size={14} className={cn("transition-transform duration-300", activeAccordion === 'details' && "rotate-45")} />
               </button>
-              <div className={cn("overflow-hidden transition-all duration-500", activeAccordion === 'details' ? "max-h-[500px] pb-6" : "max-h-0")}>
-                <ul className="pb-4 space-y-3 text-[11px] text-neutral-500 font-medium tracking-wide">
+              <div className={cn("overflow-hidden transition-all duration-500", activeAccordion === 'details' ? "max-h-[500px] pb-8" : "max-h-0")}>
+                <ul className="space-y-3 text-[11px] text-neutral-500 font-medium tracking-wide">
                   {product.details.map((d: string, i: number) => <li key={i}>{d}</li>)}
                 </ul>
               </div>
@@ -179,10 +180,10 @@ export default function ProductPage() {
               >
                 <div className="flex flex-col items-start gap-1">
                   {isChecking ? "CHECKING ARCHIVE..." : showSoldOut ? (
-                    <span className="text-[#4a0404] animate-pulse">SOLD OUT — RODEO DRIVE, APRIL 4TH</span>
+                    <span className="text-[#4a0404] animate-pulse uppercase">SOLD OUT — RODEO DRIVE, APRIL 4TH</span>
                   ) : "CHECK AVAILABILITY IN STORE"}
                 </div>
-                {!isChecking && !showSoldOut && <ChevronRight size={16} />}
+                {!isChecking && !showSoldOut && <ChevronRight size={14} />}
               </button>
             </div>
 
@@ -192,9 +193,9 @@ export default function ProductPage() {
                 className="w-full py-6 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.3em]"
               >
                 SHIPPING & RETURNS
-                <Plus size={16} className={cn("transition-transform duration-300", activeAccordion === 'shipping' && "rotate-45")} />
+                <Plus size={14} className={cn("transition-transform duration-300", activeAccordion === 'shipping' && "rotate-45")} />
               </button>
-              <div className={cn("overflow-hidden transition-all duration-500", activeAccordion === 'shipping' ? "max-h-[500px] pb-6" : "max-h-0")}>
+              <div className={cn("overflow-hidden transition-all duration-500", activeAccordion === 'shipping' ? "max-h-[500px] pb-8" : "max-h-0")}>
                 <p className="text-[11px] text-neutral-500 leading-relaxed uppercase tracking-[0.1em]">
                   10-14 DAY WHITE GLOVE SHIPPING. PACKED WITH CARE. NO RETURNS. THIS GARMENT IS PERFECT.
                 </p>
@@ -202,9 +203,11 @@ export default function ProductPage() {
             </div>
           </div>
 
-          <p className="text-[9px] text-neutral-400 uppercase tracking-[0.3em] text-center pt-10">
-            L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V2.3
-          </p>
+          <div className="pt-10 text-center">
+            <p className="text-[9px] text-neutral-400 uppercase tracking-[0.4em]">
+              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | V2.4
+            </p>
+          </div>
         </div>
       </div>
     </div>

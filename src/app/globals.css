@@ -101,6 +101,27 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background text-foreground antialiased overflow-x-hidden;
+  }
+}
+
+/* AGGRESSIVE MOBILE LOCKDOWN — FORCED ARCHIVAL STACK */
+@media (max-width: 1023px) {
+  .flex-col-mobile,
+  body,
+  main,
+  div[class*="flex-col"] {
+    flex-direction: column !important;
+  }
+
+  main {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  div[class*="w-full"] {
+    width: 100% !important;
+    max-width: 100vw !important;
   }
 }

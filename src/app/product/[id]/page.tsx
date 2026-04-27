@@ -78,11 +78,10 @@ export default function ProductPage() {
   if (!product) return <div>Product not found</div>;
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-white">
-
-      {/* IMAGE — Full bleed, no padding on mobile */}
-      <div className="w-full lg:w-[60%] bg-[#f0eeeb] lg:sticky lg:top-0 lg:h-screen">
-        <div className="relative w-full h-[70vw] max-h-[80vh] lg:h-full">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-white w-full overflow-x-hidden">
+      {/* Left: Image Section - Monumental & Vertical on Mobile */}
+      <div className="w-full lg:w-[60%] bg-[#f0eeeb] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center">
+        <div className="relative w-full h-[80vw] sm:h-[60vh] lg:h-full">
           <Image
             src={product.image}
             alt={product.name}
@@ -93,9 +92,9 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* DETAILS — Flush left, clean Celine hierarchy */}
+      {/* Right: Details Section - Full Width on Mobile */}
       <div className="w-full lg:w-[40%] bg-white">
-        <div className="px-4 pt-6 pb-16 lg:px-14 lg:pt-14 space-y-8">
+        <div className="px-6 py-10 lg:px-14 lg:pt-14 space-y-8">
 
           {/* Name + Price */}
           <div>

@@ -78,10 +78,10 @@ export default function ProductPage() {
   if (!product) return <div>Product not found</div>;
 
   return (
-    <div className="flex min-h-screen bg-white">
+    <div className="flex flex-col lg:flex-row min-h-screen bg-white">
       {/* Left: Image Section */}
-      <div className="w-[60%] bg-[#f6f6f6] flex items-center justify-center p-20 sticky top-0 h-screen">
-        <div className="relative w-full h-full">
+      <div className="w-full lg:w-[60%] bg-[#f6f6f6] flex items-center justify-center p-6 lg:p-20 lg:sticky lg:top-0 lg:h-screen">
+        <div className="relative w-full aspect-[3/4] lg:h-full">
           <Image 
             src={product.image} 
             alt={product.name} 
@@ -93,8 +93,8 @@ export default function ProductPage() {
       </div>
 
       {/* Right: Details Section */}
-      <div className="w-[40%] p-16 overflow-y-auto">
-        <div className="max-w-[400px] space-y-8">
+      <div className="w-full lg:w-[40%] p-8 lg:p-16 overflow-y-auto bg-white">
+        <div className="max-w-[400px] mx-auto lg:mx-0 space-y-8">
           {/* Header */}
           <div className="space-y-2">
             <h1 className="text-[12px] font-bold tracking-widest uppercase">{product.name}</h1>

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Sidebar } from "@/components/sidebar";
@@ -9,10 +9,16 @@ import { CartToggle } from "@/components/cart-toggle";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-    title: "L'argent Brûlé | Official Flagship",
-    description: "Luxury technical apparel for the volatile era.",
+  title: "L'argent Brûlé | Official Flagship",
+  description: "Luxury technical apparel for the volatile era.",
+  openGraph: {
     images: ["/logo_red_script.png"],
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

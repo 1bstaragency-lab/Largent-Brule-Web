@@ -10,7 +10,7 @@ export function Sidebar() {
 
   return (
     <aside className="w-[250px] h-screen sticky top-0 p-10 flex flex-col border-r border-border bg-background z-50">
-      <div className="relative w-full h-24 mb-16 px-4">
+      <div className="relative w-full h-32 mb-20 px-4">
         <Link href="/" className="relative block w-full h-full">
           <Image 
             src="/logo_script_final.png" 

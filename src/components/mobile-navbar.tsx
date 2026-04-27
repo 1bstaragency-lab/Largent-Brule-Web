@@ -18,7 +18,7 @@ export function MobileNavbar() {
       </button>
 
       {/* Centered Logo - Script */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-16">
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-20">
         <Link href="/" className="relative block w-full h-full">
           <Image 
             src="/logo_script_final.png" 

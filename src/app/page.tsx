@@ -32,15 +32,13 @@ export default function Home() {
           priority
         />
         <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none p-2">
-          <div style={{ transform: 'scale(0.8)' }} className="lg:scale-100 transition-transform duration-1000">
-            <GooeyText 
-              texts={["L'ARGENT", "BRÛLÉ"]} 
-              morphTime={2}
-              cooldownTime={1}
-              className="font-bold text-white text-3xl lg:text-9xl tracking-[0.2em] uppercase"
-              textClassName="text-white text-center"
-            />
-          </div>
+          <GooeyText
+            texts={["L'ARGENT", "BRÛLÉ"]}
+            morphTime={2}
+            cooldownTime={1}
+            className="font-bold text-white text-4xl sm:text-6xl lg:text-9xl tracking-[0.2em] uppercase"
+            textClassName="text-white text-center"
+          />
         </div>
         <div className="absolute bottom-6 right-6 z-20">
           <p className="text-[8px] font-bold text-white/30 tracking-[0.4em] uppercase">ARCHIVE V4.3 LOCK</p>

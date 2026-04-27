@@ -81,7 +81,7 @@ export default function ProductPage() {
       
       {/* MONUMENTAL HERO IMAGE - HEADER ON MOBILE */}
       <div className="w-full lg:w-[60%] bg-[#f6f6f6] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center p-4 lg:p-12">
-        <div className="relative w-full h-[120vw] sm:h-[80vh] lg:h-full">
+        <div className="relative w-full h-[80vw] sm:h-[70vh] lg:h-full">
           <Image
             src={product.image}
             alt={product.name}
@@ -93,8 +93,8 @@ export default function ProductPage() {
       </div>
 
       {/* TECHNICAL DETAILS - VERTICAL ON MOBILE */}
-      <div className="w-full lg:w-[40%] bg-white px-8 py-16 lg:px-20 lg:py-32">
-        <div className="max-w-xl mx-auto lg:mx-0 space-y-20">
+      <div className="w-full lg:w-[40%] bg-white px-6 py-10 lg:px-20 lg:py-32">
+        <div className="max-w-xl mx-auto lg:mx-0 space-y-10 lg:space-y-20">
           
           {/* Clinical Info */}
           <div className="space-y-6">
@@ -149,7 +149,7 @@ export default function ProductPage() {
           </div>
 
           {/* Action Blocks */}
-          <div className="space-y-4 pt-10">
+          <div className="space-y-4 pt-2 lg:pt-10">
             <div className="relative w-full h-[60px]">
               <LiquidButton
                 onClick={() => addItem({ id, name: product.name, price: product.price, image: product.image })}
@@ -164,7 +164,7 @@ export default function ProductPage() {
           </div>
 
           {/* Technical Details - Accordions */}
-          <div className="border-t border-neutral-100 divide-y divide-neutral-100 mt-20">
+          <div className="border-t border-neutral-100 divide-y divide-neutral-100 mt-4 lg:mt-20">
             <div>
               <button
                 onClick={() => setActiveAccordion(activeAccordion === 'details' ? null : 'details')}

@@ -31,17 +31,17 @@ export default function Home() {
           className="object-cover brightness-90"
           priority
         />
-        <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none p-6">
+        <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none p-4">
           <GooeyText 
             texts={["L'ARGENT", "BRÛLÉ"]} 
             morphTime={2}
             cooldownTime={1}
-            className="font-bold text-white text-5xl sm:text-7xl md:text-9xl tracking-[0.1em] md:tracking-[0.2em] uppercase"
+            className="font-bold text-white text-4xl sm:text-6xl md:text-9xl tracking-[0.1em] md:tracking-[0.2em] uppercase"
             textClassName="text-white text-center"
           />
         </div>
         <div className="absolute bottom-6 right-6 z-20">
-          <p className="text-[8px] font-bold text-white/20 tracking-[0.4em] uppercase">ARCHIVE V2.1</p>
+          <p className="text-[8px] font-bold text-white/20 tracking-[0.4em] uppercase">ARCHIVE V4.1</p>
         </div>
       </section>
 

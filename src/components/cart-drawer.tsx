@@ -73,59 +73,78 @@ function CartDrawer({ isOpen, setIsOpen, items, showAdded }: {
   items: CartItem[];
   showAdded: boolean;
 }) {
+  const subtotal = items.reduce((acc, item) => acc + parseInt(item.price.replace(/[^0-9]/g, "")), 0);
+
   return (
     <>
       {/* Backdrop */}
       {isOpen && (
         <div 
-          className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[2100] transition-opacity duration-500" 
+          className="fixed inset-0 bg-black/10 backdrop-blur-[2px] z-[2100] transition-opacity duration-500" 
           onClick={() => setIsOpen(false)}
         />
       )}
 
       {/* Drawer */}
-      <div className={`fixed top-0 right-0 h-screen w-full sm:w-[400px] bg-white z-[2200] shadow-2xl transition-transform duration-500 ease-in-out transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="flex flex-col h-full p-10">
-          <div className="flex items-center justify-between mb-10">
-            <h2 className="text-[12px] font-bold uppercase tracking-[0.3em]">YOUR BAG</h2>
-            <button onClick={() => setIsOpen(false)} className="p-2 hover:opacity-50">
-              <X size={18} />
+      <div className={`fixed top-0 right-0 h-screen w-full sm:w-[450px] bg-white z-[2200] border-l border-neutral-100 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className="flex flex-col h-full">
+          {/* Header */}
+          <div className="flex items-center justify-between p-6 lg:p-10 border-b border-neutral-50">
+            <h2 className="text-[12px] font-bold uppercase tracking-[0.3em]">YOUR SELECTION ({items.length})</h2>
+            <button onClick={() => setIsOpen(false)} className="p-2 hover:opacity-50 transition-opacity">
+              <X size={16} strokeWidth={1.5} />
             </button>
           </div>
 
-          {/* Green Added Message */}
-          <div className={`mb-10 flex items-center gap-2 text-green-600 transition-opacity duration-1000 ${showAdded ? 'opacity-100' : 'opacity-0'}`}>
-            <Check size={14} />
-            <span className="text-[10px] font-bold uppercase tracking-widest">ADDED TO SELECTION</span>
-          </div>
-
-          <div className="flex-1 overflow-y-auto space-y-8">
-            {items.map((item, i) => (
-              <div key={i} className="flex gap-6 animate-in slide-in-from-right duration-500">
-                <div className="w-24 h-32 bg-[#f6f6f6] relative border border-border">
-                  <Image src={item.image} alt={item.name} fill className="object-contain p-2" />
-                </div>
-                <div className="flex-1 space-y-1">
-                  <p className="text-[10px] font-bold uppercase tracking-widest">{item.name}</p>
-                  <p className="text-[10px] font-medium tracking-widest">{item.price}</p>
-                </div>
+          {/* Cart Content */}
+          <div className="flex-1 overflow-y-auto px-6 lg:px-10 py-10 space-y-10">
+            {items.length === 0 ? (
+              <div className="h-full flex flex-col items-center justify-center space-y-4 opacity-30">
+                <p className="text-[10px] font-bold uppercase tracking-[0.4em]">YOUR SELECTION IS EMPTY</p>
               </div>
-            ))}
+            ) : (
+              items.map((item, i) => (
+                <div key={i} className="flex gap-8 group animate-in fade-in slide-in-from-right-4 duration-700">
+                  <div className="w-24 h-32 bg-[#f6f6f6] relative flex-shrink-0">
+                    <Image src={item.image} alt={item.name} fill className="object-cover mix-blend-multiply" />
+                  </div>
+                  <div className="flex-1 flex flex-col justify-center space-y-2">
+                    <p className="text-[11px] font-bold uppercase tracking-widest leading-tight">{item.name}</p>
+                    <p className="text-[11px] font-medium tracking-tighter">{item.price}</p>
+                    <button className="text-[9px] font-bold uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-opacity pt-2 w-fit">
+                      REMOVE
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
 
-          <div className="mt-auto pt-10 border-t border-border space-y-4">
-            <div className="flex justify-between text-[11px] font-bold uppercase tracking-widest">
-              <span>SUBTOTAL</span>
-              <span>{items.reduce((acc, item) => acc + parseInt(item.price.replace(/[^0-9]/g, "")), 0)} USD</span>
+          {/* Footer */}
+          {items.length > 0 && (
+            <div className="p-6 lg:p-10 border-t border-neutral-100 space-y-6 bg-neutral-50/30">
+              <div className="flex justify-between items-end">
+                <div className="space-y-1">
+                  <p className="text-[9px] font-bold uppercase tracking-[0.3em] opacity-40">SUBTOTAL</p>
+                  <p className="text-[14px] font-bold tracking-tight">{subtotal} USD</p>
+                </div>
+                <p className="text-[9px] font-medium uppercase tracking-widest opacity-40">EXCL. SHIPPING</p>
+              </div>
+              
+              <div className="space-y-3">
+                <Link 
+                  href="/checkout" 
+                  onClick={() => setIsOpen(false)}
+                  className="block w-full h-[55px] bg-black text-white text-center leading-[55px] text-[11px] font-bold uppercase tracking-[0.4em] hover:bg-[#1a1a1a] transition-all"
+                >
+                  PROCEED TO CHECKOUT
+                </Link>
+                <p className="text-[9px] text-center text-neutral-400 uppercase tracking-widest">
+                  SHIPPING & TAXES CALCULATED AT CHECKOUT
+                </p>
+              </div>
             </div>
-            <Link 
-              href="/checkout" 
-              onClick={() => setIsOpen(false)}
-              className="block w-full h-14 bg-black text-white text-center leading-[56px] text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-neutral-900 transition-colors"
-            >
-              PROCEED TO CHECKOUT
-            </Link>
-          </div>
+          )}
         </div>
       </div>
     </>

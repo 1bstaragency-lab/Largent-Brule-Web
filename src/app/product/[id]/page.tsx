@@ -78,33 +78,126 @@ export default function ProductPage() {
   if (!product) return <div>Product not found</div>;
 
   return (
-    <div className="w-full bg-white flex flex-col lg:flex-row min-h-screen overflow-x-hidden">
-      
-      {/* MONUMENTAL IMAGE - UN-CROPPED FULL SCALE */}
-      <div className="w-full lg:w-[60%] bg-[#f6f6f6] flex items-center justify-center lg:sticky lg:top-0 lg:h-screen">
-        <div className="relative w-full h-[140vw] lg:h-full">
+    <div className="product-page-root">
+      <style jsx>{`
+        .product-page-root {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          background-color: #fff;
+          min-height: 100vh;
+        }
+
+        .product-hero-image {
+          width: 100%;
+          background-color: #f6f6f6;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          height: 140vw;
+        }
+
+        .product-details-container {
+          width: 100%;
+          padding: 80px 32px 100px;
+          box-sizing: border-box;
+        }
+
+        @media (min-width: 1024px) {
+          .product-page-root {
+            flex-direction: row;
+          }
+          .product-hero-image {
+            width: 60%;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+          }
+          .product-details-container {
+            width: 40%;
+            padding: 120px 80px;
+          }
+        }
+
+        .clinical-header {
+          margin-bottom: 60px;
+        }
+
+        .clinical-header h1 {
+          font-size: 15px;
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.2em;
+          line-height: 1.4;
+          margin-bottom: 16px;
+        }
+
+        .clinical-header p {
+          font-size: 16px;
+          font-weight: 700;
+          letter-spacing: 0.05em;
+        }
+
+        .size-grid {
+          display: grid;
+          grid-template-cols: repeat(4, 1fr);
+          gap: 12px;
+          margin-top: 24px;
+        }
+
+        .action-block {
+          margin-top: 60px;
+          display: flex;
+          flex-direction: column;
+          gap: 16px;
+        }
+
+        .size-button {
+          height: 50px;
+          border: 1px solid #e5e5e5;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 0.2em;
+          transition: all 0.3s ease;
+          background: #fff;
+        }
+
+        .size-button.selected {
+          border-color: #000;
+          background-color: #000;
+          color: #fff;
+        }
+      `}</style>
+
+      {/* MONUMENTAL IMAGE - NO SQUEEZING POSSIBLE */}
+      <div className="product-hero-image">
+        <div className="relative w-full h-full">
           <Image
             src={product.image}
             alt={product.name}
             fill
-            className="object-contain lg:object-contain mix-blend-multiply"
+            className="object-contain mix-blend-multiply"
             priority
           />
         </div>
       </div>
 
-      {/* TECHNICAL DETAILS - CELINE WHITESPACE SPEC */}
-      <div className="w-full lg:w-[40%] bg-white">
-        <div className="px-8 pt-32 pb-20 lg:px-20 lg:py-32 space-y-24">
+      {/* TECHNICAL DETAILS - FULL WIDTH MANDATE */}
+      <div className="product-details-container">
+        <div className="max-w-xl mx-auto lg:mx-0">
           {/* Header */}
-          <div className="space-y-6">
-            <h1 className="text-[14px] lg:text-[16px] font-bold uppercase tracking-[0.2em] leading-tight text-black">{product.name}</h1>
-            <p className="text-[14px] lg:text-[16px] font-bold tracking-[0.1em] text-black">{product.price}</p>
+          <div className="clinical-header">
+            <h1>{product.name}</h1>
+            <p>{product.price}</p>
           </div>
 
           {/* Color Selector */}
-          <div className="space-y-6">
-            <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-neutral-400">{product.colors[selectedColor].name}</p>
+          <div className="space-y-6 mb-16">
+            <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-neutral-400">COLOR: {product.colors[selectedColor].name}</p>
             <div className="flex gap-4">
               {product.colors.map((color: any, i: number) => (
                 <button
@@ -121,18 +214,15 @@ export default function ProductPage() {
             </div>
           </div>
 
-          {/* Size Selector - Spacious Grid */}
-          <div className="space-y-6">
+          {/* Size Selector */}
+          <div className="mb-16">
             <p className="text-[9px] font-bold uppercase tracking-[0.4em] text-neutral-400">SELECT SIZE</p>
-            <div className="grid grid-cols-4 gap-3 max-w-[320px]">
+            <div className="size-grid">
               {product.sizes.map((size: string) => (
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
-                  className={cn(
-                    "h-12 border text-[10px] font-bold tracking-[0.3em] flex items-center justify-center transition-all",
-                    selectedSize === size ? "border-black bg-black text-white" : "border-neutral-200 text-black hover:border-black"
-                  )}
+                  className={cn("size-button", selectedSize === size && "selected")}
                 >
                   {size}
                 </button>
@@ -141,32 +231,32 @@ export default function ProductPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="space-y-4 pt-10">
-            <div className="relative w-full h-[55px]">
+          <div className="action-block">
+            <div className="relative w-full h-[60px]">
               <LiquidButton
                 onClick={() => addItem({ id, name: product.name, price: product.price, image: product.image })}
-                className="w-full h-full bg-black text-white text-[11px] font-bold tracking-[0.4em] uppercase"
+                className="w-full h-full bg-black text-white text-[12px] font-bold tracking-[0.4em] uppercase"
               >
                 ADD TO BAG
               </LiquidButton>
             </div>
-            <button className="w-full h-[55px] border border-black flex items-center justify-center bg-white hover:bg-neutral-50 transition-colors">
-               <span className="text-[11px] font-bold tracking-[0.4em] uppercase"> PAY</span>
+            <button className="w-full h-[60px] border border-black flex items-center justify-center bg-white hover:bg-neutral-50 transition-colors">
+               <span className="text-[12px] font-bold tracking-[0.4em] uppercase"> PAY</span>
             </button>
           </div>
 
-          {/* Minimalist Accordions - Extreme Whitespace */}
-          <div className="border-t border-neutral-100 divide-y divide-neutral-100 pt-10">
+          {/* Minimalist Accordions */}
+          <div className="border-t border-neutral-100 divide-y divide-neutral-100 mt-20">
             <div>
               <button
                 onClick={() => setActiveAccordion(activeAccordion === 'details' ? null : 'details')}
-                className="w-full py-8 flex justify-between items-center text-[10px] font-bold uppercase tracking-[0.4em]"
+                className="w-full py-8 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.4em]"
               >
                 DETAILS
                 <Plus size={14} strokeWidth={1} className={cn("transition-transform duration-300", activeAccordion === 'details' && "rotate-45")} />
               </button>
               <div className={cn("overflow-hidden transition-all duration-500", activeAccordion === 'details' ? "max-h-[500px] pb-12" : "max-h-0")}>
-                <ul className="space-y-4 text-[10px] text-neutral-400 font-medium tracking-[0.1em] leading-relaxed">
+                <ul className="space-y-4 text-[11px] text-neutral-400 font-medium tracking-[0.1em] leading-relaxed">
                   {product.details.map((d: string, i: number) => <li key={i}>{d}</li>)}
                 </ul>
               </div>
@@ -176,7 +266,7 @@ export default function ProductPage() {
               <button
                 onClick={handleCheckAvailability}
                 disabled={isChecking || showSoldOut}
-                className="w-full py-8 flex justify-between items-center text-[10px] font-bold uppercase tracking-[0.4em] disabled:opacity-100"
+                className="w-full py-8 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.4em] disabled:opacity-100"
               >
                 <div className="flex flex-col items-start gap-2">
                   {isChecking ? "CHECKING ARCHIVE..." : showSoldOut ? (
@@ -190,22 +280,22 @@ export default function ProductPage() {
             <div>
               <button
                 onClick={() => setActiveAccordion(activeAccordion === 'shipping' ? null : 'shipping')}
-                className="w-full py-8 flex justify-between items-center text-[10px] font-bold uppercase tracking-[0.4em]"
+                className="w-full py-8 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.4em]"
               >
                 SHIPPING & RETURNS
                 <Plus size={14} strokeWidth={1} className={cn("transition-transform duration-300", activeAccordion === 'shipping' && "rotate-45")} />
               </button>
               <div className={cn("overflow-hidden transition-all duration-500", activeAccordion === 'shipping' ? "max-h-[500px] pb-12" : "max-h-0")}>
-                <p className="text-[10px] text-neutral-400 leading-relaxed uppercase tracking-[0.1em]">
+                <p className="text-[11px] text-neutral-400 leading-relaxed uppercase tracking-[0.1em]">
                   10-14 DAY WHITE GLOVE SHIPPING. PACKED WITH CARE. NO RETURNS. THIS GARMENT IS PERFECT.
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="pt-20 text-center">
-            <p className="text-[8px] text-neutral-300 uppercase tracking-[0.5em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V3.1
+          <div className="pt-24 text-center">
+            <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
+              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V3.2
             </p>
           </div>
         </div>

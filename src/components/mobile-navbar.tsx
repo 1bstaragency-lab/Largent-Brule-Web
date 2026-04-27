@@ -11,40 +11,40 @@ export function MobileNavbar() {
   const router = useRouter();
 
   return (
-    <header className="lg:hidden sticky top-0 z-[100] w-full bg-white/95 backdrop-blur-sm border-b border-neutral-100 h-16 flex items-center px-6">
+    <header className="lg:hidden sticky top-0 z-[100] w-full bg-white/70 backdrop-blur-xl border-b border-neutral-100 h-20 flex items-center px-6">
       {/* Menu Trigger - Left */}
       <button onClick={() => setIsOpen(true)} className="p-2 -ml-2">
         <Menu size={20} strokeWidth={1.5} />
       </button>
 
-      {/* Centered Logo - Red Script */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <div className="relative w-full h-24 mb-16">
+      {/* Centered Logo - Script */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-12">
+        <Link href="/" className="relative block w-full h-full">
           <Image 
             src="/logo_script_final.png" 
-            alt="L'argent Brûlé" 
-            fill 
-            className="object-contain object-left"
+            alt="L'ARGENT BRÛLÉ" 
+            fill
+            className="object-contain"
+            priority
           />
-        </div>
+        </Link>
       </div>
 
       <div className="w-10 h-10 ml-auto" /> {/* Balance spacer */}
 
       {/* Mobile Menu Overlay - Celine Clinical Spec */}
       {isOpen && (
-        <div className="fixed inset-0 bg-white z-[200] flex flex-col animate-in fade-in slide-in-from-top-4 duration-500">
+        <div className="fixed inset-0 bg-white/80 backdrop-blur-2xl z-[200] flex flex-col animate-in fade-in slide-in-from-top-4 duration-500">
           {/* Menu Header */}
-          <div className="h-16 flex items-center px-6 border-b border-neutral-100">
+          <div className="h-20 flex items-center px-6 border-b border-neutral-100">
             <button onClick={() => setIsOpen(false)} className="p-2 -ml-2">
               <X size={20} strokeWidth={1.5} />
             </button>
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-10">
               <Image 
-                src="/logo_red_script.png" 
+                src="/logo_script_final.png" 
                 alt="L'ARGENT BRÛLÉ" 
-                width={110} 
-                height={36} 
+                fill
                 className="object-contain"
               />
             </div>

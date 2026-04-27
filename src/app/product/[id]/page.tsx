@@ -210,7 +210,7 @@ export default function ProductPage() {
           {/* Verification Signature */}
           <div className="pt-24 pb-12 text-center">
             <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V4.8
+              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V4.9
             </p>
           </div>
         </div>
@@ -220,7 +220,7 @@ export default function ProductPage() {
       <div className="hidden lg:flex w-full min-h-screen">
 
         {/* MONUMENTAL HERO IMAGE - HEADER ON MOBILE */}
-        <div className="w-full lg:w-[60%] bg-[#f6f6f6] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center p-4 pt-32 lg:p-12">
+        <div className="w-full lg:w-[60%] bg-[#f6f6f6] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center p-4 pt-40 lg:p-12">
           <div className="relative w-full aspect-[3/4] lg:h-full lg:aspect-auto">
             <Image
               src={product.image}

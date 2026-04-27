@@ -78,41 +78,41 @@ export default function ProductPage() {
   if (!product) return <div>Product not found</div>;
 
   return (
-    <div className="flex flex-col lg:flex-row min-h-screen bg-white w-full overflow-x-hidden">
-      {/* Left: Image Section - Monumental & Vertical on Mobile */}
-      <div className="w-full lg:w-[60%] bg-[#f0eeeb] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center">
-        <div className="relative w-full h-[80vw] sm:h-[60vh] lg:h-full">
+    <div style={{ display: "block", width: "100%", minHeight: "100vh", backgroundColor: "white" }}>
+      
+      {/* MONUMENTAL IMAGE - FORCED FULL WIDTH */}
+      <div style={{ display: "block", width: "100%", backgroundColor: "#f0eeeb" }}>
+        <div style={{ position: "relative", width: "100%", paddingBottom: "125%" }}>
           <Image
             src={product.image}
             alt={product.name}
             fill
-            className="object-cover lg:object-contain mix-blend-multiply"
+            style={{ objectFit: "cover" }}
             priority
           />
         </div>
       </div>
 
-      {/* Right: Details Section - Full Width on Mobile */}
-      <div className="w-full lg:w-[40%] bg-white">
-        <div className="px-6 py-10 lg:px-14 lg:pt-14 space-y-8">
-
+      {/* TECHNICAL DETAILS - FORCED FULL WIDTH */}
+      <div style={{ display: "block", width: "100%", padding: "24px", boxSizing: "border-box" }}>
+        <div className="space-y-8">
           {/* Name + Price */}
-          <div>
-            <p className="text-[12px] uppercase tracking-wide font-normal text-black leading-tight">{product.name}</p>
-            <p className="text-[14px] font-bold tracking-tight text-black mt-1">{product.price}</p>
+          <div className="space-y-2">
+            <p className="text-[14px] uppercase tracking-[0.1em] font-bold leading-tight">{product.name}</p>
+            <p className="text-[16px] font-bold tracking-tight">{product.price}</p>
           </div>
 
           {/* Color */}
-          <div className="space-y-3">
-            <p className="text-[11px] uppercase tracking-[0.15em] font-medium">{product.colors[selectedColor].name}</p>
-            <div className="flex gap-2">
+          <div className="space-y-4">
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em]">{product.colors[selectedColor].name}</p>
+            <div className="flex gap-3">
               {product.colors.map((color: any, i: number) => (
                 <button
                   key={i}
                   onClick={() => setSelectedColor(i)}
                   className={cn(
-                    "w-9 h-9 border-2 transition-all",
-                    selectedColor === i ? "border-black" : "border-transparent outline outline-1 outline-neutral-300"
+                    "w-10 h-10 border-2 transition-all",
+                    selectedColor === i ? "border-black" : "border-transparent ring-1 ring-neutral-200"
                   )}
                   style={{ backgroundColor: color.hex }}
                 />
@@ -120,35 +120,31 @@ export default function ProductPage() {
             </div>
           </div>
 
-          {/* Sizes — Horizontal row, all visible */}
+          {/* Sizes - Celine Horizontal Spec */}
           <div className="space-y-4">
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em]">SELECT SIZE</p>
             <div className="flex flex-wrap gap-2">
               {product.sizes.map((size: string) => (
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
                   className={cn(
-                    "min-w-[56px] h-11 px-3 border text-[11px] font-bold tracking-widest uppercase flex items-center justify-center transition-all",
-                    selectedSize === size
-                      ? "border-black bg-black text-white"
-                      : "border-neutral-300 text-black hover:border-black"
+                    "min-w-[60px] h-12 border text-[11px] font-bold tracking-widest flex items-center justify-center transition-all",
+                    selectedSize === size ? "border-black bg-black text-white" : "border-neutral-300 text-black"
                   )}
                 >
                   {size}
                 </button>
               ))}
             </div>
-            <button className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.25em] hover:opacity-50 transition-opacity">
-              SIZE GUIDE <ChevronRight size={11} strokeWidth={2.5} />
-            </button>
           </div>
 
-          {/* ADD TO BAG */}
-          <div className="space-y-3">
-            <button className="w-full h-[52px] border border-black flex items-center justify-center hover:bg-neutral-50 transition-colors bg-white">
-               <span className="text-[12px] font-bold tracking-[0.3em] uppercase"> PAY</span>
+          {/* Action Block */}
+          <div className="space-y-3 pt-4">
+            <button className="w-full h-[55px] border border-black flex items-center justify-center bg-white hover:bg-neutral-50 transition-colors">
+               <span className="text-[12px] font-bold tracking-[0.4em] uppercase"> PAY</span>
             </button>
-            <div className="relative w-full h-[52px]">
+            <div className="relative w-full h-[55px]">
               <LiquidButton
                 onClick={() => addItem({ id, name: product.name, price: product.price, image: product.image })}
                 className="w-full h-full bg-black text-white text-[11px] font-bold tracking-[0.4em] uppercase"
@@ -158,98 +154,61 @@ export default function ProductPage() {
             </div>
           </div>
 
-          {/* Fine print */}
-          <p className="text-[9px] leading-relaxed text-neutral-400 uppercase tracking-wide">
-            I ACCEPT THE <Link href="#" className="underline">GENERAL CONDITIONS OF SALE</Link>, AND CONSENT TO THE PROCESSING OF MY DATA, IN ACCORDANCE WITH THE <Link href="#" className="underline">PRIVACY POLICY</Link>.
-          </p>
-
-          {/* Accordions — thin Celine-style dividers */}
-          <div className="border-t border-neutral-200 divide-y divide-neutral-200">
-
-            {/* Details */}
+          {/* Accordions */}
+          <div className="border-t border-neutral-200 divide-y divide-neutral-200 mt-10">
             <div>
               <button
                 onClick={() => setActiveAccordion(activeAccordion === 'details' ? null : 'details')}
-                className="w-full py-5 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.25em]"
+                className="w-full py-6 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.3em]"
               >
                 DETAILS
-                <Plus size={14} className={cn("transition-transform duration-300 flex-shrink-0", activeAccordion === 'details' && "rotate-45")} />
+                <Plus size={16} className={cn("transition-transform duration-300", activeAccordion === 'details' && "rotate-45")} />
               </button>
-              <div className={cn("overflow-hidden transition-all duration-500", activeAccordion === 'details' ? "max-h-[500px] pb-6" : "max-h-0")}>
-                <ul className="space-y-2 text-[11px] text-neutral-500 font-medium">
+              {activeAccordion === 'details' && (
+                <ul className="pb-8 space-y-3 text-[11px] text-neutral-500 font-medium tracking-wide">
                   {product.details.map((d: string, i: number) => <li key={i}>{d}</li>)}
                 </ul>
-              </div>
+              )}
             </div>
 
-            {/* Care */}
-            <div>
-              <button
-                onClick={() => setActiveAccordion(activeAccordion === 'care' ? null : 'care')}
-                className="w-full py-5 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.25em]"
-              >
-                CARE AND MAINTENANCE
-                <Plus size={14} className={cn("transition-transform duration-300 flex-shrink-0", activeAccordion === 'care' && "rotate-45")} />
-              </button>
-              <div className={cn("overflow-hidden transition-all duration-500", activeAccordion === 'care' ? "max-h-[500px] pb-6" : "max-h-0")}>
-                <p className="text-[11px] text-neutral-500 leading-relaxed">
-                  TO PRESERVE THE QUALITY OF THIS PIECE, WE RECOMMEND SPECIALIST CLEANING ONLY. AVOID CONTACT WITH LIGHT-COLORED FABRICS AS COLOR MAY TRANSFER. STORE IN A COOL, DRY PLACE AWAY FROM DIRECT SUNLIGHT.
-                </p>
-              </div>
-            </div>
-
-            {/* Availability */}
             <div>
               <button
                 onClick={handleCheckAvailability}
                 disabled={isChecking || showSoldOut}
-                className="w-full py-5 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.25em] disabled:cursor-default"
+                className="w-full py-6 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.3em] disabled:opacity-100"
               >
-                <span>
-                  {isChecking ? "CHECKING..." : showSoldOut ? (
-                    <span className="text-[#4a0404] animate-pulse">SOLD OUT — LAST POP UP RODEO DRIVE, APRIL 4TH</span>
+                <div className="flex flex-col items-start gap-1">
+                  {isChecking ? "CHECKING ARCHIVE..." : showSoldOut ? (
+                    <span className="text-[#4a0404] animate-pulse">SOLD OUT — RODEO DRIVE, APRIL 4TH</span>
                   ) : "CHECK AVAILABILITY IN STORE"}
-                </span>
-                {!isChecking && !showSoldOut && <ChevronRight size={14} className="flex-shrink-0" />}
+                </div>
+                {!isChecking && !showSoldOut && <ChevronRight size={16} />}
               </button>
             </div>
 
-            {/* Shipping */}
             <div>
               <button
                 onClick={() => setActiveAccordion(activeAccordion === 'shipping' ? null : 'shipping')}
-                className="w-full py-5 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.25em]"
+                className="w-full py-6 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.3em]"
               >
-                SHIPPING
-                <Plus size={14} className={cn("transition-transform duration-300 flex-shrink-0", activeAccordion === 'shipping' && "rotate-45")} />
+                SHIPPING & RETURNS
+                <Plus size={16} className={cn("transition-transform duration-300", activeAccordion === 'shipping' && "rotate-45")} />
               </button>
-              <div className={cn("overflow-hidden transition-all duration-500", activeAccordion === 'shipping' ? "max-h-[300px] pb-6" : "max-h-0")}>
-                <p className="text-[11px] text-neutral-500 leading-relaxed">
-                  10-14 DAY SHIPPING. WHITE GLOVE SERVICE. PACKED AND HANDLED WITH CARE. EXCLUSIVE PINS AND STICKERS INCLUDED IN EVERY SELECTION.
-                </p>
-              </div>
+              {activeAccordion === 'shipping' && (
+                <div className="pb-8 space-y-4">
+                  <p className="text-[11px] text-neutral-500 leading-relaxed uppercase tracking-[0.1em]">
+                    10-14 DAY WHITE GLOVE SHIPPING. PACKED WITH CARE. NO RETURNS. THIS GARMENT IS PERFECT.
+                  </p>
+                </div>
+              )}
             </div>
-
-            {/* Returns */}
-            <div>
-              <button
-                onClick={() => setActiveAccordion(activeAccordion === 'returns' ? null : 'returns')}
-                className="w-full py-5 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.25em]"
-              >
-                RETURN POLICY
-                <Plus size={14} className={cn("transition-transform duration-300 flex-shrink-0", activeAccordion === 'returns' && "rotate-45")} />
-              </button>
-              <div className={cn("overflow-hidden transition-all duration-500", activeAccordion === 'returns' ? "max-h-[200px] pb-6" : "max-h-0")}>
-                <p className="text-[11px] text-neutral-500 leading-relaxed">
-                  NO RETURNS. THIS GARMENT IS PERFECT. TRUST US.
-                </p>
-              </div>
-            </div>
-
           </div>
+
+          <p className="text-[9px] text-neutral-400 uppercase tracking-widest text-center pt-6">
+            ARCHIVE FLAGSHIP V2.2
+          </p>
         </div>
       </div>
     </div>
   );
 }
-

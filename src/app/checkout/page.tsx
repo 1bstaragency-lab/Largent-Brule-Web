@@ -39,8 +39,9 @@ export default function CheckoutPage() {
           </div>
           <p className="text-[10px] font-bold tracking-[0.4em] uppercase text-[#4a0404]">ORDER CONFIRMED</p>
         </div>
-        <div className="animate-[fade-in_1s_ease-out_forwards] opacity-0 delay-300 fill-mode-both">
-          <h1 className="text-[16px] font-bold tracking-[0.6em] uppercase text-black">THANKS FOR YOUR PURCHASE. ORDER CONFIRMED.</h1>
+        <div className="animate-[fade-in_1s_ease-out_forwards] opacity-0 delay-300 fill-mode-both space-y-4">
+          <h1 className="text-[16px] font-bold tracking-[0.6em] uppercase text-black">THANK YOU FOR YOUR PURCHASE.</h1>
+          <p className="text-[10px] font-medium tracking-[0.3em] uppercase text-neutral-400">WE WILL SEND OUT TRACKING VIA EMAIL AND PACKAGE YOUR ITEM WITH CARE.</p>
         </div>
         <Link href="/" className="text-[10px] uppercase font-bold tracking-[0.4em] opacity-20 hover:opacity-100 transition-opacity pt-10">
           RETURN TO COLLECTIONS

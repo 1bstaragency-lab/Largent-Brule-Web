@@ -1,3 +1,4 @@
+// @ts-ignore
 import Client from 'shopify-buy';
 
 // Initialize the Shopify Client

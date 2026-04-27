@@ -7,6 +7,8 @@ import { cn } from "@/lib/utils";
 export function CartToggle() {
   const { items, setIsOpen, showAdded } = useCart();
   
+  if (items.length === 0) return null;
+
   return (
     <button 
       onClick={() => setIsOpen(true)}

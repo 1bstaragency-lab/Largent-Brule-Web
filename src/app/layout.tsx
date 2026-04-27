@@ -33,7 +33,7 @@ export default function RootLayout({
           {/* Announcement Bar */}
           <div className="h-[35px] w-full border-b border-neutral-100 bg-white flex items-center justify-center overflow-hidden fixed top-0 z-[110]">
             <div className="marquee-content whitespace-nowrap flex">
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] px-10">L&apos;argent Brûlé / Limited Edition Drop — L&apos;argent Brûlé / Limited Edition Drop — L&apos;argent Brûlé / Limited Edition Drop</span>
+              <span className="text-[9px] font-bold uppercase tracking-[0.4em] px-10">L&apos;argent Brûlé / Limited Edition Drop — L&apos;argent Brûlé / Limited Edition Drop — L&apos;argent Brûlé / Limited Edition Drop</span>
             </div>
           </div>
 

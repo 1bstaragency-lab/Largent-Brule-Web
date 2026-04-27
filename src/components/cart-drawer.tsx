@@ -16,6 +16,7 @@ interface CartContextType {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   addItem: (item: CartItem) => void;
+  clearCart: () => void;
   items: CartItem[];
   showAdded: boolean;
 }
@@ -48,8 +49,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [isOpen]);
 
+  const clearCart = () => {
+    setItems([]);
+  };
+
   return (
-    <CartContext.Provider value={{ isOpen, setIsOpen, addItem, items, showAdded }}>
+    <CartContext.Provider value={{ isOpen, setIsOpen, addItem, clearCart, items, showAdded }}>
       {children}
       <CartDrawer isOpen={isOpen} setIsOpen={setIsOpen} items={items} showAdded={showAdded} />
     </CartContext.Provider>

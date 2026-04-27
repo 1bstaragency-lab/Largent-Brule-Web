@@ -48,22 +48,22 @@ export default function Home() {
       </div>
 
       {/* Product Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-10 gap-y-20 w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-32 w-full">
         {products.map((product) => (
-          <Link key={product.id} href={`/product/${product.id}`} className="group block space-y-5">
-            <div className="aspect-[3/4] bg-white relative overflow-hidden flex items-center justify-center p-8 border border-transparent group-hover:border-border transition-all duration-500">
+          <Link key={product.id} href={`/product/${product.id}`} className="group block space-y-8">
+            <div className="aspect-[3/4] bg-white relative overflow-hidden flex items-center justify-center p-12 border border-transparent group-hover:border-border transition-all duration-700">
               <Image 
                 src={product.image} 
                 alt={product.name} 
                 fill 
-                className="object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-1000 ease-out p-4"
+                className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-1000 ease-out p-6"
               />
             </div>
-            <div className="space-y-2 text-[11px] tracking-widest">
+            <div className="space-y-3 text-[13px] tracking-[0.3em]">
               <p className="font-bold uppercase">{product.name}</p>
-              <div className="flex items-center justify-between opacity-60">
+              <div className="flex items-center justify-between opacity-50">
                 <p className="font-medium">{product.price}</p>
-                <p className="font-bold text-[9px] uppercase">{product.tag}</p>
+                <p className="font-bold text-[10px] uppercase border-l border-black/20 pl-4">{product.tag}</p>
               </div>
             </div>
           </Link>

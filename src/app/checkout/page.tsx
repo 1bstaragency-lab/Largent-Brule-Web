@@ -8,10 +8,11 @@ import { useCart } from "@/components/cart-drawer";
 import { GooeyText } from "@/components/ui/gooey-text-morphing";
 
 export default function CheckoutPage() {
-  const { items } = useCart();
+  const { items, clearCart } = useCart();
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isBillingSame, setIsBillingSame] = useState(true);
-  const [step, setStep] = useState(1); // 1: Info/Shipping, 2: Payment, 3: Success
+  const [step, setStep] = useState(1); 
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const subtotal = items.reduce((acc, item) => {
     const price = parseInt(item.price.replace(/[^0-9]/g, ""));
@@ -19,6 +20,15 @@ export default function CheckoutPage() {
   }, 0);
   const shipping = 0;
   const total = subtotal + shipping;
+
+  const handleComplete = () => {
+    setIsProcessing(true);
+    setTimeout(() => {
+      setIsProcessing(false);
+      clearCart();
+      setStep(3);
+    }, 2000);
+  };
 
   if (step === 3) {
     return (

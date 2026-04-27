@@ -34,12 +34,15 @@ export default function CheckoutPage() {
     return (
       <div className="fixed inset-0 bg-white z-[4000] flex flex-col items-center justify-center p-10 text-center space-y-24">
         <div className="animate-[fade-in_0.3s_ease-out_forwards] opacity-0">
-          <CheckCircle2 size={40} strokeWidth={1} className="text-[#4a0404]" />
+          <div className="relative w-64 h-16 mb-8">
+            <Image src="/logo_script_final.png" alt="L'argent Brûlé" fill className="object-contain" />
+          </div>
+          <p className="text-[10px] font-bold tracking-[0.4em] uppercase text-[#4a0404]">ORDER CONFIRMED</p>
         </div>
         <div className="animate-[fade-in_1s_ease-out_forwards] opacity-0 delay-300 fill-mode-both">
-          <h1 className="text-[16px] font-bold tracking-[0.6em] uppercase text-black">THANKS FOR YOUR PURCHASE</h1>
+          <h1 className="text-[16px] font-bold tracking-[0.6em] uppercase text-black">THANK YOU FOR JOINING THE SELECTION.</h1>
         </div>
-        <Link href="/" className="text-[10px] uppercase font-bold tracking-[0.4em] opacity-20 hover:opacity-100 transition-opacity">
+        <Link href="/" className="text-[10px] uppercase font-bold tracking-[0.4em] opacity-20 hover:opacity-100 transition-opacity pt-10">
           RETURN TO COLLECTIONS
         </Link>
       </div>
@@ -97,27 +100,27 @@ export default function CheckoutPage() {
               </section>
 
               {/* CAFE LARGENT BRULE Subscription */}
-              <section className="bg-[#fafafa] p-5 space-y-4 border-[0.5px] border-black/10">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <h3 className="text-[10px] font-bold uppercase tracking-[0.3em]">CAFE L&apos;ARGENT BRÛLÉ</h3>
-                    <div className="flex items-center gap-2">
-                      <p className="text-[8px] uppercase tracking-[0.2em] opacity-40 font-medium">MEMBERSHIP SELECTION</p>
-                      <span className="text-[7px] bg-black text-white px-1.5 py-0.5 font-bold tracking-widest">1ST DROP COMPLIMENTARY</span>
-                    </div>
+              <section className="bg-[#fafafa] p-8 space-y-8 border-[0.5px] border-black/10 flex flex-col items-center text-center">
+                <div className="space-y-4 flex flex-col items-center">
+                  <h3 className="text-[10px] font-bold uppercase tracking-[0.4em]">CAFE L&apos;ARGENT BRÛLÉ</h3>
+                  <div className="flex flex-col items-center gap-3">
+                    <p className="text-[8px] uppercase tracking-[0.2em] opacity-40 font-medium">MEMBERSHIP SELECTION</p>
+                    <span className="text-[7px] bg-black text-white px-2 py-1 font-bold tracking-widest">1ST DROP COMPLIMENTARY</span>
                   </div>
+                  
                   <button 
                     onClick={() => setIsSubscribed(!isSubscribed)}
-                    className={`w-10 h-5 rounded-full relative transition-all duration-500 ${isSubscribed ? 'bg-black' : 'bg-neutral-200'}`}
+                    className={`w-12 h-6 rounded-full relative transition-all duration-500 mt-4 ${isSubscribed ? 'bg-black' : 'bg-neutral-200'}`}
                   >
-                    <div className={`absolute top-1 left-1 w-3 h-3 rounded-full bg-white transition-transform duration-500 ${isSubscribed ? 'translate-x-5' : ''}`} />
+                    <div className={`absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform duration-500 ${isSubscribed ? 'translate-x-6' : ''}`} />
                   </button>
                 </div>
-                <div className="flex flex-wrap gap-x-8 gap-y-2 pt-2 border-t border-black/5">
+
+                <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 pt-6 border-t border-black/5 w-full">
                   {["15M EARLY ACCESS", "ARCHIVAL GIFTS", "PRIVATE RSVP"].map((perk, i) => (
                     <div key={i} className="flex items-center gap-2 text-[8px] font-bold uppercase tracking-[0.2em]">
                       <div className={`w-1 h-1 rounded-full ${isSubscribed ? 'bg-black' : 'bg-neutral-300'}`} />
-                      <span className={isSubscribed ? 'opacity-100' : 'opacity-40'}>{perk}</span>
+                      <span className={isSubscribed ? 'opacity-100' : 'opacity-60'}>{perk}</span>
                     </div>
                   ))}
                 </div>

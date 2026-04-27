@@ -19,15 +19,14 @@ export function MobileNavbar() {
 
       {/* Centered Logo - Red Script */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <Link href="/">
+        <div className="relative w-full h-24 mb-16">
           <Image 
-            src="/logo_red_script.png" 
-            alt="L'ARGENT BRÛLÉ" 
-            width={110} 
-            height={36} 
-            className="object-contain"
+            src="/logo_script_final.png" 
+            alt="L'argent Brûlé" 
+            fill 
+            className="object-contain object-left"
           />
-        </Link>
+        </div>
       </div>
 
       <div className="w-10 h-10 ml-auto" /> {/* Balance spacer */}

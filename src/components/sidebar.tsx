@@ -10,17 +10,13 @@ export function Sidebar() {
 
   return (
     <aside className="w-[250px] h-screen sticky top-0 p-10 flex flex-col border-r border-border bg-background z-50">
-      <div className="mb-14">
-        <Link href="/">
-          <Image 
-            src="/logo_vfinal.png" 
-            alt="L'ARGENT BRÛLÉ" 
-            width={200} 
-            height={80} 
-            className="object-contain"
-            priority
-          />
-        </Link>
+      <div className="relative w-full h-24 mb-16 px-6">
+        <Image 
+          src="/logo_script_final.png" 
+          alt="L'argent Brûlé" 
+          fill 
+          className="object-contain object-left"
+        />
       </div>
 
       <nav className="space-y-8 flex-1">

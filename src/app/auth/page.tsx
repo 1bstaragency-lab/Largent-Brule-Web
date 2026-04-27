@@ -55,10 +55,6 @@ export default function AuthPage() {
             <button className="text-[10px] font-bold uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity">
               FORGOT PASSWORD?
             </button>
-            <div className="h-[1px] w-10 bg-black/10" />
-            <button className="text-[10px] font-bold uppercase tracking-widest hover:opacity-100 transition-opacity">
-              CREATE ARCHIVAL ACCOUNT
-            </button>
           </div>
         </div>
 

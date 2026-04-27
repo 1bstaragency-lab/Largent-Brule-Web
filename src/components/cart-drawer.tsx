@@ -35,20 +35,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setTimeout(() => setShowAdded(false), 3000);
   };
 
-  const subtotal = items.reduce((acc, item) => {
-    const price = parseInt(item.price.replace(/[^0-9]/g, ""));
-    return acc + price;
-  }, 0);
-
-  useEffect(() => {
-    if (isOpen) {
-      const timer = setTimeout(() => {
-        setIsOpen(false);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [isOpen]);
-
   const clearCart = () => {
     setItems([]);
   };

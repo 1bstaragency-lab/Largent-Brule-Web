@@ -230,11 +230,25 @@ export default function ProductPage() {
                 </p>
               )}
             </div>
-            <button className="w-full flex justify-between items-center text-[11px] font-bold uppercase tracking-widest hover:opacity-50 transition-opacity">
-              SHIPPING
-              <ChevronRight size={14} />
-            </button>
-            <button className="w-full flex justify-between items-center text-[11px] font-bold uppercase tracking-widest hover:opacity-50 transition-opacity">
+            {/* Shipping */}
+            <div className="border-b border-neutral-100">
+              <button 
+                onClick={() => setActiveAccordion(activeAccordion === 'shipping' ? null : 'shipping')}
+                className="w-full py-5 flex justify-between items-center text-[11px] font-bold uppercase tracking-widest"
+              >
+                SHIPPING
+                <Plus size={14} className={cn("transition-transform duration-300", activeAccordion === 'shipping' && "rotate-45")} />
+              </button>
+              <div className={cn(
+                "transition-all duration-500 ease-in-out overflow-hidden",
+                activeAccordion === 'shipping' ? "max-h-[500px] pb-6" : "max-h-0"
+              )}>
+                <p className="text-[11px] text-neutral-500 leading-relaxed font-medium uppercase tracking-widest">
+                  10-14 DAY ARCHIVAL SHIPPING. WHITE GLOVE SERVICE. PACKED AND HANDLED WITH CARE. EXCLUSIVE PINS AND STICKERS INCLUDED IN EVERY SELECTION.
+                </p>
+              </div>
+            </div>
+            <button className="w-full flex justify-between items-center text-[11px] font-bold uppercase tracking-widest hover:opacity-50 transition-opacity pt-4">
               RETURNS AND EXCHANGES (WITHIN 14 DAYS)
               <ChevronRight size={14} />
             </button>

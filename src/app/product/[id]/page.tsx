@@ -244,7 +244,7 @@ export default function ProductPage() {
                 activeAccordion === 'shipping' ? "max-h-[500px] pb-6" : "max-h-0"
               )}>
                 <p className="text-[11px] text-neutral-500 leading-relaxed font-medium uppercase tracking-widest">
-                  10-14 DAY ARCHIVAL SHIPPING. WHITE GLOVE SERVICE. PACKED AND HANDLED WITH CARE. EXCLUSIVE PINS AND STICKERS INCLUDED IN EVERY SELECTION.
+                  10-14 DAY SHIPPING. WHITE GLOVE SERVICE. PACKED AND HANDLED WITH CARE. EXCLUSIVE PINS AND STICKERS INCLUDED IN EVERY SELECTION.
                 </p>
               </div>
             </div>

@@ -64,6 +64,16 @@ export default function ProductPage() {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState(0);
   const [activeAccordion, setActiveAccordion] = useState<string | null>(null);
+  const [isChecking, setIsChecking] = useState(false);
+  const [showSoldOut, setShowSoldOut] = useState(false);
+
+  const handleCheckAvailability = () => {
+    setIsChecking(true);
+    setTimeout(() => {
+      setIsChecking(false);
+      setShowSoldOut(true);
+    }, 2000);
+  };
 
   if (!product) return <div>Product not found</div>;
 
@@ -205,10 +215,21 @@ export default function ProductPage() {
 
           {/* Links */}
           <div className="space-y-4 pt-6">
-            <button className="w-full flex justify-between items-center text-[11px] font-bold uppercase tracking-widest hover:opacity-50 transition-opacity">
-              CHECK AVAILABILITY IN STORE
-              <ChevronRight size={14} />
-            </button>
+            <div className="space-y-2">
+              <button 
+                onClick={handleCheckAvailability}
+                disabled={isChecking || showSoldOut}
+                className="w-full flex justify-between items-center text-[11px] font-bold uppercase tracking-widest hover:opacity-50 transition-opacity disabled:opacity-100"
+              >
+                {isChecking ? "CHECKING ARCHIVE..." : showSoldOut ? "SOLD OUT" : "CHECK AVAILABILITY IN STORE"}
+                {!isChecking && !showSoldOut && <ChevronRight size={14} />}
+              </button>
+              {showSoldOut && (
+                <p className="text-[9px] font-bold uppercase tracking-[0.2em] opacity-40 animate-in fade-in slide-in-from-top-1 duration-500">
+                  LAST POP UP RODEO DRIVE, APRIL 4TH
+                </p>
+              )}
+            </div>
             <button className="w-full flex justify-between items-center text-[11px] font-bold uppercase tracking-widest hover:opacity-50 transition-opacity">
               SHIPPING
               <ChevronRight size={14} />

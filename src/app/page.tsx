@@ -48,21 +48,23 @@ export default function Home() {
       </div>
 
       {/* Product Grid */}
-      <div className="grid grid-cols-2 gap-10 max-w-[1000px]">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-10 gap-y-20 w-full">
         {products.map((product) => (
           <Link key={product.id} href={`/product/${product.id}`} className="group block space-y-5">
-            <div className="aspect-[1/1.35] bg-white relative overflow-hidden flex items-center justify-center p-10 border border-transparent group-hover:border-border transition-colors">
+            <div className="aspect-[3/4] bg-white relative overflow-hidden flex items-center justify-center p-8 border border-transparent group-hover:border-border transition-all duration-500">
               <Image 
                 src={product.image} 
                 alt={product.name} 
                 fill 
-                className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-700"
+                className="object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-1000 ease-out p-4"
               />
             </div>
-            <div className="space-y-2 text-[11px] tracking-wide">
+            <div className="space-y-2 text-[11px] tracking-widest">
               <p className="font-bold uppercase">{product.name}</p>
-              <p className="font-medium">{product.price}</p>
-              <p className="font-bold text-[10px] opacity-60 uppercase">{product.tag}</p>
+              <div className="flex items-center justify-between opacity-60">
+                <p className="font-medium">{product.price}</p>
+                <p className="font-bold text-[9px] uppercase">{product.tag}</p>
+              </div>
             </div>
           </Link>
         ))}

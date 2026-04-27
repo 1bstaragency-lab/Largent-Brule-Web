@@ -79,9 +79,9 @@ export default function ProductPage() {
 
   return (
     <div className="flex flex-col lg:flex-row min-h-screen bg-white overflow-x-hidden">
-      {/* Left: Image Section - Monumental & Edge-to-Edge */}
-      <div className="w-full lg:w-[60%] bg-[#f6f6f6] flex items-center justify-center p-0 lg:p-20 lg:sticky lg:top-0 lg:h-screen">
-        <div className="relative w-full aspect-[3/4] lg:h-full">
+      {/* Left: Image Section - Monumental Hero */}
+      <div className="w-full lg:w-[60%] bg-[#f6f6f6] flex flex-col items-center lg:p-20 lg:sticky lg:top-0 lg:h-screen">
+        <div className="relative w-full h-[65vh] lg:h-full">
           <Image 
             src={product.image} 
             alt={product.name} 
@@ -92,7 +92,7 @@ export default function ProductPage() {
         </div>
       </div>
 
-      {/* Right: Details Section - Celine Technical Minimalism */}
+      {/* Right: Details Section - Technical Interaction */}
       <div className="w-full lg:w-[40%] p-6 lg:p-16 bg-white space-y-12">
         {/* Header */}
         <div className="space-y-4">
@@ -121,15 +121,16 @@ export default function ProductPage() {
           </div>
         </div>
 
-        {/* Size Selector */}
+        {/* Size Selector - Horizontal Archival Scroll */}
         <div className="space-y-4">
-          <div className="grid grid-cols-4 gap-2">
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em]">SELECT SIZE</p>
+          <div className="flex overflow-x-auto gap-2 pb-4 scrollbar-hide -mx-6 px-6 lg:mx-0 lg:px-0 no-scrollbar">
             {product.sizes.map((size: string) => (
               <button
                 key={size}
                 onClick={() => setSelectedSize(size)}
                 className={cn(
-                  "h-12 border text-[11px] font-bold tracking-widest flex items-center justify-center transition-all",
+                  "min-w-[70px] h-12 border text-[11px] font-bold tracking-widest flex items-center justify-center transition-all flex-shrink-0",
                   selectedSize === size ? "border-black bg-black text-white" : "border-neutral-200 hover:border-neutral-400"
                 )}
               >
@@ -137,7 +138,7 @@ export default function ProductPage() {
               </button>
             ))}
           </div>
-          <button className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.3em] hover:opacity-60 transition-opacity mt-4">
+          <button className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-[0.3em] hover:opacity-60 transition-opacity">
             SIZE GUIDE <ChevronRight size={12} strokeWidth={2} />
           </button>
         </div>

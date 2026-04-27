@@ -21,7 +21,7 @@ const products = [
 
 export default function Home() {
   return (
-    <div className="p-10 pb-40">
+    <div className="p-4 sm:p-10 pb-40 overflow-x-hidden">
       {/* Hero Section */}
       <section className="relative w-full h-[90vh] mb-20 overflow-hidden bg-black flex items-center justify-center">
         <Image

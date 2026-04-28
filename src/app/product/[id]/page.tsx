@@ -148,19 +148,20 @@ function ProductImageViewer({ images, alt }: { images: any[], alt: string }) {
 
   return (
     <div 
-      className="relative w-full h-full cursor-pointer group perspective-2000 select-none"
+      className="relative w-full h-full cursor-pointer group perspective-[3000px] select-none"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      <AnimatePresence mode="wait">
+      <AnimatePresence initial={false} mode="wait">
         <motion.div
           key={currentIdx}
-          initial={{ opacity: 0, rotateY: currentIdx === 1 ? -180 : 180 }}
-          animate={{ opacity: 1, rotateY: 0 }}
-          exit={{ opacity: 0, rotateY: currentIdx === 1 ? 180 : -180 }}
+          initial={{ opacity: 0, rotateY: currentIdx === 1 ? -180 : 180, scale: 0.95 }}
+          animate={{ opacity: 1, rotateY: 0, scale: 1 }}
+          exit={{ opacity: 0, rotateY: currentIdx === 1 ? 180 : -180, scale: 0.95 }}
           transition={{ 
-            duration: 0.45, 
-            ease: [0.16, 1, 0.3, 1] 
+            duration: 1.2, 
+            ease: [0.23, 1, 0.32, 1], // Monumental Liquid Ease
+            opacity: { duration: 0.4 }
           }}
           className="relative w-full h-full flex items-center justify-center"
           style={{ transformStyle: 'preserve-3d' }}
@@ -187,9 +188,9 @@ function ProductImageViewer({ images, alt }: { images: any[], alt: string }) {
       </AnimatePresence>
 
       {images.length > 1 && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 opacity-0 group-hover:opacity-40 transition-opacity duration-300">
-          <RotateCcw size={10} className="text-black" />
-          <span className="text-[7px] font-bold tracking-[0.4em] uppercase text-black">TECHNICAL ROTATION</span>
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 opacity-0 group-hover:opacity-20 transition-opacity duration-1000">
+          <RotateCcw size={9} className="text-black" />
+          <span className="text-[6px] font-bold tracking-[0.5em] uppercase text-black">TECHNICAL ORBIT</span>
         </div>
       )}
     </div>

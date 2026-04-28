@@ -26,11 +26,7 @@ const storyContent = [
 export default function OurStoryPage() {
   return (
     <div className="min-h-screen bg-white">
-      <Sidebar />
-      <MobileNavbar />
-      
-      <main className="lg:pl-64 pt-20 lg:pt-0">
-        <div className="max-w-4xl mx-auto px-6 lg:px-20 py-20 space-y-32">
+      <div className="max-w-4xl mx-auto px-6 lg:px-20 py-24 space-y-32">
           {/* Hero Section */}
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -74,13 +70,13 @@ export default function OurStoryPage() {
           ))}
 
           {/* Verification Signature */}
+          {/* Verification Signature */}
           <div className="pt-24 pb-12 text-center">
             <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V7.6
+              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V7.7
             </p>
           </div>
         </div>
-      </main>
     </div>
   );
 }

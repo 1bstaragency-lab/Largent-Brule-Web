@@ -56,7 +56,7 @@ export function MobileNavbar() {
               { label: "OUR STORY", href: "/our-story" },
               { label: "LOOKBOOK", href: "#" },
               { label: "EARLY ACCESS", href: "/early-access" },
-              { label: "FAQ", href: "#" },
+              { label: "FAQ", href: "/faq" },
               { label: "SIGN IN", href: "/auth" },
               { label: "REGISTER", href: "#" }
             ].map((item) => (

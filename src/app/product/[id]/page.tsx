@@ -18,9 +18,7 @@ const productData: Record<string, any> = {
         name: "WINE", 
         hex: "#4b1b1b", 
         images: [
-          { type: 'exact', src: "/wine_front_exact.png" },
-          // Using a high-performance CSS blend engine for the back view to ensure zero lag
-          { type: 'blend', src: "/charcoal_back_exact.png", blendColor: '#4b1b1b' }
+          { type: 'exact', src: "/wine_front_exact.png" }
         ] 
       },
       { 
@@ -72,61 +70,15 @@ const productData: Record<string, any> = {
 };
 
 function OptimizedProductImage({ imageData, alt }: { imageData: any, alt: string }) {
-  if (imageData.type === 'exact') {
-    return (
-      <div className="relative w-full h-full">
-        <Image
-          src={imageData.src}
-          alt={alt}
-          fill
-          className="object-contain mix-blend-multiply"
-          style={{ filter: 'contrast(1.05) brightness(1.02)' }}
-          priority
-        />
-      </div>
-    );
-  }
-
-  // High-performance blend engine: No Canvas, no lag.
   return (
     <div className="relative w-full h-full">
-      {/* Base Layer: Exact Charcoal Silhouette */}
       <Image
         src={imageData.src}
         alt={alt}
         fill
-        className="object-contain mix-blend-multiply brightness-[1.1] contrast-[1.1]"
+        className="object-contain mix-blend-multiply"
+        style={{ filter: 'contrast(1.05) brightness(1.02)' }}
         priority
-      />
-      {/* Color Layer: Wine Overlay using 'color' blend mode */}
-      <div 
-        className="absolute inset-0 pointer-events-none mix-blend-color"
-        style={{ 
-          backgroundColor: imageData.blendColor,
-          maskImage: `url(${imageData.src})`,
-          WebkitMaskImage: `url(${imageData.src})`,
-          maskSize: 'contain',
-          WebkitMaskSize: 'contain',
-          maskRepeat: 'no-repeat',
-          WebkitMaskRepeat: 'no-repeat',
-          maskPosition: 'center',
-          WebkitMaskPosition: 'center'
-        }}
-      />
-      {/* Depth Layer: Multiply to restore shadow depth */}
-      <div 
-        className="absolute inset-0 pointer-events-none mix-blend-multiply opacity-40"
-        style={{ 
-          backgroundColor: imageData.blendColor,
-          maskImage: `url(${imageData.src})`,
-          WebkitMaskImage: `url(${imageData.src})`,
-          maskSize: 'contain',
-          WebkitMaskSize: 'contain',
-          maskRepeat: 'no-repeat',
-          WebkitMaskRepeat: 'no-repeat',
-          maskPosition: 'center',
-          WebkitMaskPosition: 'center'
-        }}
       />
     </div>
   );
@@ -145,16 +97,16 @@ function ProductImageViewer({ images, alt }: { images: any[], alt: string }) {
 
   return (
     <div 
-      className="relative w-full h-full cursor-pointer group perspective-[3000px] select-none"
+      className="relative w-full h-full group perspective-[3000px] select-none"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       <AnimatePresence initial={false} mode="wait">
         <motion.div
           key={currentIdx}
-          initial={{ opacity: 0, rotateY: currentIdx === 1 ? -180 : 180, scale: 0.98 }}
+          initial={images.length > 1 ? { opacity: 0, rotateY: currentIdx === 1 ? -180 : 180, scale: 0.98 } : { opacity: 1 }}
           animate={{ opacity: 1, rotateY: 0, scale: 1 }}
-          exit={{ opacity: 0, rotateY: currentIdx === 1 ? 180 : -180, scale: 0.98 }}
+          exit={images.length > 1 ? { opacity: 0, rotateY: currentIdx === 1 ? 180 : -180, scale: 0.98 } : { opacity: 1 }}
           transition={{ 
             duration: 1.0, 
             ease: [0.23, 1, 0.32, 1],

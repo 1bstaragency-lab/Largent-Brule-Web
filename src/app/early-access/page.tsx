@@ -5,22 +5,41 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ChevronRight, Smartphone } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
 export default function EarlyAccessPage() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!phoneNumber) return;
     
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    
+    try {
+      const { error } = await supabase
+        .from('early_access')
+        .insert([{ phone_number: phoneNumber }]);
+
+      if (error) {
+        if (error.code === '23505') {
+          // Unique constraint violation - already registered
+          setIsSubmitted(true);
+        } else {
+          console.error("Supabase Error:", error);
+          alert("AN ARCHIVAL ERROR OCCURRED. PLEASE TRY AGAIN.");
+        }
+      } else {
+        setIsSubmitted(true);
+      }
+    } catch (err) {
+      console.error("Submission Error:", err);
+      alert("A CLINICAL SYSTEM ERROR OCCURRED.");
+    } finally {
       setIsLoading(false);
-      setIsSubmitted(true);
-    }, 1500);
+    }
   };
 
   if (isSubmitted) {
@@ -124,7 +143,7 @@ export default function EarlyAccessPage() {
       {/* Technical Signature */}
       <div className="absolute bottom-8 right-8 hidden lg:block">
         <p className="text-[9px] text-neutral-200 uppercase tracking-[0.5em]">
-          L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V6.7
+          L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V6.8
         </p>
       </div>
     </div>

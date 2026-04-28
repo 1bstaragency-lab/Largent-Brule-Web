@@ -132,7 +132,8 @@ export function EarlyAccessPopup() {
                         value={phoneNumber}
                         onFocus={() => setHasInteracted(true)}
                         onChange={(e) => {
-                          setPhoneNumber(e.target.value);
+                          const val = e.target.value.replace(/[^0-9+]/g, ''); // Numeric and + only
+                          setPhoneNumber(val);
                           setHasInteracted(true);
                         }}
                         className="w-full pl-8 py-4 text-[12px] font-bold tracking-[0.3em] uppercase outline-none bg-transparent placeholder:text-neutral-200"

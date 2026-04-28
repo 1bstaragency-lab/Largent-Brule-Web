@@ -18,7 +18,7 @@ const storyContent = [
   },
   {
     title: "THE FACTORY FOUNDATION",
-    text: "OUR PRODUCTION IS CENTERED ON ABSOLUTE QUALITY. BY BRIDGING THE GAP BETWEEN TRADITIONAL CRAFTSMANSHIP AND ADVANCED TEXTILE ENGINEERING, WE CREATE GARMENTS THAT TRANSCEND SEASONALITY. THIS IS THE ARCHIVE.",
+    text: "OUR PRODUCTION IS CENTERED ON ABSOLUTE QUALITY. BY BRIDGING THE GAP BETWEEN TRADITIONAL CRAFTSMANSHIP AND ADVANCED TEXTILE ENGINEERING, WE CREATE GARMENTS THAT TRANSCEND SEASONALITY.",
     image: "/archive/factory_3.png"
   }
 ];
@@ -72,7 +72,7 @@ export default function OurStoryPage() {
           {/* Verification Signature */}
           <div className="pt-24 pb-12 text-center">
             <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 | FLAGSHIP V8.8
+              L&apos;ARGENT BRÛLÉ &copy; 2026
             </p>
           </div>
         </div>

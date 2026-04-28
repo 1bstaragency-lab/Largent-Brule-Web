@@ -189,7 +189,7 @@ export default function ProductPage() {
               disabled={isChecking || showSoldOut}
               className="w-full py-5 flex justify-between items-center text-[11px] uppercase tracking-[0.3em] disabled:opacity-100"
             >
-              {isChecking ? "CHECKING ARCHIVE..." : showSoldOut ? (
+              {isChecking ? "CHECKING AVAILABILITY..." : showSoldOut ? (
                 <span className="text-[#4a0404] animate-pulse">SOLD OUT — RODEO DRIVE, APRIL 4TH</span>
               ) : "CHECK AVAILABILITY IN STORE"}
               {!isChecking && !showSoldOut && <ChevronRight size={13} strokeWidth={1} />}
@@ -214,7 +214,7 @@ export default function ProductPage() {
           {/* Verification Signature */}
           <div className="pt-24 pb-12 text-center">
             <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 | FLAGSHIP V8.8
+              L&apos;ARGENT BRÛLÉ &copy; 2026
             </p>
           </div>
         </div>
@@ -331,7 +331,7 @@ export default function ProductPage() {
                   className="w-full py-8 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.4em] disabled:opacity-100"
                 >
                   <div className="flex flex-col items-start gap-2">
-                    {isChecking ? "CHECKING ARCHIVE..." : showSoldOut ? (
+                    {isChecking ? "CHECKING AVAILABILITY..." : showSoldOut ? (
                       <span className="text-[#4a0404] animate-pulse">SOLD OUT — RODEO DRIVE, APRIL 4TH</span>
                     ) : "CHECK AVAILABILITY IN STORE"}
                   </div>
@@ -357,7 +357,7 @@ export default function ProductPage() {
 
             <div className="pt-24 pb-12 text-center">
               <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-                L&apos;ARGENT BRÛLÉ &copy; 2026 | FLAGSHIP V8.8
+                L&apos;ARGENT BRÛLÉ &copy; 2026
               </p>
             </div>
           </div>

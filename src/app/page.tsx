@@ -41,7 +41,7 @@ export default function Home() {
           />
         </div>
         <div className="absolute bottom-6 right-6 z-20">
-          <p className="text-[8px] font-bold text-white/30 tracking-[0.4em] uppercase">ARCHIVE V4.3 LOCK</p>
+          {/* Clinical Signature */}
         </div>
       </section>
 

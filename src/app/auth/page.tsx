@@ -26,7 +26,7 @@ export default function AuthPage() {
         <div className="text-center space-y-2 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300 fill-mode-both">
           <h1 className="text-[12px] font-bold uppercase tracking-[0.5em] text-black">SIGN IN TO THE CLUB BELOW</h1>
           <p className="text-[9px] uppercase tracking-[0.3em] opacity-40 font-medium leading-relaxed">
-            ACCESS THE ARCHIVE. RSVP TO PRIVATE SHOWS. <br /> RECEIVE COMPLIMENTARY MEMBERSHIP GIFTS.
+            ACCESS THE COLLECTION. RSVP TO PRIVATE SHOWS. <br /> RECEIVE COMPLIMENTARY MEMBERSHIP GIFTS.
           </p>
         </div>
 

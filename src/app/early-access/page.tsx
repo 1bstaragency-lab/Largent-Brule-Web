@@ -11,6 +11,7 @@ export default function EarlyAccessPage() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [activeBlurb, setActiveBlurb] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -135,21 +136,61 @@ export default function EarlyAccessPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.4 }}
         transition={{ delay: 0.6 }}
-        className="text-center space-y-4"
+        className="text-center space-y-6 pt-12"
       >
         <p className="text-[8px] uppercase tracking-[0.3em] font-medium text-neutral-400">
           BY JOINING, YOU AGREE TO RECEIVE RECURRING AUTOMATED MARKETING MESSAGES FROM L&apos;ARGENT BRÛLÉ.
         </p>
         <div className="flex justify-center gap-8 text-[8px] font-bold uppercase tracking-widest text-neutral-300">
-          <Link href="#" className="hover:text-black transition-colors">PRIVACY</Link>
-          <Link href="#" className="hover:text-black transition-colors">TERMS</Link>
+          <button 
+            onClick={() => setActiveBlurb("PRIVACY")}
+            className="hover:text-black transition-colors"
+          >
+            PRIVACY
+          </button>
+          <button 
+            onClick={() => setActiveBlurb("TERMS")}
+            className="hover:text-black transition-colors"
+          >
+            TERMS
+          </button>
         </div>
       </motion.div>
+
+      {/* Privacy/Terms Blurb Overlay */}
+      {activeBlurb && (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 z-[5000] bg-white/40 backdrop-blur-xl flex items-center justify-center p-10"
+          onClick={() => setActiveBlurb(null)}
+        >
+          <motion.div 
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="max-w-md w-full bg-white p-12 border border-neutral-100 shadow-2xl space-y-8 text-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black">
+              {activeBlurb} POLICY
+            </h2>
+            <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-neutral-400 leading-relaxed">
+              L&apos;ARGENT BRÛLÉ VALUES YOUR PRIVACY. BY JOINING THE SELECTION, YOU CONSENT TO RECEIVE ARCHIVAL UPDATES AND MARKETING NEWS VIA SMS. YOUR DATA IS PROTECTED AND WILL NEVER BE SOLD. OPT-OUT AT ANY TIME BY REPLYING &apos;STOP&apos;.
+            </p>
+            <button 
+              onClick={() => setActiveBlurb(null)}
+              className="text-[9px] font-bold uppercase tracking-[0.4em] text-black pt-4 block w-full border-t border-neutral-50"
+            >
+              CLOSE
+            </button>
+          </motion.div>
+        </motion.div>
+      )}
 
       {/* Technical Signature */}
       <div className="absolute bottom-8 right-8 hidden lg:block">
         <p className="text-[9px] text-neutral-200 uppercase tracking-[0.5em]">
-          L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V7.2
+          L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V7.3
         </p>
       </div>
     </div>

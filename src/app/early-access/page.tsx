@@ -49,17 +49,7 @@ export default function EarlyAccessPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-between py-20 px-10">
-      {/* Header Logo */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1 }}
-        className="relative w-64 h-16"
-      >
-        <Image src="/logo_script_final.png" alt="L'argent Brûlé" fill className="object-contain" />
-      </motion.div>
-
+    <div className="min-h-screen bg-white flex flex-col items-center justify-center py-20 px-10">
       {/* Main Content */}
       <main className="w-full max-w-md space-y-16">
         <motion.div 
@@ -73,7 +63,7 @@ export default function EarlyAccessPage() {
             <h1 className="text-[18px] font-bold tracking-[0.5em] uppercase text-black">SMS EARLY ACCESS</h1>
           </div>
           <p className="text-[11px] font-medium tracking-[0.2em] uppercase text-neutral-400 leading-relaxed">
-            BE THE FIRST TO ARCHIVE THE NEXT DROP. MEMBERS ONLY.
+            MEMBERS ONLY UPDATES AND NEWS.
           </p>
         </motion.div>
 
@@ -134,7 +124,7 @@ export default function EarlyAccessPage() {
       {/* Technical Signature */}
       <div className="absolute bottom-8 right-8 hidden lg:block">
         <p className="text-[9px] text-neutral-200 uppercase tracking-[0.5em]">
-          L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V6.5
+          L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V6.6
         </p>
       </div>
     </div>

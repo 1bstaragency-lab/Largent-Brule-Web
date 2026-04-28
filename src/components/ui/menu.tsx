@@ -1,8 +1,7 @@
-// 1. Import Dependencies
 import * as React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants, Transition } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
-import { cn } from '@/lib/utils'; // Make sure you have this utility function
+import { cn } from '@/lib/utils';
 
 // 2. Define Prop Types
 interface NavItem {
@@ -30,7 +29,7 @@ interface UserProfileSidebarProps {
 }
 
 // 3. Define Animation Variants
-const sidebarVariants = {
+const sidebarVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -40,16 +39,18 @@ const sidebarVariants = {
   },
 };
 
-const itemVariants = {
+const springTransition: Transition = {
+  type: 'spring',
+  stiffness: 100,
+  damping: 15,
+};
+
+const itemVariants: Variants = {
   hidden: { opacity: 0, x: -20 },
   visible: {
     opacity: 1,
     x: 0,
-    transition: {
-      type: 'spring',
-      stiffness: 100,
-      damping: 15,
-    },
+    transition: springTransition,
   },
 };
 

@@ -18,16 +18,16 @@ const productData: Record<string, any> = {
         name: "WINE", 
         hex: "#4b1b1b", 
         images: [
-          "/wine_jacket_front_v4_clinical_1777407115982.png", 
-          "/wine_jacket_back_flat_v5_1777407156027.png"
+          { type: 'exact', src: "/wine_front_exact.png" },
+          { type: 'crop', src: "/exact_jackets_composite.png", position: 'bottom-right' }
         ] 
       },
       { 
         name: "CHARCOAL", 
         hex: "#2f2f2f", 
         images: [
-          "/charcoal_jacket_front_flat_v6_match_wine_front_v6_1777407207393.png", 
-          "/charcoal_jacket_back_flat_v5_1777407179567.png"
+          { type: 'exact', src: "/charcoal_front_exact.png" },
+          { type: 'exact', src: "/charcoal_back_exact.png" }
         ] 
       }
     ],
@@ -37,7 +37,7 @@ const productData: Record<string, any> = {
       "LINING 100% VISCOSE",
       "OVERSIZED FIT",
       "CROPPED CUT",
-      "STRUCTURED COLLAR",
+      "BATWING SCULPTURAL SLEEVES",
       "SILVER-TONE ZIP CLOSURE",
       "RIBBED CUFFS AND HEM",
       "MADE IN LOS ANGELES",
@@ -52,7 +52,7 @@ const productData: Record<string, any> = {
       { 
         name: "BLACK", 
         hex: "#000000",
-        images: ["/pants_leather_studio.png"]
+        images: [{ type: 'exact', src: "/pants_leather_studio.png" }]
       }
     ],
     sizes: ["30", "32", "34", "36", "38"],
@@ -70,17 +70,53 @@ const productData: Record<string, any> = {
   }
 };
 
-function ProductImageViewer({ images, alt }: { images: string[], alt: string }) {
+function CroppedProductImage({ imageData, alt, className }: { imageData: any, alt: string, className?: string }) {
+  if (imageData.type === 'exact') {
+    return (
+      <Image
+        src={imageData.src}
+        alt={alt}
+        fill
+        className={cn("object-contain mix-blend-multiply", className)}
+        priority
+      />
+    );
+  }
+
+  // Handle CSS cropping for composite image
+  const positions: Record<string, string> = {
+    'top-left': '0% 0%',
+    'top-right': '100% 0%',
+    'bottom-left': '0% 100%',
+    'bottom-right': '100% 100%'
+  };
+
+  return (
+    <div className={cn("relative w-full h-full overflow-hidden", className)}>
+      <div 
+        className="absolute w-[200%] h-[200%]"
+        style={{ 
+          top: imageData.position.includes('bottom') ? '-100%' : '0%',
+          left: imageData.position.includes('right') ? '-100%' : '0%',
+        }}
+      >
+        <Image
+          src={imageData.src}
+          alt={alt}
+          fill
+          className="object-contain mix-blend-multiply"
+        />
+      </div>
+    </div>
+  );
+}
+
+function ProductImageViewer({ images, alt }: { images: any[], alt: string }) {
   const [currentIdx, setCurrentIdx] = useState(0);
-  const [isFlipping, setIsFlipping] = useState(false);
 
   const handleFlip = () => {
     if (images.length < 2) return;
-    setIsFlipping(true);
-    setTimeout(() => {
-      setCurrentIdx((prev) => (prev + 1) % images.length);
-      setIsFlipping(false);
-    }, 300);
+    setCurrentIdx((prev) => (prev + 1) % images.length);
   };
 
   return (
@@ -97,19 +133,13 @@ function ProductImageViewer({ images, alt }: { images: string[], alt: string }) 
           transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
           className="relative w-full h-full"
         >
-          <Image
-            src={images[currentIdx]}
-            alt={alt}
-            fill
-            className="object-contain mix-blend-multiply"
-            priority
-          />
+          <CroppedProductImage imageData={images[currentIdx]} alt={alt} />
         </motion.div>
       </AnimatePresence>
 
       {images.length > 1 && (
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 opacity-0 group-hover:opacity-40 transition-opacity duration-500">
-          <RotateCcw size={12} className="animate-spin-slow" />
+          <RotateCcw size={12} />
           <span className="text-[8px] font-bold tracking-[0.3em] uppercase">VIEW {currentIdx === 0 ? "BACK" : "FRONT"}</span>
         </div>
       )}
@@ -142,99 +172,53 @@ export default function ProductPage() {
   return (
     <div className="w-full bg-white min-h-screen pt-20 lg:pt-0">
 
-      {/* ── MOBILE LAYOUT (hidden on lg+) ── */}
+      {/* ── MOBILE LAYOUT ── */}
       <div className="lg:hidden">
-
-        {/* Full-bleed image - Natural Poise */}
         <div className="w-full aspect-square bg-[#f6f6f6] p-10">
-          <ProductImageViewer 
-            images={product.colors[selectedColor].images} 
-            alt={product.name} 
-          />
+          <ProductImageViewer images={product.colors[selectedColor].images} alt={product.name} />
         </div>
-
-        {/* Details panel */}
         <div className="px-5 pt-6 pb-16 space-y-7">
-
-          {/* Name + price */}
           <div>
-            <p className="text-[12px] uppercase tracking-[0.18em] leading-snug text-black font-medium">
-              {product.name}
-            </p>
-            <p className="text-[14px] font-bold tracking-[0.05em] text-black mt-1.5">
-              {product.price}
-            </p>
+            <p className="text-[12px] uppercase tracking-[0.18em] leading-snug text-black font-medium">{product.name}</p>
+            <p className="text-[14px] font-bold tracking-[0.05em] text-black mt-1.5">{product.price}</p>
           </div>
-
-          {/* Color */}
           <div className="space-y-3">
-            <p className="text-[10px] uppercase tracking-[0.35em] text-black">
-              {product.colors[selectedColor].name}
-            </p>
+            <p className="text-[10px] uppercase tracking-[0.35em] text-black">{product.colors[selectedColor].name}</p>
             <div className="flex gap-3">
               {product.colors.map((color: any, i: number) => (
-                <button
-                  key={i}
-                  onClick={() => setSelectedColor(i)}
-                  className={cn(
-                    "w-9 h-9 border transition-all p-0.5",
-                    selectedColor === i ? "border-black" : "border-neutral-200"
-                  )}
-                >
+                <button key={i} onClick={() => setSelectedColor(i)} className={cn("w-9 h-9 border transition-all p-0.5", selectedColor === i ? "border-black" : "border-neutral-200")}>
                   <div className="w-full h-full" style={{ backgroundColor: color.hex }} />
                 </button>
               ))}
             </div>
           </div>
-
-          {/* Size */}
           <div className="space-y-3">
             <p className="text-[10px] uppercase tracking-[0.35em] text-black">SELECT SIZE</p>
             <div className="flex gap-2 flex-wrap">
               {product.sizes.map((size: string) => (
-                <button
-                  key={size}
-                  onClick={() => setSelectedSize(size)}
-                  className={cn(
-                    "h-11 min-w-[52px] px-3 border text-[11px] font-medium tracking-wider flex items-center justify-center transition-all",
-                    selectedSize === size
-                      ? "border-black bg-black text-white"
-                      : "border-neutral-200 text-black"
-                  )}
-                >
+                <button key={size} onClick={() => setSelectedSize(size)} className={cn("h-11 min-w-[52px] px-3 border text-[11px] font-medium tracking-wider flex items-center justify-center transition-all", selectedSize === size ? "border-black bg-black text-white" : "border-neutral-200 text-black")}>
                   {size}
                 </button>
               ))}
             </div>
           </div>
-
-          {/* CTAs */}
           <div className="space-y-3 pt-1">
             <button
               onClick={() => addItem({ 
                 id: `${id}-${product.colors[selectedColor].name}`, 
                 name: `${product.name} - ${product.colors[selectedColor].name}`, 
                 price: product.price, 
-                image: product.colors[selectedColor].images[0]
+                image: product.colors[selectedColor].images[0].src 
               })}
               className="w-full h-[52px] bg-black text-white text-[11px] font-bold tracking-[0.4em] uppercase"
             >
               ADD TO BAG
             </button>
-            <button className="w-full h-[52px] border border-black flex items-center justify-center bg-white">
-              <span className="text-[11px] font-bold tracking-[0.4em] uppercase"> PAY</span>
-            </button>
           </div>
-
-          {/* Accordions */}
           <div className="border-t border-neutral-100 divide-y divide-neutral-100">
             <div>
-              <button
-                onClick={() => setActiveAccordion(activeAccordion === 'details' ? null : 'details')}
-                className="w-full py-5 flex justify-between items-center text-[11px] uppercase tracking-[0.3em]"
-              >
-                DETAILS
-                <Plus size={13} strokeWidth={1} className={cn("transition-transform duration-300", activeAccordion === 'details' && "rotate-45")} />
+              <button onClick={() => setActiveAccordion(activeAccordion === 'details' ? null : 'details')} className="w-full py-5 flex justify-between items-center text-[11px] uppercase tracking-[0.3em]">
+                DETAILS <Plus size={13} strokeWidth={1} className={cn("transition-transform duration-300", activeAccordion === 'details' && "rotate-45")} />
               </button>
               <div className={cn("overflow-hidden transition-all duration-500", activeAccordion === 'details' ? "max-h-[500px] pb-5" : "max-h-0")}>
                 <ul className="space-y-3 text-[11px] text-neutral-500 tracking-[0.05em] leading-relaxed">
@@ -242,109 +226,50 @@ export default function ProductPage() {
                 </ul>
               </div>
             </div>
-
-            <button
-              onClick={handleCheckAvailability}
-              disabled={isChecking || showSoldOut}
-              className="w-full py-5 flex justify-between items-center text-[11px] uppercase tracking-[0.3em] disabled:opacity-100"
-            >
-              {isChecking ? "CHECKING AVAILABILITY..." : showSoldOut ? (
-                <span className="text-[#4a0404] animate-pulse">SOLD OUT — RODEO DRIVE, APRIL 4TH</span>
-              ) : "CHECK AVAILABILITY IN STORE"}
+            <button onClick={handleCheckAvailability} disabled={isChecking || showSoldOut} className="w-full py-5 flex justify-between items-center text-[11px] uppercase tracking-[0.3em] disabled:opacity-100">
+              {isChecking ? "CHECKING AVAILABILITY..." : showSoldOut ? <span className="text-[#4a0404] animate-pulse">SOLD OUT — RODEO DRIVE, APRIL 4TH</span> : "CHECK AVAILABILITY IN STORE"}
               {!isChecking && !showSoldOut && <ChevronRight size={13} strokeWidth={1} />}
             </button>
-
-            <div>
-              <button
-                onClick={() => setActiveAccordion(activeAccordion === 'shipping' ? null : 'shipping')}
-                className="w-full py-5 flex justify-between items-center text-[11px] uppercase tracking-[0.3em]"
-              >
-                SHIPPING & RETURNS
-                <Plus size={13} strokeWidth={1} className={cn("transition-transform duration-300", activeAccordion === 'shipping' && "rotate-45")} />
-              </button>
-              <div className={cn("overflow-hidden transition-all duration-500", activeAccordion === 'shipping' ? "max-h-[500px] pb-5" : "max-h-0")}>
-                <p className="text-[11px] text-neutral-400 leading-relaxed uppercase tracking-[0.05em]">
-                  10-14 DAY WHITE GLOVE SHIPPING. PACKED WITH CARE. NO RETURNS. THIS GARMENT IS PERFECT.
-                </p>
-              </div>
-            </div>
           </div>
-
-          {/* Verification Signature */}
           <div className="pt-24 pb-12 text-center">
-            <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026
-            </p>
+            <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">L&apos;ARGENT BRÛLÉ &copy; 2026</p>
           </div>
         </div>
       </div>
 
-      {/* ── DESKTOP LAYOUT (hidden below lg) ── */}
+      {/* ── DESKTOP LAYOUT ── */}
       <div className="hidden lg:flex w-full min-h-screen">
-
-        {/* MONUMENTAL HERO IMAGE - HEADER ON MOBILE */}
         <div className="w-full lg:w-[60%] bg-[#f6f6f6] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center p-4 pt-40 lg:p-12">
           <div className="w-full aspect-[3/4] lg:h-full lg:aspect-auto">
-            <ProductImageViewer 
-              images={product.colors[selectedColor].images} 
-              alt={product.name} 
-            />
+            <ProductImageViewer images={product.colors[selectedColor].images} alt={product.name} />
           </div>
         </div>
-
-        {/* Scrollable details panel */}
         <div className="w-[40%] bg-white px-20 py-32">
           <div className="max-w-xl space-y-20">
-
             <div className="space-y-6">
-              <h1 className="text-[17px] font-bold uppercase tracking-[0.2em] leading-tight text-black">
-                {product.name}
-              </h1>
-              <p className="text-[17px] font-bold tracking-[0.1em] text-black">
-                {product.price}
-              </p>
+              <h1 className="text-[17px] font-bold uppercase tracking-[0.2em] leading-tight text-black">{product.name}</h1>
+              <p className="text-[17px] font-bold tracking-[0.1em] text-black">{product.price}</p>
             </div>
-
             <div className="space-y-6">
-              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-400">
-                COLOR: {product.colors[selectedColor].name}
-              </p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-400">COLOR: {product.colors[selectedColor].name}</p>
               <div className="flex gap-4">
                 {product.colors.map((color: any, i: number) => (
-                  <button
-                    key={i}
-                    onClick={() => setSelectedColor(i)}
-                    className={cn(
-                      "w-10 h-10 border transition-all p-0.5",
-                      selectedColor === i ? "border-black" : "border-neutral-100"
-                    )}
-                  >
+                  <button key={i} onClick={() => setSelectedColor(i)} className={cn("w-10 h-10 border transition-all p-0.5", selectedColor === i ? "border-black" : "border-neutral-100")}>
                     <div className="w-full h-full" style={{ backgroundColor: color.hex }} />
                   </button>
                 ))}
               </div>
             </div>
-
             <div className="space-y-6">
-              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-400">
-                SELECT SIZE
-              </p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-400">SELECT SIZE</p>
               <div className="grid grid-cols-4 gap-3 max-w-sm">
                 {product.sizes.map((size: string) => (
-                  <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={cn(
-                      "h-12 border text-[11px] font-bold tracking-widest flex items-center justify-center transition-all",
-                      selectedSize === size ? "border-black bg-black text-white" : "border-neutral-200 text-black hover:border-black"
-                    )}
-                  >
+                  <button key={size} onClick={() => setSelectedSize(size)} className={cn("h-12 border text-[11px] font-bold tracking-widest flex items-center justify-center transition-all", selectedSize === size ? "border-black bg-black text-white" : "border-neutral-200 text-black hover:border-black")}>
                     {size}
                   </button>
                 ))}
               </div>
             </div>
-
             <div className="space-y-4 pt-10">
               <div className="relative w-full h-[60px]">
                 <LiquidButton
@@ -352,26 +277,18 @@ export default function ProductPage() {
                     id: `${id}-${product.colors[selectedColor].name}`, 
                     name: `${product.name} - ${product.colors[selectedColor].name}`, 
                     price: product.price, 
-                    image: product.colors[selectedColor].images[0]
+                    image: product.colors[selectedColor].images[0].src 
                   })}
                   className="w-full h-full bg-black text-white text-[12px] font-bold tracking-[0.4em] uppercase"
                 >
                   ADD TO BAG
                 </LiquidButton>
               </div>
-              <button className="w-full h-[60px] border border-black flex items-center justify-center bg-white hover:bg-neutral-50 transition-colors">
-                <span className="text-[12px] font-bold tracking-[0.4em] uppercase"> PAY</span>
-              </button>
             </div>
-
             <div className="border-t border-neutral-100 divide-y divide-neutral-100">
               <div>
-                <button
-                  onClick={() => setActiveAccordion(activeAccordion === 'details' ? null : 'details')}
-                  className="w-full py-8 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.4em]"
-                >
-                  DETAILS
-                  <Plus size={14} strokeWidth={1} className={cn("transition-transform duration-300", activeAccordion === 'details' && "rotate-45")} />
+                <button onClick={() => setActiveAccordion(activeAccordion === 'details' ? null : 'details')} className="w-full py-8 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.4em]">
+                  DETAILS <Plus size={14} strokeWidth={1} className={cn("transition-transform duration-300", activeAccordion === 'details' && "rotate-45")} />
                 </button>
                 <div className={cn("overflow-hidden transition-all duration-500", activeAccordion === 'details' ? "max-h-[500px] pb-12" : "max-h-0")}>
                   <ul className="space-y-4 text-[11px] text-neutral-500 font-medium tracking-[0.1em] leading-relaxed">
@@ -379,42 +296,15 @@ export default function ProductPage() {
                   </ul>
                 </div>
               </div>
-
               <div>
-                <button
-                  onClick={handleCheckAvailability}
-                  disabled={isChecking || showSoldOut}
-                  className="w-full py-8 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.4em] disabled:opacity-100"
-                >
-                  <div className="flex flex-col items-start gap-2">
-                    {isChecking ? "CHECKING AVAILABILITY..." : showSoldOut ? (
-                      <span className="text-[#4a0404] animate-pulse">SOLD OUT — RODEO DRIVE, APRIL 4TH</span>
-                    ) : "CHECK AVAILABILITY IN STORE"}
-                  </div>
+                <button onClick={handleCheckAvailability} disabled={isChecking || showSoldOut} className="w-full py-8 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.4em] disabled:opacity-100">
+                  {isChecking ? "CHECKING AVAILABILITY..." : showSoldOut ? <span className="text-[#4a0404] animate-pulse">SOLD OUT — RODEO DRIVE, APRIL 4TH</span> : "CHECK AVAILABILITY IN STORE"}
                   {!isChecking && !showSoldOut && <ChevronRight size={14} strokeWidth={1} />}
                 </button>
               </div>
-
-              <div>
-                <button
-                  onClick={() => setActiveAccordion(activeAccordion === 'shipping' ? null : 'shipping')}
-                  className="w-full py-8 flex justify-between items-center text-[11px] font-bold uppercase tracking-[0.4em]"
-                >
-                  SHIPPING & RETURNS
-                  <Plus size={14} strokeWidth={1} className={cn("transition-transform duration-300", activeAccordion === 'shipping' && "rotate-45")} />
-                </button>
-                <div className={cn("overflow-hidden transition-all duration-500", activeAccordion === 'shipping' ? "max-h-[500px] pb-12" : "max-h-0")}>
-                  <p className="text-[11px] text-neutral-400 leading-relaxed uppercase tracking-[0.1em]">
-                    MOST ITEMS DELIVERED WITHIN 10-14 DAYS. SPECIAL ITEMS CAN TAKE UP TO 8 WEEKS PLUS. WHITE GLOVE SERVICE. NO RETURNS.
-                  </p>
-                </div>
-              </div>
             </div>
-
             <div className="pt-24 pb-12 text-center">
-              <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-                L&apos;ARGENT BRÛLÉ &copy; 2026
-              </p>
+              <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">L&apos;ARGENT BRÛLÉ &copy; 2026</p>
             </div>
           </div>
         </div>

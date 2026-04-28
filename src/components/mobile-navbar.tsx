@@ -60,12 +60,13 @@ export function MobileNavbar() {
               "WOMEN",
               "MEN",
               "STORE LOCATOR",
+              "EARLY ACCESS",
               "SIGN IN",
               "REGISTER"
             ].map((item) => (
               <Link 
                 key={item}
-                href={item === "SIGN IN" ? "/auth" : "#"} 
+                href={item === "SIGN IN" ? "/auth" : item === "EARLY ACCESS" ? "/early-access" : "#"} 
                 onClick={() => setIsOpen(false)} 
                 className="text-[14px] font-bold uppercase tracking-[0.5em] text-black hover:text-[#4a0404] transition-all duration-300"
               >

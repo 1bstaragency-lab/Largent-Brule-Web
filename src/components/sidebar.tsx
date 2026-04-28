@@ -31,12 +31,13 @@ export function Sidebar() {
           "WOMEN",
           "MEN",
           "STORE LOCATOR",
+          "EARLY ACCESS",
           "SIGN IN",
           "REGISTER"
         ].map((item) => (
           <Link 
             key={item}
-            href={item === "SIGN IN" ? "/auth" : "#"} 
+            href={item === "SIGN IN" ? "/auth" : item === "EARLY ACCESS" ? "/early-access" : "#"} 
             className="block text-[11px] font-bold uppercase tracking-[0.4em] hover:text-[#4a0404] transition-colors"
           >
             {item}

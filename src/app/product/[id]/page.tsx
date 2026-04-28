@@ -15,18 +15,18 @@ const productData: Record<string, any> = {
     price: "310 USD",
     colors: [
       { 
-        name: "WINE", 
-        hex: "#4b1b1b", 
-        images: [
-          { type: 'exact', src: "/wine_front_exact.png" }
-        ] 
-      },
-      { 
         name: "CHARCOAL", 
         hex: "#2f2f2f", 
         images: [
           { type: 'exact', src: "/charcoal_front_exact.png" },
           { type: 'exact', src: "/charcoal_back_exact.png" }
+        ] 
+      },
+      { 
+        name: "WINE", 
+        hex: "#4b1b1b", 
+        images: [
+          { type: 'exact', src: "/wine_front_exact.png" }
         ] 
       }
     ],

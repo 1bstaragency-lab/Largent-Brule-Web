@@ -52,19 +52,10 @@ export function MobileNavbar() {
             className="fixed inset-0 bg-white z-[200] flex flex-col"
           >
             {/* Menu Header */}
-            <div className="h-20 flex items-center px-6 border-b border-neutral-100">
+            <div className="h-20 flex items-center px-6 border-b border-neutral-100 relative">
               <button onClick={() => setIsOpen(false)} className="p-2 -ml-2">
                 <X size={20} strokeWidth={1.5} />
               </button>
-              
-              <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-12">
-                <Image 
-                  src="/logo_script_final.png" 
-                  alt="L'ARGENT BRÛLÉ" 
-                  fill
-                  className="object-contain"
-                />
-              </div>
             </div>
 
             <nav className="flex-1 flex flex-col items-center justify-center space-y-8 py-20 overflow-y-auto">

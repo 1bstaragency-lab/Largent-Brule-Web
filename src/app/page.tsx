@@ -1,6 +1,10 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { GooeyText } from "@/components/ui/gooey-text-morphing";
+import { motion, AnimatePresence } from "framer-motion";
 
 const products = [
   {
@@ -19,18 +23,44 @@ const products = [
   }
 ];
 
+const heroImages = [
+  "/hero_final_lock_v10.jpg",
+  "/hero_editorial_v11.jpg"
+];
+
 export default function Home() {
+  const [heroIdx, setHeroIdx] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setHeroIdx((prev) => (prev + 1) % heroImages.length);
+    }, 15000); // 15 seconds rotation
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="p-4 sm:p-10 pb-40 overflow-x-hidden">
       {/* Hero Section */}
       <section className="relative w-full h-[90vh] mb-20 overflow-hidden bg-[#050505] flex items-center justify-center">
-        <Image
-          src="/hero_final_lock_v10.jpg"
-          alt="L'argent Brûlé Editorial"
-          fill
-          className="object-cover brightness-75"
-          priority
-        />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={heroIdx}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            className="absolute inset-0"
+          >
+            <Image
+              src={heroImages[heroIdx]}
+              alt="L'argent Brûlé Editorial"
+              fill
+              className="object-cover brightness-75"
+              priority
+            />
+          </motion.div>
+        </AnimatePresence>
+        
         <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none p-2">
           <GooeyText
             texts={["L'ARGENT", "BRÛLÉ"]}
@@ -39,9 +69,6 @@ export default function Home() {
             className="font-bold text-white text-4xl sm:text-6xl lg:text-9xl tracking-[0.2em] uppercase"
             textClassName="text-white text-center"
           />
-        </div>
-        <div className="absolute bottom-6 right-6 z-20">
-          {/* Clinical Signature */}
         </div>
       </section>
 

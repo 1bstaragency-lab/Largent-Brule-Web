@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: "L'argent Brûlé | Official Flagship",
   description: "Luxury technical apparel for the volatile era.",
   openGraph: {
-    images: ["/logo_red_script.png"],
+    images: ["/og-image.png"],
   },
 };
 

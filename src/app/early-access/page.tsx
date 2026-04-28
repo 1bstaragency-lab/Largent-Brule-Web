@@ -94,7 +94,7 @@ export default function EarlyAccessPage() {
             className="w-full h-16 bg-black text-white text-[11px] font-bold uppercase tracking-[0.5em] hover:bg-neutral-900 transition-all flex items-center justify-center gap-4 group"
           >
             {isLoading ? (
-              <span className="animate-pulse">AUTHORIZING ARCHIVE...</span>
+              <span className="animate-pulse">LOADING...</span>
             ) : (
               <>
                 JOIN THE SELECTION
@@ -124,7 +124,7 @@ export default function EarlyAccessPage() {
       {/* Technical Signature */}
       <div className="absolute bottom-8 right-8 hidden lg:block">
         <p className="text-[9px] text-neutral-200 uppercase tracking-[0.5em]">
-          L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V6.6
+          L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V6.7
         </p>
       </div>
     </div>

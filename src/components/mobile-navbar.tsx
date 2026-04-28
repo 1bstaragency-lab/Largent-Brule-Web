@@ -52,25 +52,21 @@ export function MobileNavbar() {
 
           <nav className="flex-1 overflow-y-auto flex flex-col items-center justify-center space-y-10 px-10">
             {[
-              "COLLECTIONS",
-              "LOOKBOOK",
-              "OUR STORY",
-              "CAMPAIGNS",
-              "FAQ",
-              "WOMEN",
-              "MEN",
-              "STORE LOCATOR",
-              "EARLY ACCESS",
-              "SIGN IN",
-              "REGISTER"
+              { label: "COLLECTIONS", href: "/" },
+              { label: "OUR STORY", href: "/our-story" },
+              { label: "LOOKBOOK", href: "#" },
+              { label: "EARLY ACCESS", href: "/early-access" },
+              { label: "FAQ", href: "#" },
+              { label: "SIGN IN", href: "/auth" },
+              { label: "REGISTER", href: "#" }
             ].map((item) => (
               <Link 
-                key={item}
-                href={item === "SIGN IN" ? "/auth" : item === "EARLY ACCESS" ? "/early-access" : "#"} 
+                key={item.label}
+                href={item.href} 
                 onClick={() => setIsOpen(false)} 
-                className="text-[14px] font-bold uppercase tracking-[0.5em] text-black hover:text-[#4a0404] transition-all duration-300"
+                className="text-[12px] font-bold uppercase tracking-[0.6em] text-black hover:opacity-40 transition-all duration-300"
               >
-                {item}
+                {item.label}
               </Link>
             ))}
           </nav>

@@ -23,24 +23,20 @@ export function Sidebar() {
 
       <nav className="space-y-6 flex-1 overflow-y-auto">
         {[
-          "COLLECTIONS",
-          "LOOKBOOK",
-          "OUR STORY",
-          "CAMPAIGNS",
-          "FAQ",
-          "WOMEN",
-          "MEN",
-          "STORE LOCATOR",
-          "EARLY ACCESS",
-          "SIGN IN",
-          "REGISTER"
+          { label: "COLLECTIONS", href: "/" },
+          { label: "OUR STORY", href: "/our-story" },
+          { label: "LOOKBOOK", href: "#" },
+          { label: "EARLY ACCESS", href: "/early-access" },
+          { label: "FAQ", href: "#" },
+          { label: "SIGN IN", href: "/auth" },
+          { label: "REGISTER", href: "#" }
         ].map((item) => (
           <Link 
-            key={item}
-            href={item === "SIGN IN" ? "/auth" : item === "EARLY ACCESS" ? "/early-access" : "#"} 
-            className="block text-[11px] font-bold uppercase tracking-[0.4em] hover:text-[#4a0404] transition-colors"
+            key={item.label}
+            href={item.href} 
+            className="block text-[10px] font-bold uppercase tracking-[0.5em] hover:opacity-40 transition-all"
           >
-            {item}
+            {item.label}
           </Link>
         ))}
       </nav>

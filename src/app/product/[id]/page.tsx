@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { cn } from "@/lib/utils";
 import { ChevronRight, Plus, RotateCcw } from "lucide-react";
@@ -19,7 +19,8 @@ const productData: Record<string, any> = {
         hex: "#4b1b1b", 
         images: [
           { type: 'exact', src: "/wine_front_exact.png" },
-          { type: 'color-replace', src: "/charcoal_back_exact.png", targetColor: '#4b1b1b' }
+          // Using a high-performance CSS blend engine for the back view to ensure zero lag
+          { type: 'blend', src: "/charcoal_back_exact.png", blendColor: '#4b1b1b' }
         ] 
       },
       { 
@@ -70,67 +71,63 @@ const productData: Record<string, any> = {
   }
 };
 
-function ColorReplacedImage({ src, targetColor, alt, className }: { src: string, targetColor: string, alt: string, className?: string }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [processedSrc, setProcessedSrc] = useState<string | null>(null);
-
-  useEffect(() => {
-    const img = new (window as any).Image();
-    img.crossOrigin = "anonymous";
-    img.src = src;
-    img.onload = () => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const data = imageData.data;
-
-      const r_target = parseInt(targetColor.slice(1, 3), 16);
-      const g_target = parseInt(targetColor.slice(3, 5), 16);
-      const b_target = parseInt(targetColor.slice(5, 7), 16);
-
-      for (let i = 0; i < data.length; i += 4) {
-        const r = data[i];
-        const g = data[i + 1];
-        const b = data[i + 2];
-        const a = data[i + 3];
-
-        if (a > 0 && (r < 250 || g < 250 || b < 250)) {
-          const intensity = (r + g + b) / 3;
-          const factor = intensity / 255;
-          data[i] = r_target * (factor + 0.3);
-          data[i + 1] = g_target * (factor + 0.3);
-          data[i + 2] = b_target * (factor + 0.3);
-        } else if (r >= 250 && g >= 250 && b >= 250) {
-          data[i + 3] = 0;
-        }
-      }
-
-      ctx.putImageData(imageData, 0, 0);
-      setProcessedSrc(canvas.toDataURL());
-    };
-  }, [src, targetColor]);
-
-  return (
-    <div className={cn("relative w-full h-full", className)}>
-      <canvas ref={canvasRef} className="hidden" />
-      {processedSrc ? (
+function OptimizedProductImage({ imageData, alt }: { imageData: any, alt: string }) {
+  if (imageData.type === 'exact') {
+    return (
+      <div className="relative w-full h-full">
         <Image
-          src={processedSrc}
+          src={imageData.src}
           alt={alt}
           fill
-          className="object-contain"
+          className="object-contain mix-blend-multiply"
+          style={{ filter: 'contrast(1.05) brightness(1.02)' }}
           priority
         />
-      ) : (
-        <div className="w-full h-full bg-white animate-pulse" />
-      )}
+      </div>
+    );
+  }
+
+  // High-performance blend engine: No Canvas, no lag.
+  return (
+    <div className="relative w-full h-full">
+      {/* Base Layer: Exact Charcoal Silhouette */}
+      <Image
+        src={imageData.src}
+        alt={alt}
+        fill
+        className="object-contain mix-blend-multiply brightness-[1.1] contrast-[1.1]"
+        priority
+      />
+      {/* Color Layer: Wine Overlay using 'color' blend mode */}
+      <div 
+        className="absolute inset-0 pointer-events-none mix-blend-color"
+        style={{ 
+          backgroundColor: imageData.blendColor,
+          maskImage: `url(${imageData.src})`,
+          WebkitMaskImage: `url(${imageData.src})`,
+          maskSize: 'contain',
+          WebkitMaskSize: 'contain',
+          maskRepeat: 'no-repeat',
+          WebkitMaskRepeat: 'no-repeat',
+          maskPosition: 'center',
+          WebkitMaskPosition: 'center'
+        }}
+      />
+      {/* Depth Layer: Multiply to restore shadow depth */}
+      <div 
+        className="absolute inset-0 pointer-events-none mix-blend-multiply opacity-40"
+        style={{ 
+          backgroundColor: imageData.blendColor,
+          maskImage: `url(${imageData.src})`,
+          WebkitMaskImage: `url(${imageData.src})`,
+          maskSize: 'contain',
+          WebkitMaskSize: 'contain',
+          maskRepeat: 'no-repeat',
+          WebkitMaskRepeat: 'no-repeat',
+          maskPosition: 'center',
+          WebkitMaskPosition: 'center'
+        }}
+      />
     </div>
   );
 }
@@ -155,35 +152,18 @@ function ProductImageViewer({ images, alt }: { images: any[], alt: string }) {
       <AnimatePresence initial={false} mode="wait">
         <motion.div
           key={currentIdx}
-          initial={{ opacity: 0, rotateY: currentIdx === 1 ? -180 : 180, scale: 0.95 }}
+          initial={{ opacity: 0, rotateY: currentIdx === 1 ? -180 : 180, scale: 0.98 }}
           animate={{ opacity: 1, rotateY: 0, scale: 1 }}
-          exit={{ opacity: 0, rotateY: currentIdx === 1 ? 180 : -180, scale: 0.95 }}
+          exit={{ opacity: 0, rotateY: currentIdx === 1 ? 180 : -180, scale: 0.98 }}
           transition={{ 
-            duration: 1.2, 
-            ease: [0.23, 1, 0.32, 1], // Monumental Liquid Ease
-            opacity: { duration: 0.4 }
+            duration: 1.0, 
+            ease: [0.23, 1, 0.32, 1],
+            opacity: { duration: 0.3 }
           }}
           className="relative w-full h-full flex items-center justify-center"
           style={{ transformStyle: 'preserve-3d' }}
         >
-          {images[currentIdx].type === 'color-replace' ? (
-            <ColorReplacedImage 
-              src={images[currentIdx].src} 
-              targetColor={images[currentIdx].targetColor} 
-              alt={alt} 
-            />
-          ) : (
-            <div className="relative w-full h-full">
-              <Image
-                src={images[currentIdx].src}
-                alt={alt}
-                fill
-                className="object-contain mix-blend-multiply"
-                style={{ filter: 'contrast(1.05) brightness(1.02)' }}
-                priority
-              />
-            </div>
-          )}
+          <OptimizedProductImage imageData={images[currentIdx]} alt={alt} />
         </motion.div>
       </AnimatePresence>
 

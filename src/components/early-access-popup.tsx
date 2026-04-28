@@ -97,7 +97,7 @@ export function EarlyAccessPopup() {
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            className="relative w-full max-w-lg bg-white p-12 lg:p-20 shadow-2xl space-y-12 overflow-hidden pointer-events-auto"
+            className="relative w-full max-w-lg bg-white p-8 lg:p-20 shadow-2xl space-y-12 overflow-hidden pointer-events-auto"
           >
             {/* Close Button */}
             <button 
@@ -108,7 +108,7 @@ export function EarlyAccessPopup() {
             </button>
 
             <div className="space-y-12 text-center">
-              <div className="relative w-96 h-24 mx-auto">
+              <div className="relative w-full max-w-[200px] sm:max-w-[300px] lg:max-w-sm h-20 sm:h-24 mx-auto">
                 <Image src="/logo_script_final.png" alt="L'argent Brûlé" fill className="object-contain" />
               </div>
 

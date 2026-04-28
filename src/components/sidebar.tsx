@@ -40,11 +40,6 @@ export function Sidebar() {
         ))}
       </nav>
 
-      <div className="mt-auto">
-        <Link href="#" className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest hover:opacity-50 transition-opacity">
-          SEARCH 🔍
-        </Link>
-      </div>
     </aside>
   );
 }

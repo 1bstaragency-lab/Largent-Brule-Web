@@ -110,7 +110,7 @@ export function EarlyAccessPopup() {
                       disabled={isLoading}
                       className="w-full h-14 bg-black text-white text-[11px] font-bold uppercase tracking-[0.5em] hover:bg-neutral-900 transition-all flex items-center justify-center gap-4 group"
                     >
-                      {isLoading ? "ARCHIVING..." : (
+                      {isLoading ? "JOINING..." : (
                         <>
                           JOIN SELECTION
                           <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -127,7 +127,7 @@ export function EarlyAccessPopup() {
                 >
                   <h2 className="text-[14px] font-bold tracking-[0.6em] uppercase text-black">ACCESS GRANTED</h2>
                   <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-neutral-400">
-                    YOU HAVE BEEN ADDED TO THE SELECTION.
+                    YOU ARE NOW IN L&apos;ARGENT BRÛLÉ.
                   </p>
                 </motion.div>
               )}

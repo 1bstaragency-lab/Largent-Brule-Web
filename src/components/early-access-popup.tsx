@@ -23,7 +23,7 @@ export function EarlyAccessPopup() {
       const arrivalTimer = setTimeout(() => {
         setIsOpen(true);
         
-        // Start the 4-second departure countdown
+        // Start the 3-second departure countdown
         autoCloseTimerRef.current = setTimeout(() => {
           setIsOpen((current) => {
             if (current) {
@@ -32,7 +32,7 @@ export function EarlyAccessPopup() {
             }
             return false;
           });
-        }, 4000); 
+        }, 3000); 
 
       }, 3000); // 3-second arrival delay
 

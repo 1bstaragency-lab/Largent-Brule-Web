@@ -14,8 +14,8 @@ export default function AuthPage() {
         {/* Logo */}
         <div className="w-full flex justify-center animate-in fade-in zoom-in duration-1000">
           <Image 
-            src="/logo_cafe_v3.png" 
-            alt="Café L'argent Brûlé" 
+            src="/logo_script_final.png" 
+            alt="L'argent Brûlé" 
             width={220} 
             height={110} 
             className="object-contain"
@@ -24,7 +24,7 @@ export default function AuthPage() {
 
         {/* Header */}
         <div className="text-center space-y-2 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300 fill-mode-both">
-          <h1 className="text-[12px] font-bold uppercase tracking-[0.5em] text-black">SIGN IN TO THE CLUB BELOW</h1>
+          <h1 className="text-[12px] font-bold uppercase tracking-[0.5em] text-black">SIGN IN TO CLUB L&apos;ARGENT BRÛLÉ BELOW</h1>
           <p className="text-[9px] uppercase tracking-[0.3em] opacity-40 font-medium leading-relaxed">
             ACCESS THE COLLECTION. RSVP TO PRIVATE SHOWS. <br /> RECEIVE COMPLIMENTARY MEMBERSHIP GIFTS.
           </p>

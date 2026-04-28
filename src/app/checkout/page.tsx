@@ -100,10 +100,10 @@ export default function CheckoutPage() {
                 </div>
               </section>
 
-              {/* CAFE LARGENT BRULE Subscription */}
+              {/* CLUB LARGENT BRULE Subscription */}
               <section className="bg-[#fafafa] p-8 space-y-8 border-[0.5px] border-black/10 flex flex-col items-center text-center">
                 <div className="space-y-4 flex flex-col items-center">
-                  <h3 className="text-[10px] font-bold uppercase tracking-[0.4em]">CAFE L&apos;ARGENT BRÛLÉ</h3>
+                  <h3 className="text-[10px] font-bold uppercase tracking-[0.4em]">CLUB L&apos;ARGENT BRÛLÉ</h3>
                   <div className="flex flex-col items-center gap-3">
                     <p className="text-[8px] uppercase tracking-[0.2em] opacity-40 font-medium">MEMBERSHIP SELECTION</p>
                     <span className="text-[7px] bg-black text-white px-2 py-1 font-bold tracking-widest">1ST DROP COMPLIMENTARY</span>
@@ -118,7 +118,7 @@ export default function CheckoutPage() {
                 </div>
 
                 <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 pt-6 border-t border-black/5 w-full">
-                  {["15M EARLY ACCESS", "ARCHIVAL GIFTS", "PRIVATE RSVP"].map((perk, i) => (
+                  {["15M EARLY ACCESS", "GIFTS + ACCESSORIES, ETC", "PRIVATE RSVP"].map((perk, i) => (
                     <div key={i} className="flex items-center gap-2 text-[8px] font-bold uppercase tracking-[0.2em]">
                       <div className={`w-1 h-1 rounded-full ${isSubscribed ? 'bg-black' : 'bg-neutral-300'}`} />
                       <span className={isSubscribed ? 'opacity-100' : 'opacity-60'}>{perk}</span>

@@ -91,8 +91,8 @@ function CartDrawer({ isOpen, setIsOpen, items, showAdded }: {
             ) : (
               items.map((item, i) => (
                 <div key={i} className="flex gap-8 group animate-in fade-in slide-in-from-right-4 duration-700">
-                  <div className="w-24 h-32 bg-[#f6f6f6] relative flex-shrink-0">
-                    <Image src={item.image} alt={item.name} fill className="object-cover mix-blend-multiply" />
+                  <div className="w-24 h-32 bg-white relative flex-shrink-0 border border-neutral-50 p-2">
+                    <Image src={item.image} alt={item.name} fill className="object-contain mix-blend-multiply" />
                   </div>
                   <div className="flex-1 flex flex-col justify-center space-y-2">
                     <p className="text-[11px] font-bold uppercase tracking-widest leading-tight">{item.name}</p>
@@ -108,7 +108,7 @@ function CartDrawer({ isOpen, setIsOpen, items, showAdded }: {
 
           {/* Footer */}
           {items.length > 0 && (
-            <div className="p-6 lg:p-10 border-t border-neutral-100 space-y-6 bg-neutral-50/30">
+            <div className="p-6 lg:p-10 border-t border-neutral-100 space-y-6 bg-white">
               <div className="flex justify-between items-end">
                 <div className="space-y-1">
                   <p className="text-[9px] font-bold uppercase tracking-[0.3em] opacity-40">SUBTOTAL</p>

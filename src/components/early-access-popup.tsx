@@ -108,7 +108,7 @@ export function EarlyAccessPopup() {
             </button>
 
             <div className="space-y-12 text-center">
-              <div className="relative w-80 h-20 mx-auto">
+              <div className="relative w-96 h-24 mx-auto">
                 <Image src="/logo_script_final.png" alt="L'argent Brûlé" fill className="object-contain" />
               </div>
 

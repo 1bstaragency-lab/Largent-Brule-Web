@@ -79,7 +79,7 @@ export default function FAQPage() {
         {/* Verification Signature */}
         <div className="pt-24 pb-12 text-center">
           <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-            L&apos;ARGENT BRÛLÉ &copy; 2026 | FLAGSHIP V8.7
+            L&apos;ARGENT BRÛLÉ &copy; 2026 | FLAGSHIP V8.8
           </p>
         </div>
       </main>

@@ -192,10 +192,11 @@ export default function CheckoutPage() {
 
               <div className="flex flex-col gap-4">
                 <button 
-                  onClick={() => setStep(3)}
-                  className="w-full h-14 bg-black text-white text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-neutral-900 transition-colors"
+                  onClick={handleComplete}
+                  disabled={isProcessing}
+                  className="w-full h-14 bg-black text-white text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-neutral-900 transition-colors disabled:opacity-50"
                 >
-                  COMPLETE PURCHASE
+                  {isProcessing ? "PROCESSING TRANSACTION..." : "COMPLETE PURCHASE"}
                 </button>
                 <button 
                   onClick={() => setStep(1)}

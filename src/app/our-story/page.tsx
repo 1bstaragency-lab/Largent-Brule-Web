@@ -13,7 +13,7 @@ const storyContent = [
   },
   {
     title: "TECHNICAL PRECISION",
-    text: "WE DO NOT DESIGN; WE DOCUMENT. THE COLLECTION IS A CURATED SELECTION OF TECHNICAL ARTIFACTS, PRODUCED IN LIMITED ARCHIVAL RUNS FOR THE DISCERNING COLLECTOR. EVERY STITCH IS CALCULATED, EVERY SEAM IS SURGICAL.",
+    text: "WE DO NOT DESIGN; WE DOCUMENT. THE COLLECTION IS A CURATED SELECTION OF TECHNICAL ARTIFACTS, PRODUCED FOR THE DISCERNING COLLECTOR. EVERY STITCH IS CALCULATED, EVERY SEAM IS SURGICAL.",
     image: "/archive/factory_2.png"
   },
   {
@@ -70,10 +70,9 @@ export default function OurStoryPage() {
           ))}
 
           {/* Verification Signature */}
-          {/* Verification Signature */}
           <div className="pt-24 pb-12 text-center">
             <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V7.8
+              L&apos;ARGENT BRÛLÉ &copy; 2026 | FLAGSHIP V8.0
             </p>
           </div>
         </div>

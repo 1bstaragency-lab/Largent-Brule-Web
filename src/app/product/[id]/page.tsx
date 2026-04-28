@@ -152,7 +152,12 @@ export default function ProductPage() {
           {/* CTAs */}
           <div className="space-y-3 pt-1">
             <button
-              onClick={() => addItem({ id, name: product.name, price: product.price, image: product.image })}
+              onClick={() => addItem({ 
+                id: `${id}-${product.colors[selectedColor].name}`, 
+                name: `${product.name} - ${product.colors[selectedColor].name}`, 
+                price: product.price, 
+                image: product.colors[selectedColor].image || product.image 
+              })}
               className="w-full h-[52px] bg-black text-white text-[11px] font-bold tracking-[0.4em] uppercase"
             >
               ADD TO BAG
@@ -287,7 +292,12 @@ export default function ProductPage() {
             <div className="space-y-4 pt-10">
               <div className="relative w-full h-[60px]">
                 <LiquidButton
-                  onClick={() => addItem({ id, name: product.name, price: product.price, image: product.image })}
+                  onClick={() => addItem({ 
+                    id: `${id}-${product.colors[selectedColor].name}`, 
+                    name: `${product.name} - ${product.colors[selectedColor].name}`, 
+                    price: product.price, 
+                    image: product.colors[selectedColor].image || product.image 
+                  })}
                   className="w-full h-full bg-black text-white text-[12px] font-bold tracking-[0.4em] uppercase"
                 >
                   ADD TO BAG

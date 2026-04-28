@@ -5,17 +5,31 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { cn } from "@/lib/utils";
-import { ChevronRight, Plus } from "lucide-react";
+import { ChevronRight, Plus, RotateCcw } from "lucide-react";
 import { useCart } from "@/components/cart-drawer";
+import { motion, AnimatePresence } from "framer-motion";
 
 const productData: Record<string, any> = {
   bomber: {
     name: "CROPPED BOMBER JACKET IN TECHNICAL NYLON",
     price: "310 USD",
-    image: "/bomber_final_studio.jpg",
     colors: [
-      { name: "WINE", hex: "#4b1b1b", image: "/bomber_final_studio.jpg" },
-      { name: "CHARCOAL", hex: "#2f2f2f", image: "/bomber_charcoal_studio.png" }
+      { 
+        name: "WINE", 
+        hex: "#4b1b1b", 
+        images: [
+          "/wine_jacket_front_v4_clinical_1777407115982.png", 
+          "/wine_jacket_back_flat_v5_1777407156027.png"
+        ] 
+      },
+      { 
+        name: "CHARCOAL", 
+        hex: "#2f2f2f", 
+        images: [
+          "/charcoal_jacket_front_flat_v6_match_wine_front_v6_1777407207393.png", 
+          "/charcoal_jacket_back_flat_v5_1777407179567.png"
+        ] 
+      }
     ],
     sizes: ["S", "M", "L", "XL"],
     details: [
@@ -34,9 +48,12 @@ const productData: Record<string, any> = {
   pants: {
     name: "CARGO LEATHER PANTS IN LAMBSKIN",
     price: "240 USD",
-    image: "/pants_leather_studio.png",
     colors: [
-      { name: "BLACK", hex: "#000000" }
+      { 
+        name: "BLACK", 
+        hex: "#000000",
+        images: ["/pants_leather_studio.png"]
+      }
     ],
     sizes: ["30", "32", "34", "36", "38"],
     details: [
@@ -52,6 +69,53 @@ const productData: Record<string, any> = {
     ]
   }
 };
+
+function ProductImageViewer({ images, alt }: { images: string[], alt: string }) {
+  const [currentIdx, setCurrentIdx] = useState(0);
+  const [isFlipping, setIsFlipping] = useState(false);
+
+  const handleFlip = () => {
+    if (images.length < 2) return;
+    setIsFlipping(true);
+    setTimeout(() => {
+      setCurrentIdx((prev) => (prev + 1) % images.length);
+      setIsFlipping(false);
+    }, 300);
+  };
+
+  return (
+    <div 
+      className="relative w-full h-full cursor-pointer group perspective-1000"
+      onClick={handleFlip}
+    >
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentIdx}
+          initial={{ opacity: 0, rotateY: 90 }}
+          animate={{ opacity: 1, rotateY: 0 }}
+          exit={{ opacity: 0, rotateY: -90 }}
+          transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
+          className="relative w-full h-full"
+        >
+          <Image
+            src={images[currentIdx]}
+            alt={alt}
+            fill
+            className="object-contain mix-blend-multiply"
+            priority
+          />
+        </motion.div>
+      </AnimatePresence>
+
+      {images.length > 1 && (
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 opacity-0 group-hover:opacity-40 transition-opacity duration-500">
+          <RotateCcw size={12} className="animate-spin-slow" />
+          <span className="text-[8px] font-bold tracking-[0.3em] uppercase">VIEW {currentIdx === 0 ? "BACK" : "FRONT"}</span>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function ProductPage() {
   const params = useParams();
@@ -83,15 +147,10 @@ export default function ProductPage() {
 
         {/* Full-bleed image - Natural Poise */}
         <div className="w-full aspect-square bg-[#f6f6f6] p-10">
-          <div className="relative w-full h-full">
-            <Image
-              src={product.colors[selectedColor]?.image || product.image}
-              alt={product.name}
-              fill
-              className="object-contain mix-blend-multiply"
-              priority
-            />
-          </div>
+          <ProductImageViewer 
+            images={product.colors[selectedColor].images} 
+            alt={product.name} 
+          />
         </div>
 
         {/* Details panel */}
@@ -156,7 +215,7 @@ export default function ProductPage() {
                 id: `${id}-${product.colors[selectedColor].name}`, 
                 name: `${product.name} - ${product.colors[selectedColor].name}`, 
                 price: product.price, 
-                image: product.colors[selectedColor].image || product.image 
+                image: product.colors[selectedColor].images[0]
               })}
               className="w-full h-[52px] bg-black text-white text-[11px] font-bold tracking-[0.4em] uppercase"
             >
@@ -225,13 +284,10 @@ export default function ProductPage() {
 
         {/* MONUMENTAL HERO IMAGE - HEADER ON MOBILE */}
         <div className="w-full lg:w-[60%] bg-[#f6f6f6] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center p-4 pt-40 lg:p-12">
-          <div className="relative w-full aspect-[3/4] lg:h-full lg:aspect-auto">
-            <Image
-              src={product.colors[selectedColor]?.image || product.image}
-              alt={product.name}
-              fill
-              className="object-contain mix-blend-multiply"
-              priority
+          <div className="w-full aspect-[3/4] lg:h-full lg:aspect-auto">
+            <ProductImageViewer 
+              images={product.colors[selectedColor].images} 
+              alt={product.name} 
             />
           </div>
         </div>
@@ -296,7 +352,7 @@ export default function ProductPage() {
                     id: `${id}-${product.colors[selectedColor].name}`, 
                     name: `${product.name} - ${product.colors[selectedColor].name}`, 
                     price: product.price, 
-                    image: product.colors[selectedColor].image || product.image 
+                    image: product.colors[selectedColor].images[0]
                   })}
                   className="w-full h-full bg-black text-white text-[12px] font-bold tracking-[0.4em] uppercase"
                 >

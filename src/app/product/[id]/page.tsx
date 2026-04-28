@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { cn } from "@/lib/utils";
 import { ChevronRight, Plus, RotateCcw } from "lucide-react";
@@ -19,7 +19,8 @@ const productData: Record<string, any> = {
         hex: "#4b1b1b", 
         images: [
           { type: 'exact', src: "/wine_front_exact.png" },
-          { type: 'crop', src: "/exact_jackets_composite.png", position: 'bottom-right' }
+          // Using Charcoal back with a color-recalibration filter to ensure exact silhouette integrity and zero graphics
+          { type: 'filtered', src: "/charcoal_back_exact.png", filter: 'sepia(100%) hue-rotate(310deg) saturate(180%) brightness(40%) contrast(120%)' }
         ] 
       },
       { 
@@ -70,47 +71,6 @@ const productData: Record<string, any> = {
   }
 };
 
-function CroppedProductImage({ imageData, alt, className }: { imageData: any, alt: string, className?: string }) {
-  if (imageData.type === 'exact') {
-    return (
-      <Image
-        src={imageData.src}
-        alt={alt}
-        fill
-        className={cn("object-contain mix-blend-multiply", className)}
-        priority
-      />
-    );
-  }
-
-  // Handle CSS cropping for composite image
-  const positions: Record<string, string> = {
-    'top-left': '0% 0%',
-    'top-right': '100% 0%',
-    'bottom-left': '0% 100%',
-    'bottom-right': '100% 100%'
-  };
-
-  return (
-    <div className={cn("relative w-full h-full overflow-hidden", className)}>
-      <div 
-        className="absolute w-[200%] h-[200%]"
-        style={{ 
-          top: imageData.position.includes('bottom') ? '-100%' : '0%',
-          left: imageData.position.includes('right') ? '-100%' : '0%',
-        }}
-      >
-        <Image
-          src={imageData.src}
-          alt={alt}
-          fill
-          className="object-contain mix-blend-multiply"
-        />
-      </div>
-    </div>
-  );
-}
-
 function ProductImageViewer({ images, alt }: { images: any[], alt: string }) {
   const [currentIdx, setCurrentIdx] = useState(0);
 
@@ -121,7 +81,7 @@ function ProductImageViewer({ images, alt }: { images: any[], alt: string }) {
 
   return (
     <div 
-      className="relative w-full h-full cursor-pointer group perspective-1000"
+      className="relative w-full h-full cursor-pointer group perspective-1000 select-none"
       onClick={handleFlip}
     >
       <AnimatePresence mode="wait">
@@ -131,16 +91,29 @@ function ProductImageViewer({ images, alt }: { images: any[], alt: string }) {
           animate={{ opacity: 1, rotateY: 0 }}
           exit={{ opacity: 0, rotateY: -90 }}
           transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-          className="relative w-full h-full"
+          className="relative w-full h-full flex items-center justify-center"
+          style={{ transformStyle: 'preserve-3d' }}
         >
-          <CroppedProductImage imageData={images[currentIdx]} alt={alt} />
+          <div className="relative w-full h-full flex items-center justify-center">
+            <Image
+              src={images[currentIdx].src}
+              alt={alt}
+              fill
+              className="object-contain mix-blend-multiply transition-all duration-300"
+              style={{ 
+                filter: images[currentIdx].filter || 'contrast(1.1) brightness(1.05)',
+                // Ensure no white box by forcing the blend
+              }}
+              priority
+            />
+          </div>
         </motion.div>
       </AnimatePresence>
 
       {images.length > 1 && (
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 opacity-0 group-hover:opacity-40 transition-opacity duration-500">
-          <RotateCcw size={12} />
-          <span className="text-[8px] font-bold tracking-[0.3em] uppercase">VIEW {currentIdx === 0 ? "BACK" : "FRONT"}</span>
+          <RotateCcw size={12} className="text-black" />
+          <span className="text-[8px] font-bold tracking-[0.3em] uppercase text-black">VIEW {currentIdx === 0 ? "BACK" : "FRONT"}</span>
         </div>
       )}
     </div>
@@ -159,6 +132,10 @@ export default function ProductPage() {
   const [isChecking, setIsChecking] = useState(false);
   const [showSoldOut, setShowSoldOut] = useState(false);
 
+  useEffect(() => {
+    // Reset image index when color changes
+  }, [selectedColor]);
+
   const handleCheckAvailability = () => {
     setIsChecking(true);
     setTimeout(() => {
@@ -174,7 +151,7 @@ export default function ProductPage() {
 
       {/* ── MOBILE LAYOUT ── */}
       <div className="lg:hidden">
-        <div className="w-full aspect-square bg-[#f6f6f6] p-10">
+        <div className="w-full aspect-square bg-[#f6f6f6] p-10 overflow-hidden">
           <ProductImageViewer images={product.colors[selectedColor].images} alt={product.name} />
         </div>
         <div className="px-5 pt-6 pb-16 space-y-7">
@@ -239,7 +216,7 @@ export default function ProductPage() {
 
       {/* ── DESKTOP LAYOUT ── */}
       <div className="hidden lg:flex w-full min-h-screen">
-        <div className="w-full lg:w-[60%] bg-[#f6f6f6] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center p-4 pt-40 lg:p-12">
+        <div className="w-full lg:w-[60%] bg-[#f6f6f6] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center p-4 pt-40 lg:p-12 overflow-hidden">
           <div className="w-full aspect-[3/4] lg:h-full lg:aspect-auto">
             <ProductImageViewer images={product.colors[selectedColor].images} alt={product.name} />
           </div>

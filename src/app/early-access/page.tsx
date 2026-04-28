@@ -15,6 +15,12 @@ export default function EarlyAccessPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!phoneNumber) return;
+
+    // Clinical Environment Validation
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      alert("ARCHIVAL ERROR: SUPABASE CONFIGURATION MISSING. PLEASE SET ENVIRONMENT VARIABLES.");
+      return;
+    }
     
     setIsLoading(true);
     
@@ -143,7 +149,7 @@ export default function EarlyAccessPage() {
       {/* Technical Signature */}
       <div className="absolute bottom-8 right-8 hidden lg:block">
         <p className="text-[9px] text-neutral-200 uppercase tracking-[0.5em]">
-          L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V6.8
+          L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V6.9
         </p>
       </div>
     </div>

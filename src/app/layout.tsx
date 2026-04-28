@@ -5,6 +5,7 @@ import { Sidebar } from "@/components/sidebar";
 import { MobileNavbar } from "@/components/mobile-navbar";
 import { CartProvider } from "@/components/cart-drawer";
 import { CartToggle } from "@/components/cart-toggle";
+import { EarlyAccessPopup } from "@/components/early-access-popup";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -31,6 +32,7 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased bg-white overflow-x-hidden`}>
         <CartProvider>
           <CartToggle />
+          <EarlyAccessPopup />
 
           <div className="w-full min-h-screen relative">
             {/* Desktop Sidebar - Hidden on Mobile */}

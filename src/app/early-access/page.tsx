@@ -25,24 +25,24 @@ export default function EarlyAccessPage() {
     setIsLoading(true);
     
     try {
+      console.log("Attempting archival capture for:", phoneNumber);
       const { error } = await supabase
         .from('early_access')
         .insert([{ phone_number: phoneNumber }]);
 
       if (error) {
+        console.error("Supabase Error Detail:", error);
         if (error.code === '23505') {
-          // Unique constraint violation - already registered
           setIsSubmitted(true);
         } else {
-          console.error("Supabase Error:", error);
-          alert("AN ARCHIVAL ERROR OCCURRED. PLEASE TRY AGAIN.");
+          alert(`ARCHIVAL ERROR [${error.code}]: ${error.message}`);
         }
       } else {
         setIsSubmitted(true);
       }
-    } catch (err) {
-      console.error("Submission Error:", err);
-      alert("A CLINICAL SYSTEM ERROR OCCURRED.");
+    } catch (err: any) {
+      console.error("Critical System Error:", err);
+      alert(`CLINICAL SYSTEM ERROR: ${err.message || "UNKNOWN FAILURE"}`);
     } finally {
       setIsLoading(false);
     }
@@ -149,7 +149,7 @@ export default function EarlyAccessPage() {
       {/* Technical Signature */}
       <div className="absolute bottom-8 right-8 hidden lg:block">
         <p className="text-[9px] text-neutral-200 uppercase tracking-[0.5em]">
-          L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V7.0
+          L&apos;ARGENT BRÛLÉ &copy; 2026 ARCHIVE | FLAGSHIP V7.1
         </p>
       </div>
     </div>

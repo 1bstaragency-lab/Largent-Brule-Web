@@ -196,6 +196,14 @@ export default function ProductPage() {
             >
               ADD TO BAG
             </button>
+            
+            {/* Apple Pay Mobile Only */}
+            <button className="w-full h-[52px] bg-black text-white flex items-center justify-center rounded-md transition-all active:scale-[0.98]">
+              <svg width="60" height="25" viewBox="0 0 100 42" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.9 14.5c.3-3.8 3.5-6.8 7.3-6.8 3.7 0 6.6 2.6 7 6.1-3.6.2-6.5 2.5-7.3 5.6-.4 1.4-.4 3 .2 4.3.7 1.4 1.9 2.4 3.4 2.8 1.4.3 3 .1 4.3-.6 1.1-.6 2-1.7 2.4-2.9l.1-.3V28h5.2V7.1c-.8-.2-1.6-.3-2.5-.3-4.5 0-8.4 2.7-10.1 6.6l-.2.5L12.9 14.5zM45.5 19.8c.2-4.1 3.4-7.4 7.6-7.4 4.1 0 7.3 3.3 7.6 7.4h-15.2zm7.6-11.8c-6.8 0-12.4 5.3-12.8 12h25.6c-.4-6.7-6-12-12.8-12zM75.1 19.8c.2-4.1 3.4-7.4 7.6-7.4 4.1 0 7.3 3.3 7.6 7.4H75.1zm7.6-11.8c-6.8 0-12.4 5.3-12.8 12h25.6c-.4-6.7-6-12-12.8-12z" fill="white"/>
+                <path d="M18.4 2.9C17.4 4.1 15.8 4.9 14.3 4.8c-.2-1.5.5-3.1 1.6-4.2 1.1-1.1 2.7-1.9 4.1-1.8.2 1.6-.6 3-1.6 4.1" fill="white"/>
+              </svg>
+            </button>
           </div>
           <div className="border-t border-neutral-100 divide-y divide-neutral-100">
             <div>

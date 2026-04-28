@@ -78,14 +78,14 @@ export function EarlyAccessPopup() {
             </button>
 
             <div className="space-y-12 text-center">
-              <div className="relative w-48 h-12 mx-auto">
+              <div className="relative w-64 h-16 mx-auto">
                 <Image src="/logo_script_final.png" alt="L'argent Brûlé" fill className="object-contain" />
               </div>
 
               {!isSubmitted ? (
                 <>
                   <div className="space-y-4">
-                    <h2 className="text-[14px] font-bold tracking-[0.6em] uppercase text-black">ACCESS THE ARCHIVE</h2>
+                    <h2 className="text-[14px] font-bold tracking-[0.6em] uppercase text-black">ACCESS THE COLLECTION</h2>
                     <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-neutral-400 leading-relaxed">
                       JOIN THE SELECTION FOR PRIVATE UPDATES AND PRE-RELEASE ACCESS.
                     </p>
@@ -133,13 +133,13 @@ export function EarlyAccessPopup() {
               )}
 
               <p className="text-[8px] font-medium tracking-[0.3em] text-neutral-300 uppercase leading-relaxed max-w-xs mx-auto">
-                BY JOINING, YOU AGREE TO RECEIVE AUTOMATED MARKETING MESSAGES. DATA PROTECTED BY CLINICAL ARCHIVAL STANDARDS.
+                BY JOINING, YOU AGREE TO RECEIVE AUTOMATED MARKETING MESSAGES. DATA PROTECTED BY CLINICAL STANDARDS.
               </p>
             </div>
             
             {/* Archival Background Mark */}
             <div className="absolute -bottom-10 -right-10 opacity-[0.03] select-none pointer-events-none">
-              <h3 className="text-[120px] font-bold tracking-tighter">ARCHIVE</h3>
+              <h3 className="text-[120px] font-bold tracking-tighter">L&apos;ARGENT BRÛLÉ</h3>
             </div>
           </motion.div>
         </div>

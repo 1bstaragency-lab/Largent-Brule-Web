@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Smartphone, ChevronRight } from "lucide-react";
@@ -11,20 +11,50 @@ export function EarlyAccessPopup() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
+  
+  const autoCloseTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    const hasSeen = localStorage.getItem("largent_brule_access_seen");
+    // Check session storage to avoid annoyance, but allow re-entry for testing if needed
+    const hasSeen = sessionStorage.getItem("largent_brule_access_seen");
+    
     if (!hasSeen) {
-      const timer = setTimeout(() => {
+      const arrivalTimer = setTimeout(() => {
         setIsOpen(true);
-      }, 3000); // Show after 3 seconds for prestigious arrival
-      return () => clearTimeout(timer);
+        
+        // Start the 4-second departure countdown
+        autoCloseTimerRef.current = setTimeout(() => {
+          setIsOpen((current) => {
+            if (current) {
+               sessionStorage.setItem("largent_brule_access_seen", "true");
+               return false;
+            }
+            return false;
+          });
+        }, 4000); 
+
+      }, 3000); // 3-second arrival delay
+
+      return () => {
+        clearTimeout(arrivalTimer);
+        if (autoCloseTimerRef.current) clearTimeout(autoCloseTimerRef.current);
+      };
     }
   }, []);
 
+  // Cancel departure if user interacts
+  useEffect(() => {
+    if (hasInteracted && autoCloseTimerRef.current) {
+      clearTimeout(autoCloseTimerRef.current);
+      autoCloseTimerRef.current = null;
+    }
+  }, [hasInteracted]);
+
   const handleClose = () => {
     setIsOpen(false);
-    localStorage.setItem("largent_brule_access_seen", "true");
+    sessionStorage.setItem("largent_brule_access_seen", "true");
+    if (autoCloseTimerRef.current) clearTimeout(autoCloseTimerRef.current);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -41,7 +71,7 @@ export function EarlyAccessPopup() {
         alert(`ACCESS ERROR: ${error.message}`);
       } else {
         setIsSubmitted(true);
-        localStorage.setItem("largent_brule_access_seen", "true");
+        sessionStorage.setItem("largent_brule_access_seen", "true");
         setTimeout(() => setIsOpen(false), 3000);
       }
     } catch (err) {
@@ -54,20 +84,20 @@ export function EarlyAccessPopup() {
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-6">
+        <div className="fixed inset-0 z-[10000] flex items-center justify-center p-6 pointer-events-none">
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={handleClose}
-            className="absolute inset-0 bg-black/60 backdrop-blur-md"
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm pointer-events-auto"
           />
           
           <motion.div 
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 20 }}
-            className="relative w-full max-w-lg bg-white p-12 lg:p-20 shadow-2xl space-y-12 overflow-hidden"
+            className="relative w-full max-w-lg bg-white p-12 lg:p-20 shadow-2xl space-y-12 overflow-hidden pointer-events-auto"
           >
             {/* Close Button */}
             <button 
@@ -87,7 +117,7 @@ export function EarlyAccessPopup() {
                   <div className="space-y-4">
                     <h2 className="text-[14px] font-bold tracking-[0.6em] uppercase text-black">ACCESS THE COLLECTION</h2>
                     <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-neutral-400 leading-relaxed">
-                      JOIN THE SELECTION FOR PRIVATE UPDATES AND PRE-RELEASE ACCESS.
+                      JOIN THE SELECTION FOR PRIVATE UPDATES.
                     </p>
                   </div>
 
@@ -100,7 +130,11 @@ export function EarlyAccessPopup() {
                         type="tel" 
                         placeholder="PHONE NUMBER" 
                         value={phoneNumber}
-                        onChange={(e) => setPhoneNumber(e.target.value)}
+                        onFocus={() => setHasInteracted(true)}
+                        onChange={(e) => {
+                          setPhoneNumber(e.target.value);
+                          setHasInteracted(true);
+                        }}
                         className="w-full pl-8 py-4 text-[12px] font-bold tracking-[0.3em] uppercase outline-none bg-transparent placeholder:text-neutral-200"
                         required
                       />
@@ -136,7 +170,6 @@ export function EarlyAccessPopup() {
                 BY JOINING, YOU AGREE TO RECEIVE AUTOMATED MARKETING MESSAGES. DATA PROTECTED BY CLINICAL STANDARDS.
               </p>
             </div>
-            
           </motion.div>
         </div>
       )}

@@ -190,7 +190,7 @@ export default function EarlyAccessPage() {
       {/* Technical Signature */}
       <div className="absolute bottom-8 right-8 hidden lg:block">
         <p className="text-[9px] text-neutral-200 uppercase tracking-[0.5em]">
-          L&apos;ARGENT BRÛLÉ &copy; 2026 | FLAGSHIP V8.5
+          L&apos;ARGENT BRÛLÉ &copy; 2026 | FLAGSHIP V8.6
         </p>
       </div>
     </div>

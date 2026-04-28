@@ -161,7 +161,7 @@ export function EarlyAccessPopup() {
                 >
                   <h2 className="text-[14px] font-bold tracking-[0.6em] uppercase text-black">ACCESS GRANTED</h2>
                   <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-neutral-400">
-                    YOU ARE NOW IN L&apos;ARGENT BRÛLÉ.
+                    YOU ARE NOW IN CLUB L&apos;ARGENT BRÛLÉ.
                   </p>
                 </motion.div>
               )}

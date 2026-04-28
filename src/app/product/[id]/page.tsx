@@ -77,7 +77,7 @@ function OptimizedProductImage({ imageData, alt }: { imageData: any, alt: string
         alt={alt}
         fill
         className="object-contain mix-blend-multiply"
-        style={{ filter: 'contrast(1.05) brightness(1.02)' }}
+        style={{ filter: 'contrast(1.15) brightness(1.1)' }}
         priority
       />
     </div>
@@ -156,7 +156,7 @@ export default function ProductPage() {
 
       {/* ── MOBILE LAYOUT ── */}
       <div className="lg:hidden bg-white">
-        <div className="w-full aspect-square bg-white p-10 overflow-hidden">
+        <div className="w-full aspect-square bg-white p-6 overflow-hidden mix-blend-multiply">
           <ProductImageViewer images={product.colors[selectedColor].images} alt={product.name} />
         </div>
         <div className="px-5 pt-6 pb-16 space-y-7 bg-white">

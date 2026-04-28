@@ -78,7 +78,7 @@ export function EarlyAccessPopup() {
             </button>
 
             <div className="space-y-12 text-center">
-              <div className="relative w-64 h-16 mx-auto">
+              <div className="relative w-80 h-20 mx-auto">
                 <Image src="/logo_script_final.png" alt="L'argent Brûlé" fill className="object-contain" />
               </div>
 
@@ -137,10 +137,6 @@ export function EarlyAccessPopup() {
               </p>
             </div>
             
-            {/* Archival Background Mark */}
-            <div className="absolute -bottom-10 -right-10 opacity-[0.03] select-none pointer-events-none">
-              <h3 className="text-[120px] font-bold tracking-tighter">L&apos;ARGENT BRÛLÉ</h3>
-            </div>
           </motion.div>
         </div>
       )}

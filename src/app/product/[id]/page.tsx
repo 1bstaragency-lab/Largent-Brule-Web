@@ -214,7 +214,7 @@ export default function ProductPage() {
           {/* Verification Signature */}
           <div className="pt-24 pb-12 text-center">
             <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-              L&apos;ARGENT BRÛLÉ &copy; 2026 | FLAGSHIP V8.0
+              L&apos;ARGENT BRÛLÉ &copy; 2026 | FLAGSHIP V8.1
             </p>
           </div>
         </div>
@@ -349,7 +349,7 @@ export default function ProductPage() {
                 </button>
                 <div className={cn("overflow-hidden transition-all duration-500", activeAccordion === 'shipping' ? "max-h-[500px] pb-12" : "max-h-0")}>
                   <p className="text-[11px] text-neutral-400 leading-relaxed uppercase tracking-[0.1em]">
-                    10-14 DAY WHITE GLOVE SHIPPING. PACKED WITH CARE. NO RETURNS. THIS GARMENT IS PERFECT.
+                    MOST ITEMS DELIVERED WITHIN 10-14 DAYS. SPECIAL ITEMS CAN TAKE UP TO 8 WEEKS PLUS. WHITE GLOVE SERVICE. NO RETURNS.
                   </p>
                 </div>
               </div>
@@ -357,7 +357,7 @@ export default function ProductPage() {
 
             <div className="pt-24 pb-12 text-center">
               <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-                L&apos;ARGENT BRÛLÉ &copy; 2026 | FLAGSHIP V8.0
+                L&apos;ARGENT BRÛLÉ &copy; 2026 | FLAGSHIP V8.1
               </p>
             </div>
           </div>

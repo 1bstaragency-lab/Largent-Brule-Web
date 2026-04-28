@@ -20,7 +20,7 @@ const faqData = [
   },
   {
     question: "SHIPPING & DELIVERY",
-    answer: "WE OFFER WHITE GLOVE SHIPPING GLOBALLY. EACH GARMENT IS PACKED WITH CARE AND DELIVERED IN PREMIUM PACKAGING WITHIN 10-14 DAYS."
+    answer: "MOST ITEMS DELIVERED WITHIN 10-14 DAYS. SPECIAL ITEMS CAN TAKE UP TO 8 WEEKS PLUS. WHITE GLOVE SERVICE. NO RETURNS."
   }
 ];
 
@@ -79,7 +79,7 @@ export default function FAQPage() {
         {/* Verification Signature */}
         <div className="pt-24 pb-12 text-center">
           <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
-            L&apos;ARGENT BRÛLÉ &copy; 2026 | FLAGSHIP V8.0
+            L&apos;ARGENT BRÛLÉ &copy; 2026 | FLAGSHIP V8.1
           </p>
         </div>
       </main>

@@ -121,7 +121,7 @@ const productData: Record<string, any> = {
         name: "OFF-WHITE", 
         hex: "#f5f5f5", 
         images: [
-          { type: 'exact', src: "/adieu_tee_clean.png" }
+          { type: 'exact', src: "/adieu_tee_clean_v5.png" }
         ] 
       }
     ],

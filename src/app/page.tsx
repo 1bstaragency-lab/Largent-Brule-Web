@@ -39,7 +39,7 @@ const products = [
     id: "adieu",
     name: "ADIEU TEE",
     price: "85 USD",
-    image: "/adieu_tee_clean.png",
+    image: "/adieu_tee_clean_v5.png",
     tag: "NEW"
   }
 ];

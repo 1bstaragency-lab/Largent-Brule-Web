@@ -14,7 +14,7 @@ const collections = [
     slug: "ss26",
     label: "S/S 26",
     description: "Spring / Summer 2026. The new season.",
-    image: "/hoodie_front_v12.png",
+    image: "/hoodie_front_v14.png",
   },
 ];
 

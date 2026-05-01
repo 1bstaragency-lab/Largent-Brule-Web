@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { use } from "react";
 import { notFound } from "next/navigation";
 
 const collectionData: Record<string, {
@@ -27,8 +28,9 @@ const collectionData: Record<string, {
   },
 };
 
-export default function CollectionPage({ params }: { params: { slug: string } }) {
-  const col = collectionData[params.slug];
+export default function CollectionPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params);
+  const col = collectionData[slug];
   if (!col) return notFound();
 
   return (

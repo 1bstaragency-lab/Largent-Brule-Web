@@ -66,6 +66,50 @@ const productData: Record<string, any> = {
       "SKETCHED, FRAMED AND SAMPLES MADE IN FRANCE DESIGN STUDIO",
       "REF: 2LB-CP-LMB-004"
     ]
+  },
+  raglan: {
+    name: "L'ARGENT BRÛLÉ RAGLAN LONG-SLEEVE TEE",
+    price: "160 USD",
+    colors: [
+      { 
+        name: "NAVY/YELLOW", 
+        hex: "#1a1a2e", 
+        images: [{ type: 'exact', src: "/raglan_tee.png" }] 
+      }
+    ],
+    sizes: ["S", "M", "L", "XL"],
+    details: [
+      "100% SUPIMA COTTON",
+      "TWO-TONE RAGLAN CONSTRUCTION",
+      "SCREEN PRINTED ARCHIVE GRAPHIC",
+      "OVERSIZED DRAPE",
+      "MADE IN LOS ANGELES",
+      "REF: 2LB-RT-COT-002"
+    ]
+  },
+  hoodie: {
+    name: "L'ARGENT BRÛLÉ VINTAGE GRAPHIC HOODIE",
+    price: "280 USD",
+    colors: [
+      { 
+        name: "WASHED YELLOW", 
+        hex: "#f0e68c", 
+        images: [
+          { type: 'exact', src: "/hoodie_front.png" },
+          { type: 'exact', src: "/hoodie_back.png" }
+        ] 
+      }
+    ],
+    sizes: ["S", "M", "L", "XL"],
+    details: [
+      "500 GSM HEAVYWEIGHT COTTON FLEECE",
+      "HAND-WASHED VINTAGE FINISH",
+      "MULTI-PLACEMENT GRAPHICS (FRONT/BACK)",
+      "DOUBLE-LAYERED HOOD",
+      "KANGAROO POCKET",
+      "MADE IN LOS ANGELES",
+      "REF: 2LB-VH-COT-003"
+    ]
   }
 };
 

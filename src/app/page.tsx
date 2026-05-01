@@ -20,6 +20,20 @@ const products = [
     price: "240 USD",
     image: "/pants_leather_studio.png",
     tag: "NEW"
+  },
+  {
+    id: "raglan",
+    name: "RAGLAN L/S TEE",
+    price: "160 USD",
+    image: "/raglan_tee.png",
+    tag: "NEW"
+  },
+  {
+    id: "hoodie",
+    name: "VINTAGE GRAPHIC HOODIE",
+    price: "280 USD",
+    image: "/hoodie_front.png",
+    tag: "NEW"
   }
 ];
 

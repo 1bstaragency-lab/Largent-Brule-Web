@@ -75,8 +75,8 @@ const productData: Record<string, any> = {
         name: "NAVY/YELLOW", 
         hex: "#1a1a2e", 
         images: [
-          { type: 'exact', src: "/raglan_front_v3.png" },
-          { type: 'exact', src: "/raglan_back_v3.png" }
+          { type: 'exact', src: "/raglan_front_v4.png" },
+          { type: 'exact', src: "/raglan_back_v4.png" }
         ] 
       }
     ],
@@ -98,8 +98,8 @@ const productData: Record<string, any> = {
         name: "WASHED YELLOW", 
         hex: "#f0e68c", 
         images: [
-          { type: 'exact', src: "/hoodie_front_v3.png" },
-          { type: 'exact', src: "/hoodie_back_v3.png" }
+          { type: 'exact', src: "/hoodie_front_v4.png" },
+          { type: 'exact', src: "/hoodie_back_v4.png" }
         ] 
       }
     ],
@@ -124,7 +124,7 @@ function OptimizedProductImage({ imageData, alt }: { imageData: any, alt: string
         alt={alt}
         fill
         className="object-contain mix-blend-multiply"
-        style={{ filter: 'contrast(1.05) brightness(1.02)' }}
+        style={{ filter: 'contrast(1.1) brightness(1.05)' }}
         priority
       />
     </div>

@@ -34,7 +34,7 @@ export default function CollectionPage({ params }: { params: Promise<{ slug: str
   if (!col) return notFound();
 
   return (
-    <div className="p-4 sm:p-10 pb-40">
+    <div className="px-4 pt-10 sm:px-10 sm:pt-10 pb-40">
       {/* Breadcrumb */}
       <div className="mb-20 space-y-3">
         <p className="text-[10px] uppercase tracking-[0.5em] opacity-30">

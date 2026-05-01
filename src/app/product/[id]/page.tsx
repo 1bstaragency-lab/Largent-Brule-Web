@@ -75,8 +75,7 @@ const productData: Record<string, any> = {
         name: "NAVY/YELLOW", 
         hex: "#1a1a2e", 
         images: [
-          { type: 'exact', src: "/raglan_front_v4.png" },
-          { type: 'exact', src: "/raglan_back_v4.png" }
+          { type: 'exact', src: "/raglan_front_v4.png" }
         ] 
       }
     ],
@@ -98,8 +97,8 @@ const productData: Record<string, any> = {
         name: "WASHED YELLOW", 
         hex: "#f0e68c", 
         images: [
-          { type: 'exact', src: "/hoodie_front_v4.png" },
-          { type: 'exact', src: "/hoodie_back_v4.png" }
+          { type: 'exact', src: "/hoodie_front_v5.png" },
+          { type: 'exact', src: "/hoodie_back_v5.png" }
         ] 
       }
     ],

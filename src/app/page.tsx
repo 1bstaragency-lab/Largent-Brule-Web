@@ -25,7 +25,7 @@ const products = [
     id: "hoodie",
     name: "VINTAGE GRAPHIC HOODIE",
     price: "280 USD",
-    image: "/hoodie_front_v4.png",
+    image: "/hoodie_front_v5.png",
     tag: "NEW"
   },
   {
@@ -100,7 +100,7 @@ export default function Home() {
                 src={product.image} 
                 alt={product.name} 
                 fill 
-                className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-1000 ease-out p-6"
+                className="object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-1000 ease-out p-2"
                 style={{ filter: 'contrast(1.1) brightness(1.05)' }}
               />
             </div>

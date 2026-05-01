@@ -67,28 +67,6 @@ const productData: Record<string, any> = {
       "REF: 2LB-CP-LMB-004"
     ]
   },
-  raglan: {
-    name: "L'ARGENT BRÛLÉ RAGLAN LONG-SLEEVE TEE",
-    price: "87 USD",
-    colors: [
-      { 
-        name: "NAVY/YELLOW", 
-        hex: "#1a1a2e", 
-        images: [
-          { type: 'exact', src: "/raglan_front_v4.png" }
-        ] 
-      }
-    ],
-    sizes: ["S", "M", "L", "XL"],
-    details: [
-      "100% SUPIMA COTTON",
-      "TWO-TONE RAGLAN CONSTRUCTION",
-      "SCREEN PRINTED ARCHIVE GRAPHIC",
-      "OVERSIZED DRAPE",
-      "MADE IN LOS ANGELES",
-      "REF: 2LB-RT-COT-002"
-    ]
-  },
   hoodie: {
     name: "L'ARGENT BRÛLÉ LEMONDROP HOODIE",
     price: "185 USD",

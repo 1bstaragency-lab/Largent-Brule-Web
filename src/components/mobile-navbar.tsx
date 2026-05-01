@@ -12,7 +12,7 @@ export function MobileNavbar() {
   const router = useRouter();
 
   const navItems = [
-    { label: "COLLECTIONS", href: "/" },
+    { label: "COLLECTIONS", href: "/collections" },
     { label: "OUR STORY", href: "/our-story" },
     { label: "LOOKBOOK", href: "#" },
     { label: "FAQ", href: "/faq" },

@@ -23,7 +23,7 @@ export function Sidebar() {
 
       <nav className="space-y-6 flex-1 overflow-y-auto">
         {[
-          { label: "COLLECTIONS", href: "/" },
+          { label: "COLLECTIONS", href: "/collections" },
           { label: "OUR STORY", href: "/our-story" },
           { label: "LOOKBOOK", href: "#" },
           { label: "FAQ", href: "/faq" },

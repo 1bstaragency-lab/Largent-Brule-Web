@@ -25,14 +25,14 @@ const products = [
     id: "hoodie",
     name: "VINTAGE GRAPHIC HOODIE",
     price: "280 USD",
-    image: "/hoodie_front_v2.png",
+    image: "/hoodie_front_v3.png",
     tag: "NEW"
   },
   {
     id: "raglan",
     name: "RAGLAN L/S TEE",
     price: "160 USD",
-    image: "/raglan_tee_v2.png",
+    image: "/raglan_front_v3.png",
     tag: "NEW"
   }
 ];
@@ -101,7 +101,7 @@ export default function Home() {
                 alt={product.name} 
                 fill 
                 className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-1000 ease-out p-6"
-                style={{ filter: 'contrast(1.2) brightness(1.1)' }}
+                style={{ filter: 'contrast(1.05) brightness(1.02)' }}
               />
             </div>
             <div className="space-y-3 text-[13px] tracking-[0.3em]">

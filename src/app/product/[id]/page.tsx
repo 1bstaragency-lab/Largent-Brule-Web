@@ -72,17 +72,10 @@ const productData: Record<string, any> = {
     price: "87 USD",
     colors: [
       { 
-        name: "NAVY/YELLOW", 
-        hex: "#1a1a2e", 
-        images: [
-          { type: 'exact', src: "/raglan_front_v4.png" }
-        ] 
-      },
-      { 
         name: "NAVY/WHITE", 
         hex: "#f8f8f8", 
         images: [
-          { type: 'exact', src: "/raglan_front_white_v1.png" }
+          { type: 'exact', src: "/raglan_front_white_v2.png" }
         ] 
       }
     ],

@@ -22,7 +22,7 @@ const collectionData: Record<string, {
     label: "S/S 26",
     description: "Spring / Summer 2026. The new season.",
     products: [
-      { id: "hoodie", name: "LEMONDROP HOODIE", price: "185 USD", image: "/hoodie_front_v15.png", tag: "NEW" },
+      { id: "hoodie", name: "LEMONDROP HOODIE", price: "185 USD", image: "/hoodie_front_v16.png", tag: "NEW" },
       { id: "raglan", name: "RAGLAN L/S TEE", price: "87 USD", image: "/raglan_front_white_v2.png", tag: "NEW" },
     ],
   },

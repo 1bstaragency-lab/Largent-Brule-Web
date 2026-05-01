@@ -90,7 +90,7 @@ const productData: Record<string, any> = {
     ]
   },
   hoodie: {
-    name: "L'ARGENT BRÛLÉ VINTAGE GRAPHIC HOODIE",
+    name: "L'ARGENT BRÛLÉ LEMONDROP HOODIE",
     price: "185 USD",
     colors: [
       { 

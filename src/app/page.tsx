@@ -23,7 +23,7 @@ const products = [
   },
   {
     id: "hoodie",
-    name: "VINTAGE GRAPHIC HOODIE",
+    name: "LEMONDROP HOODIE",
     price: "185 USD",
     image: "/hoodie_front_v10.png",
     tag: "NEW"

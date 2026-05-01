@@ -121,7 +121,7 @@ function OptimizedProductImage({ imageData, alt }: { imageData: any, alt: string
         alt={alt}
         fill
         className="object-contain mix-blend-multiply"
-        style={{ filter: 'contrast(1.15) brightness(1.1)' }}
+        style={{ filter: 'contrast(1.2) brightness(1.1)' }}
         priority
       />
     </div>

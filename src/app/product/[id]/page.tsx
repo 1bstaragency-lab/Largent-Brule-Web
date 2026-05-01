@@ -69,7 +69,7 @@ const productData: Record<string, any> = {
   },
   raglan: {
     name: "L'ARGENT BRÛLÉ RAGLAN LONG-SLEEVE TEE",
-    price: "160 USD",
+    price: "90 USD",
     colors: [
       { 
         name: "NAVY/YELLOW", 
@@ -91,7 +91,7 @@ const productData: Record<string, any> = {
   },
   hoodie: {
     name: "L'ARGENT BRÛLÉ VINTAGE GRAPHIC HOODIE",
-    price: "280 USD",
+    price: "185 USD",
     colors: [
       { 
         name: "WASHED YELLOW", 

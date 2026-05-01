@@ -124,7 +124,7 @@ export default function Home() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-32 w-full">
         {[
-          { id: "hoodie", name: "LEMONDROP HOODIE", price: "185 USD", image: "/hoodie_front_v10.png", tag: "NEW" },
+          { id: "hoodie", name: "LEMONDROP HOODIE", price: "185 USD", image: "/hoodie_front_v12.png", tag: "NEW" },
           { id: "raglan", name: "RAGLAN L/S TEE", price: "87 USD", image: "/raglan_front_white_v2.png", tag: "NEW" },
         ].map((product) => (
           <Link key={product.id} href={`/product/${product.id}`} className="group block space-y-8">

@@ -77,6 +77,13 @@ const productData: Record<string, any> = {
         images: [
           { type: 'exact', src: "/raglan_front_v4.png" }
         ] 
+      },
+      { 
+        name: "NAVY/WHITE", 
+        hex: "#f8f8f8", 
+        images: [
+          { type: 'exact', src: "/raglan_front_white_v1.png" }
+        ] 
       }
     ],
     sizes: ["S", "M", "L", "XL"],

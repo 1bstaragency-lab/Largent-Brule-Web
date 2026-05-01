@@ -97,7 +97,7 @@ const productData: Record<string, any> = {
         name: "WASHED YELLOW", 
         hex: "#f0e68c", 
         images: [
-          { type: 'exact', src: "/hoodie_front_v11.png" },
+          { type: 'exact', src: "/hoodie_front_v12.png" },
           { type: 'exact', src: "/hoodie_back_v10.png" }
         ] 
       }

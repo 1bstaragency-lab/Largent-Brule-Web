@@ -25,7 +25,7 @@ const products = [
     id: "hoodie",
     name: "LEMONDROP HOODIE",
     price: "185 USD",
-    image: "/hoodie_front_v11.png",
+    image: "/hoodie_front_v12.png",
     tag: "NEW"
   },
   {

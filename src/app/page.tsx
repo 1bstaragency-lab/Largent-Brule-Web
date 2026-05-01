@@ -34,6 +34,13 @@ const products = [
     price: "87 USD",
     image: "/raglan_front_v4.png",
     tag: "NEW"
+  },
+  {
+    id: "adieu",
+    name: "ADIEU TEE",
+    price: "85 USD",
+    image: "/adieu_tee_clean.png",
+    tag: "NEW"
   }
 ];
 

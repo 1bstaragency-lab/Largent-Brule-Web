@@ -112,6 +112,28 @@ const productData: Record<string, any> = {
       "MADE IN LOS ANGELES",
       "REF: 2LB-VH-COT-003"
     ]
+  },
+  adieu: {
+    name: "L'ARGENT BRÛLÉ ADIEU TEE",
+    price: "85 USD",
+    colors: [
+      { 
+        name: "OFF-WHITE", 
+        hex: "#f5f5f5", 
+        images: [
+          { type: 'exact', src: "/adieu_tee_clean.png" }
+        ] 
+      }
+    ],
+    sizes: ["S", "M", "L", "XL"],
+    details: [
+      "220 GSM SINGLE JERSEY COTTON",
+      "OVERSIZED BOX FIT",
+      "HAND-SCREENED ARCHIVE GRAPHICS",
+      "GARMENT DYED OFF-WHITE",
+      "MADE IN FRANCE",
+      "REF: 2LB-AT-COT-004"
+    ]
   }
 };
 

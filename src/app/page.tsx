@@ -86,14 +86,47 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Section Header */}
+      {/* CLASSICS Collection */}
       <div className="mb-14">
-        <h2 className="text-[14px] uppercase font-bold tracking-[0.3em]">NEW</h2>
+        <h2 className="text-[14px] uppercase font-bold tracking-[0.3em]">CLASSICS</h2>
       </div>
 
-      {/* Product Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-32 w-full mb-40">
+        {[
+          { id: "bomber", name: "CROPPED BOMBER JACKET", price: "310 USD", image: "/bomber_final_studio.jpg", tag: "NEW" },
+          { id: "pants", name: "CARGO LEATHER PANTS", price: "240 USD", image: "/pants_leather_studio.png", tag: "NEW" },
+        ].map((product) => (
+          <Link key={product.id} href={`/product/${product.id}`} className="group block space-y-8">
+            <div className="aspect-[3/4] bg-white relative overflow-hidden flex items-center justify-center p-12 border border-transparent group-hover:border-border transition-all duration-700">
+              <Image 
+                src={product.image} 
+                alt={product.name} 
+                fill 
+                className="object-contain mix-blend-multiply group-hover:scale-125 transition-transform duration-1000 ease-out p-2"
+                style={{ filter: 'contrast(1.1) brightness(1.05)' }}
+              />
+            </div>
+            <div className="space-y-3 text-[13px] tracking-[0.3em]">
+              <p className="font-bold uppercase">{product.name}</p>
+              <div className="flex items-center justify-between opacity-50">
+                <p className="font-medium">{product.price}</p>
+                <p className="font-bold text-[10px] uppercase border-l border-black/20 pl-4">{product.tag}</p>
+              </div>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      {/* S/S 26 Collection */}
+      <div className="mb-14">
+        <h2 className="text-[14px] uppercase font-bold tracking-[0.3em]">S/S 26</h2>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-32 w-full">
-        {products.map((product) => (
+        {[
+          { id: "hoodie", name: "LEMONDROP HOODIE", price: "185 USD", image: "/hoodie_front_v10.png", tag: "NEW" },
+          { id: "raglan", name: "RAGLAN L/S TEE", price: "87 USD", image: "/raglan_front_white_v2.png", tag: "NEW" },
+        ].map((product) => (
           <Link key={product.id} href={`/product/${product.id}`} className="group block space-y-8">
             <div className="aspect-[3/4] bg-white relative overflow-hidden flex items-center justify-center p-12 border border-transparent group-hover:border-border transition-all duration-700">
               <Image 

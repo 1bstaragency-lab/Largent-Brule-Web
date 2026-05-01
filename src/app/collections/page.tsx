@@ -20,7 +20,9 @@ const collections = [
 
 export default function CollectionsPage() {
   return (
-    <div className="px-4 pt-10 sm:px-10 sm:pt-10 pb-40">
+    <div className="px-4 sm:px-10 pb-40">
+      {/* Mobile spacer to clear fixed header */}
+      <div className="h-8 lg:h-0" />
       <div className="mb-20">
         <h1 className="text-[11px] uppercase font-bold tracking-[0.5em] opacity-40">Collections</h1>
       </div>

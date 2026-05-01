@@ -46,7 +46,7 @@ export default function RootLayout({
             </div>
 
             {/* Main Content Area */}
-            <main className="w-full lg:pl-64 pt-36 lg:pt-0 bg-white">
+            <main className="w-full lg:pl-64 pt-20 lg:pt-0 bg-white">
               {children}
             </main>
           </div>

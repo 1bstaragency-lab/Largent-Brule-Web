@@ -25,14 +25,14 @@ const products = [
     id: "raglan",
     name: "RAGLAN L/S TEE",
     price: "160 USD",
-    image: "/raglan_tee.png",
+    image: "/raglan_tee_padded.png",
     tag: "NEW"
   },
   {
     id: "hoodie",
     name: "VINTAGE GRAPHIC HOODIE",
     price: "280 USD",
-    image: "/hoodie_front.png",
+    image: "/hoodie_front_padded.png",
     tag: "NEW"
   }
 ];

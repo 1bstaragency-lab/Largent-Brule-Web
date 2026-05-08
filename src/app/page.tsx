@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { GooeyText } from "@/components/ui/gooey-text-morphing";
 import { motion, AnimatePresence } from "framer-motion";
 
 const products = [
@@ -51,16 +50,6 @@ export default function Home() {
           playsInline
           className="absolute inset-0 w-full h-full object-cover brightness-75"
         />
-        
-        <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none p-2">
-          <GooeyText
-            texts={["L'ARGENT", "BRÛLÉ"]}
-            morphTime={2}
-            cooldownTime={1}
-            className="font-bold text-white text-4xl sm:text-6xl lg:text-9xl tracking-[0.2em] uppercase"
-            textClassName="text-white text-center"
-          />
-        </div>
       </section>
 
       {/* CLASSICS Collection */}
@@ -120,7 +109,6 @@ export default function Home() {
                 <p className="font-medium">{product.price}</p>
                 <p className="font-bold text-[10px] uppercase border-l border-black/20 pl-4">{product.tag}</p>
               </div>
-            </div>
             </div>
           </Link>
         ))}

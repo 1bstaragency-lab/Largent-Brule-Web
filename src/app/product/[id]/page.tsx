@@ -232,27 +232,10 @@ export default function ProductPage() {
           </div>
           <div className="space-y-4 pt-1">
             <button
-              onClick={() => addItem({ 
-                id: `${id}-${product.colors[selectedColor].name}`, 
-                name: `${product.name} - ${product.colors[selectedColor].name}`, 
-                price: product.price, 
-                image: product.colors[selectedColor].images[0].src 
-              })}
-              className="w-full h-[52px] bg-black text-white text-[11px] font-bold tracking-[0.4em] uppercase"
+              disabled
+              className="w-full h-[52px] bg-neutral-200 text-neutral-400 text-[11px] font-bold tracking-[0.4em] uppercase cursor-not-allowed"
             >
-              ADD TO BAG
-            </button>
-            
-            {/* Apple Pay Mobile Only - High Fidelity Logo */}
-            <button className="w-full h-[52px] bg-black flex items-center justify-center transition-all active:scale-[0.98]">
-              <div className="relative w-20 h-8">
-                <Image 
-                  src="/apple-pay-logo.png" 
-                  alt="Apple Pay" 
-                  fill 
-                  className="object-contain invert brightness-200"
-                />
-              </div>
+              CHECKOUT CLOSED
             </button>
           </div>
           <div className="border-t border-neutral-100 divide-y divide-neutral-100">
@@ -312,17 +295,12 @@ export default function ProductPage() {
             </div>
             <div className="space-y-4 pt-10">
               <div className="relative w-full h-[60px]">
-                <LiquidButton
-                  onClick={() => addItem({ 
-                    id: `${id}-${product.colors[selectedColor].name}`, 
-                    name: `${product.name} - ${product.colors[selectedColor].name}`, 
-                    price: product.price, 
-                    image: product.colors[selectedColor].images[0].src 
-                  })}
-                  className="w-full h-full bg-black text-white text-[12px] font-bold tracking-[0.4em] uppercase"
+                <button
+                  disabled
+                  className="w-full h-full bg-neutral-200 text-neutral-400 text-[12px] font-bold tracking-[0.4em] uppercase cursor-not-allowed"
                 >
-                  ADD TO BAG
-                </LiquidButton>
+                  CHECKOUT CLOSED
+                </button>
               </div>
             </div>
             <div className="border-t border-neutral-100 divide-y divide-neutral-100">

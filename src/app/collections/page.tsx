@@ -27,28 +27,29 @@ export default function CollectionsPage() {
         <h1 className="text-[11px] uppercase font-bold tracking-[0.5em] opacity-40">Collections</h1>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-24">
-        {collections.map((col) => (
-          <Link
-            key={col.slug}
-            href={`/collections/${col.slug}`}
-            className="group block space-y-8"
+      <div className="flex flex-col items-center justify-center min-h-[50vh] text-center space-y-12">
+        <h2 className="text-[14px] uppercase font-bold tracking-[0.4em]">S/S 26 COLLECTION COMING SOON</h2>
+        <p className="opacity-50 text-[11px] tracking-[0.2em] uppercase max-w-md leading-relaxed">
+          The checkout process is currently closed as we prepare the new collection. Join the SMS list for early access.
+        </p>
+        
+        <form 
+          className="w-full max-w-sm space-y-4"
+          onSubmit={(e) => { e.preventDefault(); alert("Thanks for subscribing."); }}
+        >
+          <input 
+            type="tel" 
+            placeholder="PHONE NUMBER" 
+            className="w-full h-[52px] bg-neutral-50 text-black text-[11px] font-medium tracking-[0.2em] px-4 outline-none border border-transparent focus:border-black transition-colors"
+            required
+          />
+          <button 
+            type="submit"
+            className="w-full h-[52px] bg-black text-white text-[11px] font-bold tracking-[0.4em] uppercase hover:bg-neutral-800 transition-colors"
           >
-            <div className="aspect-[3/4] bg-white relative overflow-hidden border border-transparent group-hover:border-border transition-all duration-700">
-              <Image
-                src={col.image}
-                alt={col.label}
-                fill
-                className="object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-1000 ease-out p-8"
-                style={{ filter: "contrast(1.1) brightness(1.05)" }}
-              />
-            </div>
-            <div className="space-y-3 text-[13px] tracking-[0.3em]">
-              <p className="font-bold uppercase">{col.label}</p>
-              <p className="opacity-40 text-[11px] tracking-[0.2em] uppercase">{col.description}</p>
-            </div>
-          </Link>
-        ))}
+            NOTIFY ME
+          </button>
+        </form>
       </div>
     </div>
   );

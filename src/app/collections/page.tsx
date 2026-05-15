@@ -30,7 +30,7 @@ export default function CollectionsPage() {
       <div className="flex flex-col items-center justify-center min-h-[50vh] text-center space-y-12">
         <h2 className="text-[14px] uppercase font-bold tracking-[0.4em]">S/S 26 COLLECTION COMING SOON</h2>
         <p className="opacity-50 text-[11px] tracking-[0.2em] uppercase max-w-md leading-relaxed">
-          The checkout process is currently closed as we prepare the new collection. Join the SMS list for early access.
+          The shop is closed as we prepare the new collection. Join VIP for early access.
         </p>
         
         <form 

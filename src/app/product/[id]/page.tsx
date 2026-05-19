@@ -276,10 +276,10 @@ export default function ProductPage() {
           </div>
           <div className="space-y-4 pt-1">
             <button
-              disabled
-              className="w-full h-[52px] bg-neutral-200 text-neutral-400 text-[11px] font-bold tracking-[0.4em] uppercase cursor-not-allowed"
+              onClick={() => alert("We will notify you the moment this piece becomes available.")}
+              className="w-full h-[52px] bg-black text-white hover:bg-neutral-800 transition-colors text-[11px] font-bold tracking-[0.4em] uppercase"
             >
-              CHECKOUT CLOSED
+              NOTIFY ME WHEN IN STOCK
             </button>
           </div>
           <div className="border-t border-neutral-100 divide-y divide-neutral-100">
@@ -345,10 +345,10 @@ export default function ProductPage() {
             <div className="space-y-4 pt-10">
               <div className="relative w-full h-[60px]">
                 <button
-                  disabled
-                  className="w-full h-full bg-neutral-200 text-neutral-400 text-[12px] font-bold tracking-[0.4em] uppercase cursor-not-allowed"
+                  onClick={() => alert("We will notify you the moment this piece becomes available.")}
+                  className="w-full h-full bg-black text-white hover:bg-neutral-800 transition-colors text-[11px] font-bold tracking-[0.4em] uppercase"
                 >
-                  CHECKOUT CLOSED
+                  NOTIFY ME WHEN IN STOCK
                 </button>
               </div>
             </div>

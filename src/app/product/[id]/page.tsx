@@ -112,25 +112,52 @@ const productData: Record<string, any> = {
       "MADE IN LOS ANGELES",
       "REF: 2LB-VH-COT-003"
     ]
+  },
+  "leather-pants": {
+    name: "UNRELEASED LEATHER CARGO PANTS",
+    price: "??? USD",
+    isFullBleed: true,
+    colors: [
+      { 
+        name: "BLACK LEATHER", 
+        hex: "#000000", 
+        images: [
+          { type: 'exact', src: "/leather_pants_front.png" },
+          { type: 'exact', src: "/leather_pants_detail.png" },
+          { type: 'exact', src: "/leather_pants_back.jpg" },
+          { type: 'exact', src: "/leather_pants_back_detail.png" }
+        ] 
+      }
+    ],
+    sizes: ["30", "32", "34", "36", "38"],
+    details: [
+      "UNRELEASED ARCHIVE PIECE",
+      "PREMIUM HEAVYWEIGHT LEATHER",
+      "MULTI-POCKET CONSTRUCTION",
+      "SILVER-TONE RIVETS",
+      "RELAXED FIT",
+      "MADE IN LOS ANGELES",
+      "REF: 2LB-CP-LMB-005"
+    ]
   }
 };
 
-function OptimizedProductImage({ imageData, alt }: { imageData: any, alt: string }) {
+function OptimizedProductImage({ imageData, alt, isFullBleed }: { imageData: any, alt: string, isFullBleed?: boolean }) {
   return (
     <div className="relative w-full h-full">
       <Image
         src={imageData.src}
         alt={alt}
         fill
-        className="object-contain mix-blend-multiply"
-        style={{ filter: 'contrast(1.1) brightness(1.05)' }}
+        className={cn("object-cover", !isFullBleed && "object-contain mix-blend-multiply")}
+        style={!isFullBleed ? { filter: 'contrast(1.1) brightness(1.05)' } : {}}
         priority
       />
     </div>
   );
 }
 
-function ProductImageViewer({ images, alt }: { images: any[], alt: string }) {
+function ProductImageViewer({ images, alt, isFullBleed }: { images: any[], alt: string, isFullBleed?: boolean }) {
   const [currentIdx, setCurrentIdx] = useState(0);
 
   const handleMouseEnter = () => {
@@ -161,7 +188,7 @@ function ProductImageViewer({ images, alt }: { images: any[], alt: string }) {
           className="relative w-full h-full flex items-center justify-center"
           style={{ transformStyle: 'preserve-3d' }}
         >
-          <OptimizedProductImage imageData={images[currentIdx]} alt={alt} />
+          <OptimizedProductImage imageData={images[currentIdx]} alt={alt} isFullBleed={isFullBleed} />
         </motion.div>
       </AnimatePresence>
 
@@ -202,8 +229,8 @@ export default function ProductPage() {
 
       {/* ── MOBILE LAYOUT ── */}
       <div className="lg:hidden bg-white">
-        <div className="w-full aspect-square bg-white p-6 overflow-hidden mix-blend-multiply">
-          <ProductImageViewer images={product.colors[selectedColor].images} alt={product.name} />
+        <div className={cn("w-full aspect-[4/5] overflow-hidden", !product.isFullBleed && "bg-white p-6 mix-blend-multiply")}>
+          <ProductImageViewer images={product.colors[selectedColor].images} alt={product.name} isFullBleed={product.isFullBleed} />
         </div>
         <div className="px-5 pt-6 pb-16 space-y-7 bg-white">
           <div>
@@ -262,9 +289,9 @@ export default function ProductPage() {
 
       {/* ── DESKTOP LAYOUT ── */}
       <div className="hidden lg:flex w-full min-h-screen bg-white">
-        <div className="w-full lg:w-[60%] bg-white lg:sticky lg:top-0 lg:h-screen flex items-center justify-center p-4 pt-40 lg:p-12 overflow-hidden">
+        <div className={cn("w-full lg:w-[60%] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center overflow-hidden", !product.isFullBleed ? "bg-white p-4 pt-40 lg:p-12" : "bg-[#1f291f]")}>
           <div className="w-full aspect-[3/4] lg:h-full lg:aspect-auto">
-            <ProductImageViewer images={product.colors[selectedColor].images} alt={product.name} />
+            <ProductImageViewer images={product.colors[selectedColor].images} alt={product.name} isFullBleed={product.isFullBleed} />
           </div>
         </div>
         <div className="w-[40%] bg-white px-20 py-32 border-l border-neutral-50">

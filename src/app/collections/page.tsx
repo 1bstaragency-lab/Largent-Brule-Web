@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 const collections = [
   {
@@ -19,6 +19,15 @@ const collections = [
 ];
 
 export default function CollectionsPage() {
+  const [showSneakPeek, setShowSneakPeek] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowSneakPeek(true);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="px-4 sm:px-10 pb-40">
       {/* Mobile spacer to clear fixed header */}
@@ -50,6 +59,12 @@ export default function CollectionsPage() {
             NOTIFY ME
           </button>
         </form>
+
+        <div className={`transition-opacity duration-1000 ${showSneakPeek ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+          <Link href="/product/leather-pants" className="inline-block border-b border-black text-[10px] uppercase font-bold tracking-[0.3em] pb-1 hover:text-neutral-500 hover:border-neutral-500 transition-colors">
+            TAKE A SNEAK PEEK
+          </Link>
+        </div>
       </div>
     </div>
   );

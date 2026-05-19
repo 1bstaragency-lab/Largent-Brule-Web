@@ -114,8 +114,8 @@ const productData: Record<string, any> = {
     ]
   },
   "leather-pants": {
-    name: "UNRELEASED LEATHER CARGO PANTS",
-    price: "??? USD",
+    name: "BEAUTÉ DU CUIR",
+    price: "240 USD",
     isFullBleed: true,
     colors: [
       { 

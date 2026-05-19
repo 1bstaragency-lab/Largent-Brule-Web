@@ -114,7 +114,7 @@ const productData: Record<string, any> = {
     ]
   },
   "leather-pants": {
-    name: "BEAUTÉ DU CUIR",
+    name: "\"BEAUTÉ DU CUIR\" CARPENTERS",
     price: "240 USD",
     isFullBleed: true,
     colors: [

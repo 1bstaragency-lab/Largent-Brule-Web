@@ -6,7 +6,7 @@ import { useState } from "react";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { cn } from "@/lib/utils";
 import { ChevronRight, Plus, RotateCcw } from "lucide-react";
-import { useCart } from "@/lib/cart-context";
+import { useCart } from "@/components/cart-drawer";
 import { supabase } from "@/lib/supabase";
 import { motion, AnimatePresence } from "framer-motion";
 

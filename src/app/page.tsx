@@ -12,13 +12,12 @@ export default function Home() {
   });
 
   useEffect(() => {
-    // Set launch date to 5 days from now for the countdown
-    const launchDate = new Date();
-    launchDate.setDate(launchDate.getDate() + 5);
+    // End of next month: June 30, 2026
+    const launchDate = new Date("2026-06-30T23:59:59").getTime();
     
     const timer = setInterval(() => {
       const now = new Date().getTime();
-      const distance = launchDate.getTime() - now;
+      const distance = launchDate - now;
 
       if (distance < 0) {
         clearInterval(timer);
@@ -37,52 +36,54 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-white text-black flex flex-col items-center justify-center p-6 font-sans">
+    <div className="min-h-screen bg-[#020202] text-white flex flex-col items-center justify-center p-6 font-sans">
       
-      <div className="text-center space-y-16 max-w-2xl w-full">
-        {/* Top Header & Countdown */}
-        <div className="space-y-6">
-          <p className="text-[12px] uppercase tracking-[0.1em] font-medium">
-            S/S 26 COLLECTION DROP
+      <div className="w-full max-w-xl flex flex-col items-center justify-center space-y-24">
+        
+        {/* Top Header */}
+        <div className="text-center">
+          <p className="text-[9px] text-neutral-500 uppercase tracking-[0.6em] font-light">
+            S/S 26 COLLECTION
           </p>
-          
-          <div className="flex items-center justify-center gap-2 sm:gap-4 text-5xl sm:text-7xl font-bold tracking-tight">
-            <div className="flex flex-col items-center">
-              <span>{timeLeft.days}</span>
-              <span className="text-[10px] font-normal tracking-normal uppercase mt-2">Days</span>
-            </div>
-            <span className="mb-6">:</span>
-            <div className="flex flex-col items-center">
-              <span>{timeLeft.hours}</span>
-              <span className="text-[10px] font-normal tracking-normal uppercase mt-2">Hrs</span>
-            </div>
-            <span className="mb-6">:</span>
-            <div className="flex flex-col items-center">
-              <span>{timeLeft.minutes}</span>
-              <span className="text-[10px] font-normal tracking-normal uppercase mt-2">Mins</span>
-            </div>
-            <span className="mb-6">:</span>
-            <div className="flex flex-col items-center">
-              <span>{timeLeft.seconds}</span>
-              <span className="text-[10px] font-normal tracking-normal uppercase mt-2">Secs</span>
-            </div>
+        </div>
+
+        {/* Minimalist Countdown */}
+        <div className="flex items-center justify-center gap-6 sm:gap-12 text-3xl sm:text-5xl font-light tracking-[0.2em]">
+          <div className="flex flex-col items-center">
+            <span>{timeLeft.days}</span>
+            <span className="text-[7px] text-neutral-500 font-normal tracking-[0.5em] uppercase mt-4">Days</span>
+          </div>
+          <span className="mb-8 font-thin text-neutral-800">:</span>
+          <div className="flex flex-col items-center">
+            <span>{timeLeft.hours}</span>
+            <span className="text-[7px] text-neutral-500 font-normal tracking-[0.5em] uppercase mt-4">Hrs</span>
+          </div>
+          <span className="mb-8 font-thin text-neutral-800">:</span>
+          <div className="flex flex-col items-center">
+            <span>{timeLeft.minutes}</span>
+            <span className="text-[7px] text-neutral-500 font-normal tracking-[0.5em] uppercase mt-4">Min</span>
+          </div>
+          <span className="mb-8 font-thin text-neutral-800">:</span>
+          <div className="flex flex-col items-center">
+            <span>{timeLeft.seconds}</span>
+            <span className="text-[7px] text-neutral-500 font-normal tracking-[0.5em] uppercase mt-4">Sec</span>
           </div>
         </div>
 
-        {/* Main Copy */}
-        <div className="space-y-6 pt-10">
-          <h1 className="text-4xl sm:text-5xl font-black uppercase tracking-tight leading-none">
-            VIP MEMBERS<br/>EARLY ACCESS
+        {/* Messaging */}
+        <div className="text-center space-y-8">
+          <h1 className="text-[15px] sm:text-[18px] font-medium uppercase tracking-[0.4em] leading-loose">
+            VIP EARLY ACCESS
           </h1>
-          <p className="text-[11px] sm:text-[13px] font-medium uppercase tracking-[0.15em] leading-relaxed max-w-md mx-auto">
-            GAIN ACCESS TO OUR S/S 26 COLLECTION 24 HOURS BEFORE THE SITE OPENS TO PUBLIC. EVERYTHING LIMITED.
+          <p className="text-[10px] text-neutral-400 uppercase tracking-[0.2em] leading-loose max-w-sm mx-auto">
+            Secure your allocation 24 hours prior to public release. Extremely limited quantities.
           </p>
         </div>
 
-        {/* Form */}
-        <div className="pt-4 max-w-md mx-auto w-full">
+        {/* High-Fashion Input Form */}
+        <div className="w-full max-w-sm">
           <form 
-            className="flex flex-col gap-3"
+            className="flex flex-col gap-8"
             onSubmit={async (e) => {
               e.preventDefault();
               const form = e.target as HTMLFormElement;
@@ -106,7 +107,7 @@ export default function Home() {
                   btn.disabled = false;
                 } else {
                   btn.innerText = "ADDED TO VIP LIST";
-                  btn.classList.replace('bg-black', 'bg-green-800');
+                  btn.classList.add('text-neutral-500', 'border-neutral-800');
                   input.value = "";
                 }
               } catch (err) {
@@ -116,31 +117,30 @@ export default function Home() {
               }
             }}
           >
-            <div className="relative flex items-center border border-black rounded-sm overflow-hidden h-[54px] bg-white">
-              <div className="flex items-center justify-center px-4 border-r border-black/20 bg-neutral-50 h-full">
-                <span className="text-lg">🇺🇸</span>
-                <svg className="w-3 h-3 ml-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-              </div>
+            <div className="relative w-full">
               <input 
                 type="tel" 
                 name="phone"
-                placeholder="Phone Number" 
-                className="w-full h-full text-[15px] px-4 outline-none placeholder:text-neutral-400"
+                placeholder="ENTER PHONE NUMBER" 
+                className="w-full bg-transparent text-white text-[11px] font-light tracking-[0.3em] pb-3 outline-none border-b border-neutral-800 focus:border-white transition-colors placeholder:text-neutral-700 text-center"
                 required
               />
             </div>
             <button 
               type="submit"
               name="submitBtn"
-              className="w-full h-[54px] bg-black text-white text-[13px] font-bold tracking-[0.2em] uppercase rounded-[4px] hover:bg-neutral-800 transition-colors mt-2"
+              className="w-full py-4 bg-transparent border border-white text-white text-[9px] font-bold tracking-[0.5em] uppercase hover:bg-white hover:text-black transition-all duration-500"
             >
-              JOIN VIP
+              REQUEST INVITATION
             </button>
           </form>
-          
-          <div className="pt-10 flex justify-center">
-            <span className="text-[10px] font-bold tracking-[0.4em] uppercase">L'ARGENT BRÛLÉ</span>
-          </div>
+        </div>
+
+        {/* Footer Brand */}
+        <div className="pt-20">
+          <span className="text-[8px] text-neutral-600 font-medium tracking-[0.6em] uppercase">
+            L'Argent Brûlé
+          </span>
         </div>
 
       </div>

@@ -129,7 +129,7 @@ const productData: Record<string, any> = {
         ] 
       }
     ],
-    sizes: ["30", "32", "34", "36", "38"],
+    sizes: ["1|28-30", "2|30-32", "3|32-34", "4|34-36"],
     details: [
       "UNRELEASED ARCHIVE PIECE",
       "PREMIUM HEAVYWEIGHT LEATHER",
@@ -160,6 +160,18 @@ function OptimizedProductImage({ imageData, alt, isFullBleed }: { imageData: any
 function ProductImageViewer({ images, alt, isFullBleed }: { images: any[], alt: string, isFullBleed?: boolean }) {
   const [currentIdx, setCurrentIdx] = useState(0);
 
+  if (isFullBleed) {
+    return (
+      <div className="w-full h-full overflow-y-auto hide-scrollbar flex flex-col snap-y snap-mandatory bg-black">
+        {images.map((img, i) => (
+          <div key={i} className="relative w-full h-full shrink-0 snap-start">
+            <OptimizedProductImage imageData={img} alt={`${alt} ${i + 1}`} isFullBleed={isFullBleed} />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   const handleMouseEnter = () => {
     if (images.length > 1) setCurrentIdx(1);
   };
@@ -177,9 +189,9 @@ function ProductImageViewer({ images, alt, isFullBleed }: { images: any[], alt: 
       <AnimatePresence initial={false} mode="wait">
         <motion.div
           key={currentIdx}
-          initial={images.length > 1 ? { opacity: 0, rotateY: currentIdx === 1 ? -180 : 180, scale: 0.98 } : { opacity: 1 }}
-          animate={{ opacity: 1, rotateY: 0, scale: 1 }}
-          exit={images.length > 1 ? { opacity: 0, rotateY: currentIdx === 1 ? 180 : -180, scale: 0.98 } : { opacity: 1 }}
+          initial={images.length > 1 ? (isFullBleed ? { opacity: 0 } : { opacity: 0, rotateY: currentIdx === 1 ? -180 : 180, scale: 0.98 }) : { opacity: 1 }}
+          animate={isFullBleed ? { opacity: 1 } : { opacity: 1, rotateY: 0, scale: 1 }}
+          exit={images.length > 1 ? (isFullBleed ? { opacity: 0 } : { opacity: 0, rotateY: currentIdx === 1 ? 180 : -180, scale: 0.98 }) : { opacity: 1 }}
           transition={{ 
             duration: 1.0, 
             ease: [0.23, 1, 0.32, 1],
@@ -192,7 +204,7 @@ function ProductImageViewer({ images, alt, isFullBleed }: { images: any[], alt: 
         </motion.div>
       </AnimatePresence>
 
-      {images.length > 1 && (
+      {images.length > 1 && !isFullBleed && (
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3 opacity-0 group-hover:opacity-20 transition-opacity duration-1000">
           <RotateCcw size={9} className="text-black" />
           <span className="text-[6px] font-bold tracking-[0.5em] uppercase text-black">TECHNICAL ORBIT</span>
@@ -229,7 +241,7 @@ export default function ProductPage() {
 
       {/* ── MOBILE LAYOUT ── */}
       <div className="lg:hidden bg-white">
-        <div className={cn("w-full aspect-[4/5] overflow-hidden", !product.isFullBleed && "bg-white p-6 mix-blend-multiply")}>
+        <div className={cn("w-full overflow-hidden", !product.isFullBleed ? "aspect-[4/5] bg-white p-6 mix-blend-multiply" : "h-[85vh]")}>
           <ProductImageViewer images={product.colors[selectedColor].images} alt={product.name} isFullBleed={product.isFullBleed} />
         </div>
         <div className="px-5 pt-6 pb-16 space-y-7 bg-white">
@@ -251,8 +263,13 @@ export default function ProductPage() {
             <p className="text-[10px] uppercase tracking-[0.35em] text-black">SELECT SIZE</p>
             <div className="flex gap-2 flex-wrap">
               {product.sizes.map((size: string) => (
-                <button key={size} onClick={() => setSelectedSize(size)} className={cn("h-11 min-w-[52px] px-3 border text-[11px] font-medium tracking-wider flex items-center justify-center transition-all", selectedSize === size ? "border-black bg-black text-white" : "border-neutral-100 text-black")}>
-                  {size}
+                <button key={size} onClick={() => setSelectedSize(size)} className={cn("h-12 min-w-[56px] px-3 border text-[11px] font-bold tracking-widest flex flex-col items-center justify-center transition-all", selectedSize === size ? "border-black bg-black text-white" : "border-neutral-100 text-black")}>
+                  {size.includes('|') ? (
+                    <>
+                      <span>{size.split('|')[0]}</span>
+                      <span className="text-[7px] opacity-70 font-medium tracking-widest mt-0.5">{size.split('|')[1]}</span>
+                    </>
+                  ) : size}
                 </button>
               ))}
             </div>
@@ -289,8 +306,8 @@ export default function ProductPage() {
 
       {/* ── DESKTOP LAYOUT ── */}
       <div className="hidden lg:flex w-full min-h-screen bg-white">
-        <div className={cn("w-full lg:w-[60%] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center overflow-hidden", !product.isFullBleed ? "bg-white p-4 pt-40 lg:p-12" : "bg-[#1f291f]")}>
-          <div className="w-full aspect-[3/4] lg:h-full lg:aspect-auto">
+        <div className={cn("w-full lg:w-[60%] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center overflow-hidden", !product.isFullBleed ? "bg-white p-4 pt-40 lg:p-12" : "")}>
+          <div className={cn("w-full", !product.isFullBleed ? "aspect-[3/4] lg:h-full lg:aspect-auto" : "h-full")}>
             <ProductImageViewer images={product.colors[selectedColor].images} alt={product.name} isFullBleed={product.isFullBleed} />
           </div>
         </div>
@@ -314,8 +331,13 @@ export default function ProductPage() {
               <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-400">SELECT SIZE</p>
               <div className="grid grid-cols-4 gap-3 max-w-sm">
                 {product.sizes.map((size: string) => (
-                  <button key={size} onClick={() => setSelectedSize(size)} className={cn("h-12 border text-[11px] font-bold tracking-widest flex items-center justify-center transition-all", selectedSize === size ? "border-black bg-black text-white" : "border-neutral-200 text-black hover:border-black")}>
-                    {size}
+                  <button key={size} onClick={() => setSelectedSize(size)} className={cn("h-12 border text-[11px] font-bold tracking-widest flex flex-col items-center justify-center transition-all", selectedSize === size ? "border-black bg-black text-white" : "border-neutral-200 text-black hover:border-black")}>
+                    {size.includes('|') ? (
+                      <>
+                        <span>{size.split('|')[0]}</span>
+                        <span className="text-[7px] opacity-70 font-medium tracking-widest mt-0.5">{size.split('|')[1]}</span>
+                      </>
+                    ) : size}
                   </button>
                 ))}
               </div>

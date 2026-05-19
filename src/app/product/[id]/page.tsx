@@ -6,7 +6,8 @@ import { useState } from "react";
 import { LiquidButton } from "@/components/ui/liquid-glass-button";
 import { cn } from "@/lib/utils";
 import { ChevronRight, Plus, RotateCcw } from "lucide-react";
-import { useCart } from "@/components/cart-drawer";
+import { useCart } from "@/lib/cart-context";
+import { supabase } from "@/lib/supabase";
 import { motion, AnimatePresence } from "framer-motion";
 
 const productData: Record<string, any> = {
@@ -157,6 +158,74 @@ function OptimizedProductImage({ imageData, alt, isFullBleed }: { imageData: any
   );
 }
 
+function NotifyMeForm() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  if (!isOpen) {
+    return (
+      <button
+        onClick={() => setIsOpen(true)}
+        className="w-full h-full min-h-[52px] bg-black text-white hover:bg-neutral-800 transition-colors text-[11px] font-bold tracking-[0.4em] uppercase"
+      >
+        NOTIFY ME WHEN IN STOCK
+      </button>
+    );
+  }
+
+  return (
+    <form 
+      className="w-full h-full flex flex-col gap-2 animate-in fade-in duration-500"
+      onSubmit={async (e) => {
+        e.preventDefault();
+        const form = e.target as HTMLFormElement;
+        const input = form.elements.namedItem('phone') as HTMLInputElement;
+        const btn = form.elements.namedItem('submitBtn') as HTMLButtonElement;
+        
+        if (!input.value) return;
+        
+        const originalText = btn.innerText;
+        btn.innerText = "PROCESSING...";
+        btn.disabled = true;
+
+        try {
+          const { error } = await supabase
+            .from('early_access')
+            .insert([{ phone_number: input.value }]);
+
+          if (error && error.code !== '23505') {
+            alert(`ERROR: ${error.message}`);
+            btn.innerText = originalText;
+            btn.disabled = false;
+          } else {
+            btn.innerText = "ADDED TO VIP LIST";
+            btn.classList.replace('bg-black', 'bg-green-800');
+            input.value = "";
+          }
+        } catch (err) {
+          console.error(err);
+          btn.innerText = originalText;
+          btn.disabled = false;
+        }
+      }}
+    >
+      <input 
+        type="tel" 
+        name="phone"
+        placeholder="ENTER PHONE NUMBER" 
+        className="w-full h-[52px] bg-neutral-50 text-black text-[11px] font-medium tracking-[0.2em] px-4 outline-none border border-transparent focus:border-black transition-colors"
+        required
+      />
+      <button 
+        type="submit"
+        name="submitBtn"
+        className="w-full h-[52px] shrink-0 bg-black text-white text-[11px] font-bold tracking-[0.4em] uppercase hover:bg-neutral-800 transition-colors"
+      >
+        CONFIRM
+      </button>
+    </form>
+  );
+}
+
 function ProductImageViewer({ images, alt, isFullBleed }: { images: any[], alt: string, isFullBleed?: boolean }) {
   const [currentIdx, setCurrentIdx] = useState(0);
 
@@ -266,8 +335,8 @@ export default function ProductPage() {
                 <button key={size} onClick={() => setSelectedSize(size)} className={cn("h-12 min-w-[56px] px-3 border text-[11px] font-bold tracking-widest flex flex-col items-center justify-center transition-all", selectedSize === size ? "border-black bg-black text-white" : "border-neutral-100 text-black")}>
                   {size.includes('|') ? (
                     <>
-                      <span>{size.split('|')[0]}</span>
-                      <span className="text-[7px] opacity-70 font-medium tracking-widest mt-0.5">{size.split('|')[1]}</span>
+                      <span className={size.includes('CUSTOM') ? "text-[9px]" : ""}>{size.split('|')[0]}</span>
+                      <span className={cn("opacity-70 font-medium tracking-widest mt-0.5", size.includes('CUSTOM') ? "text-[6px]" : "text-[7px]")}>{size.split('|')[1]}</span>
                     </>
                   ) : size}
                 </button>
@@ -275,12 +344,7 @@ export default function ProductPage() {
             </div>
           </div>
           <div className="space-y-4 pt-1">
-            <button
-              onClick={() => alert("We will notify you the moment this piece becomes available.")}
-              className="w-full h-[52px] bg-black text-white hover:bg-neutral-800 transition-colors text-[11px] font-bold tracking-[0.4em] uppercase"
-            >
-              NOTIFY ME WHEN IN STOCK
-            </button>
+            <NotifyMeForm />
           </div>
           <div className="border-t border-neutral-100 divide-y divide-neutral-100">
             <div>
@@ -334,8 +398,8 @@ export default function ProductPage() {
                   <button key={size} onClick={() => setSelectedSize(size)} className={cn("h-12 border text-[11px] font-bold tracking-widest flex flex-col items-center justify-center transition-all", selectedSize === size ? "border-black bg-black text-white" : "border-neutral-200 text-black hover:border-black")}>
                     {size.includes('|') ? (
                       <>
-                        <span>{size.split('|')[0]}</span>
-                        <span className="text-[7px] opacity-70 font-medium tracking-widest mt-0.5">{size.split('|')[1]}</span>
+                        <span className={size.includes('CUSTOM') ? "text-[9px]" : ""}>{size.split('|')[0]}</span>
+                        <span className={cn("opacity-70 font-medium tracking-widest mt-0.5", size.includes('CUSTOM') ? "text-[6px]" : "text-[7px]")}>{size.split('|')[1]}</span>
                       </>
                     ) : size}
                   </button>
@@ -343,13 +407,8 @@ export default function ProductPage() {
               </div>
             </div>
             <div className="space-y-4 pt-10">
-              <div className="relative w-full h-[60px]">
-                <button
-                  onClick={() => alert("We will notify you the moment this piece becomes available.")}
-                  className="w-full h-full bg-black text-white hover:bg-neutral-800 transition-colors text-[11px] font-bold tracking-[0.4em] uppercase"
-                >
-                  NOTIFY ME WHEN IN STOCK
-                </button>
+              <div className="relative w-full min-h-[60px]">
+                <NotifyMeForm />
               </div>
             </div>
             <div className="border-t border-neutral-100 divide-y divide-neutral-100">

@@ -59,13 +59,13 @@ export default function Home() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 w-full items-center bg-[#f7f5f2] p-8 md:p-16 mb-40">
         <div className="aspect-[3/4] bg-white relative overflow-hidden flex items-center justify-center p-4">
-          {/* Placeholder for new product image */}
-          <div className="absolute inset-0 border-2 border-dashed border-neutral-300 flex items-center justify-center m-4">
-            <p className="text-[10px] text-neutral-400 font-bold tracking-[0.2em] uppercase text-center px-4">
-              [ Drop Next Product Image Here ]<br/><br/>
-              (Upload image in chat)
-            </p>
-          </div>
+          <Image
+            src="/leather_pants_front.png"
+            alt="Upcoming Leather Pants"
+            fill
+            className="object-contain mix-blend-multiply transition-transform duration-1000 ease-out p-4"
+            style={{ filter: "contrast(1.1) brightness(1.05)" }}
+          />
         </div>
         
         <div className="space-y-10 max-w-md">

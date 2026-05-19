@@ -129,7 +129,7 @@ const productData: Record<string, any> = {
         ] 
       }
     ],
-    sizes: ["1|28-30", "2|30-32", "3|32-34", "4|34-36"],
+    sizes: ["1|28-30", "2|30-32", "3|32-34", "4|34-36", "CUSTOM|SIZING AVAILABLE"],
     details: [
       "UNRELEASED ARCHIVE PIECE",
       "PREMIUM HEAVYWEIGHT LEATHER",

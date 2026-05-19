@@ -19,14 +19,14 @@ export default function EarlyAccessPage() {
 
     // Clinical Environment Validation
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      alert("ARCHIVAL ERROR: SUPABASE CONFIGURATION MISSING. PLEASE SET ENVIRONMENT VARIABLES.");
+      alert("CONFIGURATION ERROR: SUPABASE ENVIRONMENT VARIABLES MISSING.");
       return;
     }
     
     setIsLoading(true);
     
     try {
-      console.log("Attempting archival capture for:", phoneNumber);
+      console.log("Attempting VIP capture for:", phoneNumber);
       const { error } = await supabase
         .from('early_access')
         .insert([{ phone_number: phoneNumber }]);
@@ -36,7 +36,7 @@ export default function EarlyAccessPage() {
         if (error.code === '23505') {
           setIsSubmitted(true);
         } else {
-          alert(`ARCHIVAL ERROR [${error.code}]: ${error.message}`);
+          alert(`ERROR [${error.code}]: ${error.message}`);
         }
       } else {
         setIsSubmitted(true);
@@ -175,7 +175,7 @@ export default function EarlyAccessPage() {
               {activeBlurb} POLICY
             </h2>
             <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-neutral-400 leading-relaxed">
-              L&apos;ARGENT BRÛLÉ VALUES YOUR PRIVACY. BY JOINING THE SELECTION, YOU CONSENT TO RECEIVE ARCHIVAL UPDATES AND MARKETING NEWS VIA SMS. YOUR DATA IS PROTECTED AND WILL NEVER BE SOLD. OPT-OUT AT ANY TIME BY REPLYING &apos;STOP&apos;.
+              L&apos;ARGENT BRÛLÉ VALUES YOUR PRIVACY. BY JOINING THE SELECTION, YOU CONSENT TO RECEIVE EXCLUSIVE UPDATES AND MARKETING NEWS VIA SMS. YOUR DATA IS PROTECTED AND WILL NEVER BE SOLD. OPT-OUT AT ANY TIME BY REPLYING &apos;STOP&apos;.
             </p>
             <button 
               onClick={() => setActiveBlurb(null)}

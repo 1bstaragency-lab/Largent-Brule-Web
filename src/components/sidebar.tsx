@@ -16,7 +16,7 @@ export function Sidebar() {
             src="/logo_script_final.png" 
             alt="L'argent Brûlé" 
             fill 
-            className="object-contain object-left mix-blend-multiply"
+            className="object-contain object-left"
           />
         </Link>
       </div>

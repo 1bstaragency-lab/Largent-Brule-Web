@@ -36,7 +36,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white flex flex-col items-center justify-center p-6 font-sans">
+    <div className="min-h-screen bg-[#faf9f6] text-[#111111] flex flex-col items-center justify-center p-6 font-sans">
       
       <div className="w-full max-w-xl flex flex-col items-center justify-center space-y-24">
         
@@ -75,7 +75,7 @@ export default function Home() {
           <h1 className="text-[15px] sm:text-[18px] font-medium uppercase tracking-[0.4em] leading-loose">
             VIP EARLY ACCESS
           </h1>
-          <p className="text-[10px] text-neutral-400 uppercase tracking-[0.2em] leading-loose max-w-sm mx-auto">
+          <p className="text-[10px] text-neutral-500 uppercase tracking-[0.2em] leading-loose max-w-sm mx-auto">
             Secure your allocation 24 hours prior to public release. Extremely limited quantities.
           </p>
         </div>
@@ -122,14 +122,14 @@ export default function Home() {
                 type="tel" 
                 name="phone"
                 placeholder="ENTER PHONE NUMBER" 
-                className="w-full bg-transparent text-white text-[11px] font-light tracking-[0.3em] pb-3 outline-none border-b border-neutral-800 focus:border-white transition-colors placeholder:text-neutral-700 text-center"
+                className="w-full bg-transparent text-[#111111] text-[11px] font-light tracking-[0.3em] pb-3 outline-none border-b border-neutral-300 focus:border-[#111111] transition-colors placeholder:text-neutral-400 text-center"
                 required
               />
             </div>
             <button 
               type="submit"
               name="submitBtn"
-              className="w-full py-4 bg-transparent border border-white text-white text-[9px] font-bold tracking-[0.5em] uppercase hover:bg-white hover:text-black transition-all duration-500"
+              className="w-full py-4 bg-transparent border border-[#111111] text-[#111111] text-[9px] font-bold tracking-[0.5em] uppercase hover:bg-[#111111] hover:text-[#faf9f6] transition-all duration-500"
             >
               REQUEST INVITATION
             </button>
@@ -138,7 +138,7 @@ export default function Home() {
 
         {/* Footer Brand */}
         <div className="pt-20">
-          <span className="text-[8px] text-neutral-600 font-medium tracking-[0.6em] uppercase">
+          <span className="text-[8px] text-neutral-400 font-medium tracking-[0.6em] uppercase">
             L'Argent Brûlé
           </span>
         </div>

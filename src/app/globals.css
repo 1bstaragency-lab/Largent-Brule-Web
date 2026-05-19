@@ -6,6 +6,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
+  --color-white: #faf9f6;
   --font-sans: "Inter", var(--font-family-sans);
   --font-serif: "Pinyon Script", var(--font-family-serif);
 

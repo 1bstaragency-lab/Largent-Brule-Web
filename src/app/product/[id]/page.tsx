@@ -313,38 +313,58 @@ export default function ProductPage() {
         <div className={cn("w-full overflow-hidden", !product.isFullBleed ? "aspect-[4/5] bg-white p-6 mix-blend-multiply" : "h-[85vh]")}>
           <ProductImageViewer images={product.colors[selectedColor].images} alt={product.name} isFullBleed={product.isFullBleed} />
         </div>
-        <div className="px-5 pt-6 pb-16 space-y-7 bg-white">
-          <div>
-            <p className="text-[12px] uppercase tracking-[0.18em] leading-snug text-black font-medium">{product.name}</p>
-            <p className="text-[14px] font-bold tracking-[0.05em] text-black mt-1.5">{product.price}</p>
+        <div className="px-5 pt-4 pb-16 bg-white">
+          <div className="space-y-1 mb-6">
+            <h1 className="text-[16px] font-mono uppercase tracking-wide text-black">{product.name}</h1>
+            <p className="text-[16px] font-mono tracking-wide text-black">{product.price}</p>
           </div>
-          <div className="space-y-3">
-            <p className="text-[10px] uppercase tracking-[0.35em] text-black">{product.colors[selectedColor].name}</p>
-            <div className="flex gap-3">
-              {product.colors.map((color: any, i: number) => (
-                <button key={i} onClick={() => setSelectedColor(i)} className={cn("w-9 h-9 border transition-all p-0.5", selectedColor === i ? "border-black" : "border-neutral-100")}>
-                  <div className="w-full h-full" style={{ backgroundColor: color.hex }} />
-                </button>
-              ))}
+
+          <div className="flex gap-3 w-full mb-4">
+            <div className="relative w-1/2">
+              <select 
+                className="w-full appearance-none border border-black bg-transparent py-3.5 px-4 text-[12px] font-mono uppercase tracking-wider outline-none rounded-none"
+                value={selectedSize || ''}
+                onChange={(e) => setSelectedSize(e.target.value)}
+              >
+                <option value="" disabled>SIZE</option>
+                {product.sizes.map((size: string) => (
+                  <option key={size} value={size}>{size.split('|')[0]}</option>
+                ))}
+              </select>
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                <ChevronRight size={14} className="rotate-90 text-black" strokeWidth={1.5} />
+              </div>
+            </div>
+            <div className="relative w-1/2">
+              <select 
+                className="w-full appearance-none border border-black bg-transparent py-3.5 px-4 text-[12px] font-mono uppercase tracking-wider outline-none rounded-none"
+                value={selectedColor}
+                onChange={(e) => setSelectedColor(Number(e.target.value))}
+              >
+                {product.colors.map((color: any, i: number) => (
+                  <option key={i} value={i}>{color.name}</option>
+                ))}
+              </select>
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                <ChevronRight size={14} className="rotate-90 text-black" strokeWidth={1.5} />
+              </div>
             </div>
           </div>
-          <div className="space-y-3">
-            <p className="text-[10px] uppercase tracking-[0.35em] text-black">SELECT SIZE</p>
-            <div className="flex gap-2 flex-wrap">
-              {product.sizes.map((size: string) => (
-                <button key={size} onClick={() => setSelectedSize(size)} className={cn("h-12 min-w-[56px] px-3 border text-[11px] font-bold tracking-widest flex flex-col items-center justify-center transition-all", selectedSize === size ? "border-black bg-black text-white" : "border-neutral-100 text-black")}>
-                  {size.includes('|') ? (
-                    <>
-                      <span className={size.includes('CUSTOM') ? "text-[9px]" : ""}>{size.split('|')[0]}</span>
-                      <span className={cn("opacity-70 font-medium tracking-widest mt-0.5", size.includes('CUSTOM') ? "text-[6px]" : "text-[7px]")}>{size.split('|')[1]}</span>
-                    </>
-                  ) : size}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="space-y-4 pt-1">
+          <div className="w-full mb-6">
             <NotifyMeForm />
+            
+            {/* Payment Icons Placeholder */}
+            <div className="flex items-center justify-center gap-3 mt-4 text-neutral-500 font-mono text-[9px] uppercase tracking-wider">
+              <span>Przelewy24</span>
+              <span>•</span>
+              <span>PayPal</span>
+              <span>•</span>
+              <span>VISA</span>
+              <span>•</span>
+              <span>Mastercard</span>
+              <span>•</span>
+              <span>Apple Pay</span>
+            </div>
           </div>
           <div className="border-t border-neutral-100 divide-y divide-neutral-100">
             <div>

@@ -40,6 +40,17 @@ export default function LookbookPage() {
           />
         </div>
 
+        {/* Image 3 — Product/Still */}
+        <div className="relative w-full aspect-[16/7]">
+          <Image
+            src="/hf_20260521_073334_bad353eb-813a-426f-9939-b78904e74044.png"
+            alt="L'Argent Brûlé S/S 26 — Leather Pants Detail"
+            fill
+            className="object-cover object-center"
+            sizes="100vw"
+          />
+        </div>
+
       </div>
 
       {/* Footer */}

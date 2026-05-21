@@ -310,7 +310,7 @@ export default function ProductPage() {
 
       {/* ── MOBILE LAYOUT ── */}
       <div className="lg:hidden bg-white">
-        <div className={cn("w-full overflow-hidden", !product.isFullBleed ? "aspect-[4/5] bg-white p-6 mix-blend-multiply" : "h-[85vh]")}>
+        <div className={cn("w-full overflow-hidden", !product.isFullBleed ? "aspect-[4/5] bg-white p-6 mix-blend-multiply" : "aspect-[4/5]")}>
           <ProductImageViewer images={product.colors[selectedColor].images} alt={product.name} isFullBleed={product.isFullBleed} />
         </div>
         <div className="px-5 pt-4 pb-16 bg-white">

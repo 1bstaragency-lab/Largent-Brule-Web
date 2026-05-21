@@ -14,7 +14,7 @@ export function MobileNavbar() {
   const navItems = [
     { label: "COLLECTIONS", href: "/collections" },
     { label: "OUR STORY", href: "/our-story" },
-    { label: "LOOKBOOK", href: "#" },
+    { label: "LOOKBOOK", href: "/lookbook" },
     { label: "FAQ", href: "/faq" },
     { label: "SIGN IN", href: "/auth" },
     { label: "REGISTER", href: "#" }

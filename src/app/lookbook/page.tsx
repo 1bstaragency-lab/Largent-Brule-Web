@@ -17,11 +17,11 @@ export default function LookbookPage() {
       {/* Full-bleed image stack */}
       <div className="flex flex-col gap-1">
 
-        {/* Image 1 — Model/Editorial */}
+        {/* Image 1 — Product/Still */}
         <div className="relative w-full aspect-[16/7]">
           <Image
-            src="/hf_20260521_073327_f5f42ea1-bbdd-412c-b885-c5c43a1e1c5b.png"
-            alt="L'Argent Brûlé S/S 26 — Editorial"
+            src="/hf_20260521_073428_d29afd76-3547-4fd5-a1eb-483812ab9283.png"
+            alt="L'Argent Brûlé S/S 26 — Leather Cargo Pants"
             fill
             className="object-cover object-center"
             priority
@@ -29,11 +29,11 @@ export default function LookbookPage() {
           />
         </div>
 
-        {/* Image 2 — Product/Still */}
+        {/* Image 2 — Model/Editorial */}
         <div className="relative w-full aspect-[16/7]">
           <Image
-            src="/hf_20260521_073428_d29afd76-3547-4fd5-a1eb-483812ab9283.png"
-            alt="L'Argent Brûlé S/S 26 — Leather Cargo Pants"
+            src="/hf_20260521_073327_f5f42ea1-bbdd-412c-b885-c5c43a1e1c5b.png"
+            alt="L'Argent Brûlé S/S 26 — Editorial"
             fill
             className="object-cover object-center"
             sizes="100vw"

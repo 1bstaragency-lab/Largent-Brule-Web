@@ -51,7 +51,7 @@
   .marquee-container {
     overflow: hidden;
     width: 100%;
-    background: #f6f6f6;
+    background: #faf9f6;
   }
 
   .marquee-content {
@@ -74,7 +74,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 45 29% 97%;
     --foreground: 0 0% 0%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 0%;

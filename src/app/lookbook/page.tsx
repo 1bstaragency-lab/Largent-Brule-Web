@@ -1,31 +1,9 @@
 import Image from "next/image";
 
-const images = [
-  {
-    src: "/leather_pants_back_detail.png",
-    alt: "Leather Cargo Pants — Full Look",
-    span: "col-span-2 row-span-2",
-  },
-  {
-    src: "/leather_pants_detail.png",
-    alt: "Leather Cargo Pants — Side Detail",
-    span: "col-span-1 row-span-1",
-  },
-  {
-    src: "/leather_pants_back.jpg",
-    alt: "Leather Cargo Pants — Back Detail",
-    span: "col-span-1 row-span-1",
-  },
-  {
-    src: "/leather_pants_front.png",
-    alt: "Leather Cargo Pants — Front",
-    span: "col-span-2 row-span-1",
-  },
-];
-
 export default function LookbookPage() {
   return (
     <div className="min-h-screen bg-[#faf9f6]">
+
       {/* Header */}
       <div className="px-8 pt-16 pb-12 text-center">
         <p className="text-[8px] text-neutral-400 uppercase tracking-[0.8em] font-light mb-4">
@@ -36,32 +14,41 @@ export default function LookbookPage() {
         </h1>
       </div>
 
-      {/* Grid */}
-      <div className="px-4 md:px-8 pb-24 max-w-5xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-2 auto-rows-[320px] md:auto-rows-[420px]">
-          {images.map((img, i) => (
-            <div
-              key={i}
-              className={`relative overflow-hidden ${img.span}`}
-            >
-              <Image
-                src={img.src}
-                alt={img.alt}
-                fill
-                className="object-cover object-center"
-                sizes="(max-width: 768px) 50vw, 33vw"
-              />
-            </div>
-          ))}
+      {/* Full-bleed image stack */}
+      <div className="flex flex-col gap-1">
+
+        {/* Image 1 — Model/Editorial */}
+        <div className="relative w-full aspect-[16/7]">
+          <Image
+            src="/hf_20260521_073327_f5f42ea1-bbdd-412c-b885-c5c43a1e1c5b.png"
+            alt="L'Argent Brûlé S/S 26 — Editorial"
+            fill
+            className="object-cover object-center"
+            priority
+            sizes="100vw"
+          />
         </div>
+
+        {/* Image 2 — Product/Still */}
+        <div className="relative w-full aspect-[16/7]">
+          <Image
+            src="/hf_20260521_073428_d29afd76-3547-4fd5-a1eb-483812ab9283.png"
+            alt="L'Argent Brûlé S/S 26 — Leather Cargo Pants"
+            fill
+            className="object-cover object-center"
+            sizes="100vw"
+          />
+        </div>
+
       </div>
 
-      {/* Footer label */}
-      <div className="pb-16 text-center">
+      {/* Footer */}
+      <div className="py-16 text-center">
         <span className="text-[8px] text-neutral-300 uppercase tracking-[0.6em]">
           L&apos;Argent Brûlé
         </span>
       </div>
+
     </div>
   );
 }

@@ -17,6 +17,18 @@ export default function LookbookPage() {
       {/* Full-bleed image stack */}
       <div className="flex flex-col gap-1">
 
+        {/* Image 0 — Editorial/Car */}
+        <div className="relative w-full aspect-[16/7]">
+          <Image
+            src="/hf_20260521_214620_f138056b-c352-4738-8944-1db1d9e1b6e7.png"
+            alt="L'Argent Brûlé S/S 26 — Editorial"
+            fill
+            className="object-cover object-center"
+            priority
+            sizes="100vw"
+          />
+        </div>
+
         {/* Image 1 — Product/Still */}
         <div className="relative w-full aspect-[16/7]">
           <Image

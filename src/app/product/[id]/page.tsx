@@ -309,8 +309,8 @@ export default function ProductPage() {
     <div className="w-full bg-white min-h-screen pt-20 lg:pt-0">
 
       {/* ── MOBILE LAYOUT ── */}
-      <div className="lg:hidden bg-transparent">
-        <div className={cn("w-full overflow-hidden", !product.isFullBleed ? "aspect-[4/5] bg-transparent p-6" : "aspect-[4/5]")}>
+      <div className="lg:hidden">
+        <div className={cn("w-full overflow-hidden", !product.isFullBleed ? "aspect-[4/5] bg-white p-6" : "aspect-[4/5] bg-black")}>
           <ProductImageViewer images={product.colors[selectedColor].images} alt={product.name} isFullBleed={product.isFullBleed} />
         </div>
         <div className="px-5 pt-4 pb-16 bg-white">
@@ -389,8 +389,8 @@ export default function ProductPage() {
       </div>
 
       {/* ── DESKTOP LAYOUT ── */}
-      <div className="hidden lg:flex w-full min-h-screen bg-transparent">
-        <div className={cn("w-full lg:w-[60%] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center overflow-hidden", !product.isFullBleed ? "bg-transparent p-4 pt-40 lg:p-12" : "")}>
+      <div className="hidden lg:flex w-full min-h-screen">
+        <div className={cn("w-full lg:w-[60%] lg:sticky lg:top-0 lg:h-screen flex items-center justify-center overflow-hidden", !product.isFullBleed ? "bg-white p-4 pt-40 lg:p-12" : "")}>
           <div className={cn("w-full", !product.isFullBleed ? "aspect-[3/4] lg:h-full lg:aspect-auto" : "h-full")}>
             <ProductImageViewer images={product.colors[selectedColor].images} alt={product.name} isFullBleed={product.isFullBleed} />
           </div>

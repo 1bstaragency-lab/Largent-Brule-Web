@@ -253,8 +253,8 @@ export default function Home() {
           {submitState === "loading"
             ? "..."
             : submitState === "success"
-            ? <span className="font-serif text-xl tracking-wide">You&apos;re on the list</span>
-            : <span className="font-serif text-xl tracking-wide">Join VIP</span>}
+            ? <span className="text-[11px] tracking-[0.4em] uppercase font-medium">You&apos;re on the list</span>
+            : <span className="text-[11px] tracking-[0.4em] uppercase font-medium">Join VIP</span>}
         </button>
       </form>
 

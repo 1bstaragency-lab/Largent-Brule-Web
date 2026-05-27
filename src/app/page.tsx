@@ -247,10 +247,14 @@ export default function Home() {
           className={`w-full py-4 rounded-sm text-[13px] font-semibold tracking-[0.05em] transition-colors ${
             submitState === "success"
               ? "bg-neutral-300 text-neutral-500 cursor-default"
-              : "bg-[#2a2a2a] hover:bg-black text-white"
+              : "bg-black hover:bg-[#111] text-white"
           }`}
         >
-          {submitState === "loading" ? "..." : submitState === "success" ? "You're on the list" : "JOIN VIP"}
+          {submitState === "loading"
+            ? "..."
+            : submitState === "success"
+            ? <span className="font-serif text-xl tracking-wide">You&apos;re on the list</span>
+            : <span className="font-serif text-xl tracking-wide">Join VIP</span>}
         </button>
       </form>
 

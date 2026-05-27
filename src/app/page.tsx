@@ -123,7 +123,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f3ef] flex flex-col items-center justify-center px-6 py-16 font-sans">
+    <div className="fixed inset-0 z-[110] bg-[#f5f3ef] flex flex-col items-center justify-center px-6 py-10 font-sans overflow-y-auto">
 
       {/* Nav dropdown — top right */}
       <div className="fixed top-5 right-5 z-50" ref={dropdownRef}>

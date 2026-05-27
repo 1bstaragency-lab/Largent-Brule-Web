@@ -237,8 +237,8 @@ export default function Home() {
           <p className="text-[9px] text-red-400 tracking-[0.1em] uppercase leading-relaxed">{phoneError}</p>
         )}
 
-        <p className="text-[9px] text-neutral-400 leading-relaxed uppercase tracking-[0.04em]">
-          By submitting, you consent to receive marketing texts from L&apos;Argent Brûlé including texts sent by autodialer. Consent is not a condition of purchase. Msg &amp; data rates may apply. Unsubscribe anytime by replying STOP.
+        <p className="text-[8px] text-neutral-300 leading-relaxed tracking-[0.03em]">
+          By submitting you consent to marketing texts. Msg &amp; data rates may apply. Reply STOP to unsubscribe.
         </p>
 
         <button
@@ -250,7 +250,7 @@ export default function Home() {
               : "bg-[#2a2a2a] hover:bg-black text-white"
           }`}
         >
-          {submitState === "loading" ? "..." : submitState === "success" ? "You're on the list" : "Sign up"}
+          {submitState === "loading" ? "..." : submitState === "success" ? "You're on the list" : "JOIN VIP"}
         </button>
       </form>
 

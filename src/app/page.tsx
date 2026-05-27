@@ -51,8 +51,19 @@ export default function Home() {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const [logoTaps, setLogoTaps] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState(false);
+
+  const handleLogoTap = () => {
+    const next = logoTaps + 1;
+    setLogoTaps(next);
+    if (next >= 5) {
+      setShowPassword(true);
+      setLogoTaps(0);
+    }
+  };
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [submitState, setSubmitState] = useState<"idle" | "loading" | "success">("idle");
@@ -138,8 +149,11 @@ export default function Home() {
         )}
       </div>
 
-      {/* Logo */}
-      <div className="relative w-72 h-24 mb-10">
+      {/* Logo — tap 5× to reveal admin password field */}
+      <div
+        className="relative w-72 h-24 mb-4 cursor-default select-none"
+        onClick={handleLogoTap}
+      >
         <Image
           src="/logo_script_final.png"
           alt="L'Argent Brûlé"
@@ -147,6 +161,16 @@ export default function Home() {
           className="object-contain"
           priority
         />
+      </div>
+
+      {/* VIP heading */}
+      <div className="text-center mb-10 space-y-2">
+        <p className="text-[9px] text-neutral-500 uppercase tracking-[0.6em] font-light">
+          S/S 26 Collection
+        </p>
+        <h1 className="text-[13px] font-medium uppercase tracking-[0.5em] text-black">
+          VIP Early Access
+        </h1>
       </div>
 
       {/* Countdown */}
@@ -167,8 +191,8 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Password gate */}
-      <form onSubmit={handleEnter} className="w-full max-w-sm mb-3">
+      {/* Password gate — hidden, revealed by tapping logo 5× */}
+      {showPassword && <form onSubmit={handleEnter} className="w-full max-w-sm mb-3">
         <div className="flex gap-2">
           <input
             type="password"
@@ -191,7 +215,7 @@ export default function Home() {
             Incorrect password
           </p>
         )}
-      </form>
+      </form>}
 
       {/* Phone signup */}
       <form onSubmit={handleSignup} className="w-full max-w-sm flex flex-col gap-3">

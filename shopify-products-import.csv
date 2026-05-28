@@ -1,0 +1,28 @@
+Handle,Title,Body (HTML),Vendor,Tags,Published,Option1 Name,Option1 Value,Option2 Name,Option2 Value,Variant SKU,Variant Inventory Qty,Variant Inventory Policy,Variant Price,Variant Requires Shipping,Variant Taxable,Image Src,Image Position,Image Alt Text,Status
+bomber,Cropped Bomber Jacket in Technical Nylon,"<ul><li>100% Nylon</li><li>Lining 100% Viscose</li><li>Oversized Fit</li><li>Cropped Cut</li><li>Batwing Sculptural Sleeves</li><li>Silver-Tone Zip Closure</li><li>Ribbed Cuffs and Hem</li><li>Made in Los Angeles</li><li>Sketched, framed and samples made in France design studio</li><li>REF: 2LB-BJ-NYL-001</li></ul>",L'Argent Brûlé,"classics,outerwear",TRUE,Color,Charcoal,Size,S,LB-BJ-NYL-001-CH-S,10,deny,310.00,TRUE,TRUE,https://largentbrule.com/charcoal_front_exact.png,1,Cropped Bomber Charcoal Front,active
+bomber,,,,,,,Charcoal,,M,LB-BJ-NYL-001-CH-M,10,deny,310.00,TRUE,TRUE,,,,
+bomber,,,,,,,Charcoal,,L,LB-BJ-NYL-001-CH-L,10,deny,310.00,TRUE,TRUE,,,,
+bomber,,,,,,,Charcoal,,XL,LB-BJ-NYL-001-CH-XL,10,deny,310.00,TRUE,TRUE,,,,
+bomber,,,,,,,Wine,,S,LB-BJ-NYL-001-WI-S,10,deny,310.00,TRUE,TRUE,,,,
+bomber,,,,,,,Wine,,M,LB-BJ-NYL-001-WI-M,10,deny,310.00,TRUE,TRUE,,,,
+bomber,,,,,,,Wine,,L,LB-BJ-NYL-001-WI-L,10,deny,310.00,TRUE,TRUE,,,,
+bomber,,,,,,,Wine,,XL,LB-BJ-NYL-001-WI-XL,10,deny,310.00,TRUE,TRUE,,,,
+bomber,,,,,,,,,,,,,,,,https://largentbrule.com/charcoal_back_exact.png,2,Cropped Bomber Charcoal Back,
+bomber,,,,,,,,,,,,,,,,https://largentbrule.com/wine_front_exact.png,3,Cropped Bomber Wine Front,
+raglan,L'Argent Brûlé Raglan Long-Sleeve Tee,"<ul><li>100% Supima Cotton</li><li>Two-Tone Raglan Construction</li><li>Screen Printed Archive Graphic</li><li>Oversized Drape</li><li>Made in Los Angeles</li><li>REF: 2LB-RT-COT-002</li></ul>",L'Argent Brûlé,"ss26,tops",TRUE,Color,Navy/White,Size,1,LB-RT-COT-002-NW-1,15,deny,87.00,TRUE,TRUE,https://largentbrule.com/raglan_front_white_v2.png,1,Raglan Long Sleeve Tee,active
+raglan,,,,,,,Navy/White,,2,LB-RT-COT-002-NW-2,15,deny,87.00,TRUE,TRUE,,,,
+raglan,,,,,,,Navy/White,,3,LB-RT-COT-002-NW-3,15,deny,87.00,TRUE,TRUE,,,,
+raglan,,,,,,,Navy/White,,4,LB-RT-COT-002-NW-4,15,deny,87.00,TRUE,TRUE,,,,
+hoodie,L'Argent Brûlé Lemondrop Hoodie,"<ul><li>500 GSM Heavyweight Cotton Fleece</li><li>Hand-Washed Vintage Finish</li><li>Multi-Placement Graphics (Front/Back)</li><li>Double-Layered Hood</li><li>Kangaroo Pocket</li><li>Made in Los Angeles</li><li>REF: 2LB-VH-COT-003</li></ul>",L'Argent Brûlé,"ss26,tops",TRUE,Color,Washed Yellow,Size,S,LB-VH-COT-003-WY-S,12,deny,185.00,TRUE,TRUE,https://largentbrule.com/hoodie_front_v13.png,1,Lemondrop Hoodie Front,active
+hoodie,,,,,,,Washed Yellow,,M,LB-VH-COT-003-WY-M,12,deny,185.00,TRUE,TRUE,,,,
+hoodie,,,,,,,Washed Yellow,,L,LB-VH-COT-003-WY-L,12,deny,185.00,TRUE,TRUE,,,,
+hoodie,,,,,,,Washed Yellow,,XL,LB-VH-COT-003-WY-XL,12,deny,185.00,TRUE,TRUE,,,,
+hoodie,,,,,,,,,,,,,,,,https://largentbrule.com/hoodie_back_v10.png,2,Lemondrop Hoodie Back,
+leather-pants,"""Beauté du Cuir"" Carpenters","<ul><li>Unreleased Archive Piece</li><li>Premium Heavyweight Leather</li><li>Multi-Pocket Construction</li><li>Silver-Tone Rivets</li><li>Relaxed Fit</li><li>Made in Los Angeles</li><li>REF: 2LB-CP-LMB-005</li></ul>",L'Argent Brûlé,"classics,bottoms",TRUE,Color,Black Leather,Size,1,LB-CP-LMB-005-BL-1,4,deny,240.00,TRUE,TRUE,https://largentbrule.com/leather_pants_front.png,1,Beauté du Cuir Front,active
+leather-pants,,,,,,,Black Leather,,2,LB-CP-LMB-005-BL-2,4,deny,240.00,TRUE,TRUE,,,,
+leather-pants,,,,,,,Black Leather,,3,LB-CP-LMB-005-BL-3,4,deny,240.00,TRUE,TRUE,,,,
+leather-pants,,,,,,,Black Leather,,4,LB-CP-LMB-005-BL-4,4,deny,240.00,TRUE,TRUE,,,,
+leather-pants,,,,,,,Black Leather,,Custom Order,LB-CP-LMB-005-BL-CO,0,continue,240.00,TRUE,TRUE,,,,
+leather-pants,,,,,,,,,,,,,,,,https://largentbrule.com/leather_pants_detail.png,2,Beauté du Cuir Detail,
+leather-pants,,,,,,,,,,,,,,,,https://largentbrule.com/leather_pants_back.jpg,3,Beauté du Cuir Back,
+leather-pants,,,,,,,,,,,,,,,,https://largentbrule.com/leather_pants_back_detail.png,4,Beauté du Cuir Back Detail,

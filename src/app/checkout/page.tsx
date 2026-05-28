@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight, CheckCircle2, CreditCard, Lock } from "lucide-react";
@@ -11,8 +11,9 @@ export default function CheckoutPage() {
   const { items, clearCart } = useCart();
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isBillingSame, setIsBillingSame] = useState(true);
-  const [step, setStep] = useState(1); 
+  const [step, setStep] = useState(1);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [checkoutPhone, setCheckoutPhone] = useState("");
 
   const subtotal = items.reduce((acc, item) => {
     const price = parseInt(item.price.replace(/[^0-9]/g, ""));
@@ -21,8 +22,38 @@ export default function CheckoutPage() {
   const shipping = 0;
   const total = subtotal + shipping;
 
-  const handleComplete = () => {
+  // Fire checkout_started ONCE on first reach to this page. Marks the
+  // cart as more abandonable-recoverable than a generic active cart.
+  useEffect(() => {
+    fetch("/api/cart/checkout-started", { method: "POST" }).catch(() => {});
+  }, []);
+
+  // If the user types a phone in the checkout form, link it to the cart so
+  // abandoned-cart recovery can text them even if they bail at payment.
+  // Debounced — links only when the input looks like a complete 10-digit US number.
+  useEffect(() => {
+    const digits = checkoutPhone.replace(/\D/g, "");
+    if (digits.length !== 10) return;
+    const t = setTimeout(() => {
+      fetch("/api/cart/capture-phone", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: digits }),
+      }).catch(() => {});
+    }, 700);
+    return () => clearTimeout(t);
+  }, [checkoutPhone]);
+
+  const handleComplete = async () => {
     setIsProcessing(true);
+    // Fire MOCK purchase event — replaced by real Shopify/Stripe webhook later.
+    try {
+      await fetch("/api/cart/purchase-completed", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ total_cents: total * 100 }),
+      });
+    } catch {/* non-blocking */}
     setTimeout(() => {
       setIsProcessing(false);
       clearCart();
@@ -79,11 +110,21 @@ export default function CheckoutPage() {
             <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
               <section className="space-y-6">
                 <h2 className="text-[12px] font-bold uppercase tracking-widest">CONTACT INFORMATION</h2>
-                <input 
-                  type="email" 
-                  placeholder="EMAIL ADDRESS" 
+                <input
+                  type="email"
+                  placeholder="EMAIL ADDRESS"
                   className="w-full border-b border-border py-4 text-[11px] uppercase tracking-widest outline-none focus:border-black transition-colors bg-transparent"
                 />
+                <input
+                  type="tel"
+                  value={checkoutPhone}
+                  onChange={(e) => setCheckoutPhone(e.target.value)}
+                  placeholder="PHONE NUMBER (FOR SHIPPING UPDATES)"
+                  className="w-full border-b border-border py-4 text-[11px] uppercase tracking-widest outline-none focus:border-black transition-colors bg-transparent"
+                />
+                <p className="text-[8px] uppercase tracking-[0.3em] opacity-30">
+                  By providing your number you consent to texts about your order. Reply STOP to opt out.
+                </p>
               </section>
 
               <section className="space-y-6">

@@ -92,6 +92,20 @@ export default function Home() {
     }
   };
 
+  // Whenever a phone number is captured (from signup form), link it to the
+  // browser's cart session so abandoned-cart recovery can text this person.
+  const capturePhone = async (digits: string) => {
+    try {
+      await fetch("/api/cart/capture-phone", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: digits }),
+      });
+    } catch {
+      // Non-blocking — VIP signup still succeeds.
+    }
+  };
+
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPhone(formatPhone(e.target.value));
     if (phoneError) setPhoneError("");
@@ -113,6 +127,8 @@ export default function Home() {
         setPhoneError(error.message);
         setSubmitState("idle");
       } else {
+        // Link this phone to the browser's cart session in the background.
+        capturePhone(digits);
         setSubmitState("success");
         setPhone("");
       }

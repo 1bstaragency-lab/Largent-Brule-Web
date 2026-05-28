@@ -1,13 +1,14 @@
 "use client";
 
-// Lockdown / pre-launch product view. Hardcoded productData with the
-// "Notify Me" flow. Rendered when a product is NOT yet in Shopify.
+// TEMP: NotifyMeForm replaced with Add to Cart for testing (see git log).
+// Original lockdown view used a "Notify Me" flow with Supabase early_access
+// signup. Restored on "revert".
 
 import Image from "next/image";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ChevronRight, Plus, RotateCcw } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { useCart } from "@/components/cart-drawer";
 import { motion, AnimatePresence } from "framer-motion";
 
 const productData: Record<string, any> = {
@@ -135,71 +136,59 @@ function OptimizedProductImage({ imageData, alt, isFullBleed }: { imageData: any
   );
 }
 
-function NotifyMeForm() {
-  const [isOpen, setIsOpen] = useState(false);
+// TEMP: replaces NotifyMeForm for testing. Restored to NotifyMeForm on "revert".
+function AddToCart({
+  handle,
+  product,
+  selectedColor,
+  selectedSize,
+}: {
+  handle: string;
+  product: { name: string; price: string; colors: { name: string; images: { src: string }[] }[] };
+  selectedColor: number;
+  selectedSize: string | null;
+}) {
+  const { addItem } = useCart();
+  const [state, setState] = useState<"idle" | "adding" | "added">("idle");
 
-  if (!isOpen) {
-    return (
-      <button
-        onClick={() => setIsOpen(true)}
-        className="w-full h-full min-h-[52px] bg-black text-white hover:bg-neutral-800 transition-colors text-[11px] font-bold tracking-[0.4em] uppercase"
-      >
-        NOTIFY ME WHEN IN STOCK
-      </button>
-    );
-  }
+  const handleAdd = async () => {
+    if (!selectedSize) return;
+    setState("adding");
+    const colorName = product.colors[selectedColor]?.name || "";
+    const imageSrc = product.colors[selectedColor]?.images[0]?.src || "";
+    const sizeDisplay = selectedSize.split("|")[0];
+    try {
+      await addItem({
+        id: handle,
+        name: product.name,
+        price: product.price,
+        image: imageSrc,
+        variant: `${colorName} / ${sizeDisplay}`,
+      });
+      setState("added");
+      setTimeout(() => setState("idle"), 2200);
+    } catch {
+      setState("idle");
+    }
+  };
+
+  const label =
+    state === "adding"
+      ? "ADDING…"
+      : state === "added"
+      ? "ADDED TO CART ✓"
+      : !selectedSize
+      ? "SELECT SIZE"
+      : "ADD TO CART";
 
   return (
-    <form 
-      className="w-full h-full flex flex-col gap-2 animate-in fade-in duration-500"
-      onSubmit={async (e) => {
-        e.preventDefault();
-        const form = e.target as HTMLFormElement;
-        const input = form.elements.namedItem('phone') as HTMLInputElement;
-        const btn = form.elements.namedItem('submitBtn') as HTMLButtonElement;
-        
-        if (!input.value) return;
-        
-        const originalText = btn.innerText;
-        btn.innerText = "PROCESSING...";
-        btn.disabled = true;
-
-        try {
-          const { error } = await supabase
-            .from('early_access')
-            .insert([{ phone_number: input.value }]);
-
-          if (error && error.code !== '23505') {
-            alert(`ERROR: ${error.message}`);
-            btn.innerText = originalText;
-            btn.disabled = false;
-          } else {
-            btn.innerText = "ADDED TO VIP LIST";
-            btn.classList.replace('bg-black', 'bg-green-800');
-            input.value = "";
-          }
-        } catch (err) {
-          console.error(err);
-          btn.innerText = originalText;
-          btn.disabled = false;
-        }
-      }}
+    <button
+      onClick={handleAdd}
+      disabled={!selectedSize || state === "adding"}
+      className="w-full h-full min-h-[52px] bg-black text-white hover:bg-neutral-800 transition-colors text-[11px] font-bold tracking-[0.4em] uppercase disabled:opacity-40"
     >
-      <input 
-        type="tel" 
-        name="phone"
-        placeholder="ENTER PHONE NUMBER" 
-        className="w-full h-[52px] bg-neutral-50 text-black text-[11px] font-medium tracking-[0.2em] px-4 outline-none border border-transparent focus:border-black transition-colors"
-        required
-      />
-      <button 
-        type="submit"
-        name="submitBtn"
-        className="w-full h-[52px] shrink-0 bg-black text-white text-[11px] font-bold tracking-[0.4em] uppercase hover:bg-neutral-800 transition-colors"
-      >
-        CONFIRM
-      </button>
-    </form>
+      {label}
+    </button>
   );
 }
 
@@ -325,7 +314,7 @@ export default function LockdownProductView({ handle }: { handle: string }) {
             </div>
           </div>
           <div className="w-full mb-6">
-            <NotifyMeForm />
+            <AddToCart handle={handle} product={product} selectedColor={selectedColor} selectedSize={selectedSize} />
             
             {/* Payment Icons Placeholder */}
             <div className="flex items-center justify-center gap-3 mt-4 text-neutral-500 font-mono text-[9px] uppercase tracking-wider">
@@ -402,7 +391,7 @@ export default function LockdownProductView({ handle }: { handle: string }) {
             </div>
             <div className="space-y-4 pt-10">
               <div className="relative w-full min-h-[60px]">
-                <NotifyMeForm />
+                <AddToCart handle={handle} product={product} selectedColor={selectedColor} selectedSize={selectedSize} />
               </div>
             </div>
             <div className="border-t border-neutral-100 divide-y divide-neutral-100">

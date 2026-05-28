@@ -11,28 +11,40 @@ import { ChevronRight, Plus, RotateCcw } from "lucide-react";
 import { useCart } from "@/components/cart-drawer";
 import { motion, AnimatePresence } from "framer-motion";
 
+// TEMP: variants map added per product to bind hardcoded productData
+// to live Shopify variant IDs. Restored to original (no variants map)
+// on "revert". Keys are `${COLOR_NAME} / ${SIZE_DISPLAY}` matching what
+// AddToCart constructs from selectedColor + selectedSize.split("|")[0].
 const productData: Record<string, any> = {
   bomber: {
     name: "CROPPED BOMBER JACKET IN TECHNICAL NYLON",
     price: "310 USD",
     colors: [
-      { 
-        name: "CHARCOAL", 
-        hex: "#2f2f2f", 
+      {
+        name: "CHARCOAL",
+        hex: "#2f2f2f",
         images: [
-          { type: 'exact', src: "/charcoal_front_exact.png" },
-          { type: 'exact', src: "/charcoal_back_exact.png" }
-        ] 
+          { type: "exact", src: "/charcoal_front_exact.png" },
+          { type: "exact", src: "/charcoal_back_exact.png" },
+        ],
       },
-      { 
-        name: "WINE", 
-        hex: "#4b1b1b", 
-        images: [
-          { type: 'exact', src: "/wine_front_exact.png" }
-        ] 
-      }
+      {
+        name: "WINE",
+        hex: "#4b1b1b",
+        images: [{ type: "exact", src: "/wine_front_exact.png" }],
+      },
     ],
     sizes: ["S", "M", "L", "XL"],
+    variants: {
+      "CHARCOAL / S": "47851303370903",
+      "CHARCOAL / M": "47851303403671",
+      "CHARCOAL / L": "47851303436439",
+      "CHARCOAL / XL": "47851303469207",
+      "WINE / S": "47851303501975",
+      "WINE / M": "47851303534743",
+      "WINE / L": "47851303567511",
+      "WINE / XL": "47851303600279",
+    },
     details: [
       "100% NYLON",
       "LINING 100% VISCOSE",
@@ -43,45 +55,55 @@ const productData: Record<string, any> = {
       "RIBBED CUFFS AND HEM",
       "MADE IN LOS ANGELES",
       "SKETCHED, FRAMED AND SAMPLES MADE IN FRANCE DESIGN STUDIO",
-      "REF: 2LB-BJ-NYL-001"
-    ]
+      "REF: 2LB-BJ-NYL-001",
+    ],
   },
   raglan: {
     name: "L'ARGENT BRÛLÉ RAGLAN LONG-SLEEVE TEE",
     price: "87 USD",
     colors: [
-      { 
-        name: "NAVY/WHITE", 
-        hex: "#f8f8f8", 
-        images: [
-          { type: 'exact', src: "/raglan_front_white_v2.png" }
-        ] 
-      }
+      {
+        name: "NAVY/WHITE",
+        hex: "#f8f8f8",
+        images: [{ type: "exact", src: "/raglan_front_white_v2.png" }],
+      },
     ],
-    sizes: ["S", "M", "L", "XL"],
+    sizes: ["1", "2", "3", "4"],
+    variants: {
+      "NAVY/WHITE / 1": "47851303633047",
+      "NAVY/WHITE / 2": "47851303665815",
+      "NAVY/WHITE / 3": "47851303698583",
+      "NAVY/WHITE / 4": "47851303731351",
+    },
     details: [
       "100% SUPIMA COTTON",
       "TWO-TONE RAGLAN CONSTRUCTION",
       "SCREEN PRINTED ARCHIVE GRAPHIC",
       "OVERSIZED DRAPE",
       "MADE IN LOS ANGELES",
-      "REF: 2LB-RT-COT-002"
-    ]
+      "REF: 2LB-RT-COT-002",
+    ],
   },
   hoodie: {
     name: "L'ARGENT BRÛLÉ LEMONDROP HOODIE",
     price: "185 USD",
     colors: [
-      { 
-        name: "WASHED YELLOW", 
-        hex: "#f0e68c", 
+      {
+        name: "WASHED YELLOW",
+        hex: "#f0e68c",
         images: [
-          { type: 'exact', src: "/hoodie_front_v13.png" },
-          { type: 'exact', src: "/hoodie_back_v10.png" }
-        ] 
-      }
+          { type: "exact", src: "/hoodie_front_v13.png" },
+          { type: "exact", src: "/hoodie_back_v10.png" },
+        ],
+      },
     ],
     sizes: ["S", "M", "L", "XL"],
+    variants: {
+      "WASHED YELLOW / S": "47851303764119",
+      "WASHED YELLOW / M": "47851303796887",
+      "WASHED YELLOW / L": "47851303829655",
+      "WASHED YELLOW / XL": "47851303862423",
+    },
     details: [
       "500 GSM HEAVYWEIGHT COTTON FLEECE",
       "HAND-WASHED VINTAGE FINISH",
@@ -89,26 +111,33 @@ const productData: Record<string, any> = {
       "DOUBLE-LAYERED HOOD",
       "KANGAROO POCKET",
       "MADE IN LOS ANGELES",
-      "REF: 2LB-VH-COT-003"
-    ]
+      "REF: 2LB-VH-COT-003",
+    ],
   },
   "leather-pants": {
     name: "\"BEAUTÉ DU CUIR\" CARPENTERS",
-    price: "240 USD / 220 EUR",
+    price: "240 USD",
     isFullBleed: true,
     colors: [
-      { 
-        name: "BLACK LEATHER", 
-        hex: "#000000", 
+      {
+        name: "BLACK LEATHER",
+        hex: "#000000",
         images: [
-          { type: 'exact', src: "/leather_pants_front.png" },
-          { type: 'exact', src: "/leather_pants_detail.png" },
-          { type: 'exact', src: "/leather_pants_back.jpg" },
-          { type: 'exact', src: "/leather_pants_back_detail.png" }
-        ] 
-      }
+          { type: "exact", src: "/leather_pants_front.png" },
+          { type: "exact", src: "/leather_pants_detail.png" },
+          { type: "exact", src: "/leather_pants_back.jpg" },
+          { type: "exact", src: "/leather_pants_back_detail.png" },
+        ],
+      },
     ],
-    sizes: ["1|28-30", "2|30-32", "3|32-34", "4|34-36", "CUSTOM|SIZING AVAILABLE"],
+    sizes: ["1|28-30", "2|30-32", "3|32-34", "4|34-36", "Custom Order|SIZING AVAILABLE"],
+    variants: {
+      "BLACK LEATHER / 1": "47851303895191",
+      "BLACK LEATHER / 2": "47851303927959",
+      "BLACK LEATHER / 3": "47851303960727",
+      "BLACK LEATHER / 4": "47851303993495",
+      "BLACK LEATHER / Custom Order": "47851304026263",
+    },
     details: [
       "UNRELEASED ARCHIVE PIECE",
       "PREMIUM HEAVYWEIGHT LEATHER",
@@ -116,9 +145,9 @@ const productData: Record<string, any> = {
       "SILVER-TONE RIVETS",
       "RELAXED FIT",
       "MADE IN LOS ANGELES",
-      "REF: 2LB-CP-LMB-005"
-    ]
-  }
+      "REF: 2LB-CP-LMB-005",
+    ],
+  },
 };
 
 function OptimizedProductImage({ imageData, alt, isFullBleed }: { imageData: any, alt: string, isFullBleed?: boolean }) {
@@ -137,6 +166,9 @@ function OptimizedProductImage({ imageData, alt, isFullBleed }: { imageData: any
 }
 
 // TEMP: replaces NotifyMeForm for testing. Restored to NotifyMeForm on "revert".
+// Looks up the Shopify variant ID from product.variants["<COLOR> / <SIZE>"]
+// and passes it through so PROCEED TO CHECKOUT can build the Shopify
+// cart permalink end-to-end.
 function AddToCart({
   handle,
   product,
@@ -144,26 +176,43 @@ function AddToCart({
   selectedSize,
 }: {
   handle: string;
-  product: { name: string; price: string; colors: { name: string; images: { src: string }[] }[] };
+  product: {
+    name: string;
+    price: string;
+    colors: { name: string; images: { src: string }[] }[];
+    variants?: Record<string, string>;
+  };
   selectedColor: number;
   selectedSize: string | null;
 }) {
   const { addItem } = useCart();
-  const [state, setState] = useState<"idle" | "adding" | "added">("idle");
+  const [state, setState] = useState<"idle" | "adding" | "added" | "error">("idle");
+  const [errMsg, setErrMsg] = useState("");
 
   const handleAdd = async () => {
     if (!selectedSize) return;
     setState("adding");
+    setErrMsg("");
     const colorName = product.colors[selectedColor]?.name || "";
     const imageSrc = product.colors[selectedColor]?.images[0]?.src || "";
     const sizeDisplay = selectedSize.split("|")[0];
+    const variantKey = `${colorName} / ${sizeDisplay}`;
+    const shopifyVariantId = product.variants?.[variantKey];
+
+    if (!shopifyVariantId) {
+      setErrMsg(`No Shopify variant for "${variantKey}"`);
+      setState("error");
+      return;
+    }
+
     try {
       await addItem({
         id: handle,
         name: product.name,
         price: product.price,
         image: imageSrc,
-        variant: `${colorName} / ${sizeDisplay}`,
+        variant: variantKey,
+        shopify_variant_legacy_id: shopifyVariantId,
       });
       setState("added");
       setTimeout(() => setState("idle"), 2200);
@@ -177,18 +226,25 @@ function AddToCart({
       ? "ADDING…"
       : state === "added"
       ? "ADDED TO CART ✓"
+      : state === "error"
+      ? "ERROR — TRY AGAIN"
       : !selectedSize
       ? "SELECT SIZE"
       : "ADD TO CART";
 
   return (
-    <button
-      onClick={handleAdd}
-      disabled={!selectedSize || state === "adding"}
-      className="w-full h-full min-h-[52px] bg-black text-white hover:bg-neutral-800 transition-colors text-[11px] font-bold tracking-[0.4em] uppercase disabled:opacity-40"
-    >
-      {label}
-    </button>
+    <div className="w-full space-y-2">
+      <button
+        onClick={handleAdd}
+        disabled={!selectedSize || state === "adding"}
+        className="w-full h-full min-h-[52px] bg-black text-white hover:bg-neutral-800 transition-colors text-[11px] font-bold tracking-[0.4em] uppercase disabled:opacity-40"
+      >
+        {label}
+      </button>
+      {errMsg && (
+        <p className="text-[10px] text-red-500 tracking-wide text-center">{errMsg}</p>
+      )}
+    </div>
   );
 }
 

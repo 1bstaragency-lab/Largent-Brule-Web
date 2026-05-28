@@ -3,11 +3,16 @@
 // token to the browser. Everything goes through our Next.js server.
 //
 // For checkout we use Shopify's "cart permalink" URL pattern:
-//   https://{store}.myshopify.com/cart/{variant_id}:{qty},{variant_id}:{qty}
+//   https://{checkout_domain}/cart/{variant_id}:{qty},{variant_id}:{qty}
 // which redirects straight to Shopify-hosted checkout. No Storefront
 // token needed.
+//
+// Admin API calls always use the canonical myshopify domain. The
+// checkout URL uses the BRANDED domain (e.g. shop.largentbrule.com)
+// so customers see L'B in the address bar during checkout.
 
 const DOMAIN = process.env.SHOPIFY_STORE_DOMAIN || '';
+const CHECKOUT_DOMAIN = process.env.SHOPIFY_CHECKOUT_DOMAIN || DOMAIN;
 const TOKEN = process.env.SHOPIFY_ADMIN_TOKEN || '';
 const API_VERSION = process.env.SHOPIFY_API_VERSION || '2026-04';
 
@@ -188,7 +193,7 @@ export function buildCheckoutUrl(opts: {
    *  the Shopify order back to our cart row via session_id. */
   attributes?: Record<string, string>;
 }): string {
-  if (!DOMAIN) throw new Error('SHOPIFY_STORE_DOMAIN is not set');
+  if (!CHECKOUT_DOMAIN) throw new Error('SHOPIFY_CHECKOUT_DOMAIN / SHOPIFY_STORE_DOMAIN is not set');
   if (opts.items.length === 0) throw new Error('cart items required');
   const path = opts.items
     .map((i) => `${i.variantId}:${Math.max(1, i.quantity)}`)
@@ -201,7 +206,7 @@ export function buildCheckoutUrl(opts: {
     }
   }
   const qs = params.toString();
-  return `https://${DOMAIN}/cart/${path}${qs ? `?${qs}` : ''}`;
+  return `https://${CHECKOUT_DOMAIN}/cart/${path}${qs ? `?${qs}` : ''}`;
 }
 
 /** Extract the numeric Shopify ID from a GID string. */

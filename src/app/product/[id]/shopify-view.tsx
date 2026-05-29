@@ -9,6 +9,7 @@ import { useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ChevronRight, Plus } from "lucide-react";
 import { useCart } from "@/components/cart-drawer";
+import { useDwell } from "@/hooks/useDwell";
 import type { ShopifyProduct, ShopifyVariant } from "@/lib/shopify";
 
 interface Props {
@@ -95,6 +96,13 @@ export default function ShopifyProductView({ product }: Props) {
 
   const heroImage =
     product.featuredImage?.url || product.images[0]?.url || "";
+
+  useDwell({
+    handle: product.handle,
+    name: product.title,
+    image: heroImage,
+    priceText: `${Math.round(displayPrice)} ${product.priceRange.currencyCode}`,
+  });
 
   const detailsList = product.description
     .split(/\r?\n|\.\s+/)

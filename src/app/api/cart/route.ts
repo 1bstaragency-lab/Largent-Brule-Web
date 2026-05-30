@@ -5,12 +5,16 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import {
   getOrCreateCart,
   getOrCreateSessionId,
+  isCartTrackingEnabled,
   logEvent,
   readCartFull,
   touchCart,
 } from '@/lib/cart-session';
 
 export async function GET() {
+  if (!isCartTrackingEnabled()) {
+    return Response.json({ ok: true, cart: null, items: [], tracking: false });
+  }
   const { sessionId } = await getOrCreateSessionId();
   const cart = await getOrCreateCart(sessionId);
   const full = await readCartFull(cart.id);
@@ -22,6 +26,12 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
+  if (!isCartTrackingEnabled()) {
+    return Response.json(
+      { ok: false, error: 'cart_tracking_disabled' },
+      { status: 503 }
+    );
+  }
   let payload: {
     product_id?: string;
     product_name?: string;

@@ -4,7 +4,8 @@ import { useState, useEffect, createContext, useContext, useCallback } from "rea
 import Image from "next/image";
 import Link from "next/link";
 import { X } from "lucide-react";
-import { getTopDwell, type DwellEntry } from "@/hooks/useDwell";
+import { getTopDwell } from "@/hooks/useDwell";
+import { pickRandomCatalogItem, type CatalogItem } from "@/lib/catalog";
 
 // Public shape used by product pages: `addItem({ id, name, price, image, ... })`.
 // `id` is the product_id / handle (e.g. "bomber"). Variant is optional.
@@ -78,7 +79,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   // Hydrate from the server on first mount. This also mints the
   // lb_session cookie + cart row on first ever page load.
+  // Short-circuited when NEXT_PUBLIC_CART_TRACKING isn't "on" so the
+  // locked storefront doesn't generate empty carts on every visit.
   useEffect(() => {
+    const trackingOn =
+      (process.env.NEXT_PUBLIC_CART_TRACKING || "").toLowerCase() === "on";
+    if (!trackingOn) {
+      setIsReady(true);
+      return;
+    }
     let cancelled = false;
     fetch("/api/cart")
       .then((r) => r.json())
@@ -179,32 +188,53 @@ function DwellSuggestion({
   isOpen: boolean;
   onClose: () => void;
 }) {
-  const [entry, setEntry] = useState<DwellEntry | null>(null);
+  // `kind` distinguishes a real dwell hit from the random catalog fallback —
+  // we use a different header label for each.
+  const [pick, setPick] = useState<
+    | { kind: "dwell"; item: CatalogItem }
+    | { kind: "random"; item: CatalogItem }
+    | null
+  >(null);
 
   // Recompute each time the drawer opens or the cart contents change.
   useEffect(() => {
     if (!isOpen) return;
-    setEntry(getTopDwell(cartProductIds));
+    const dwell = getTopDwell(cartProductIds);
+    if (dwell) {
+      setPick({
+        kind: "dwell",
+        item: {
+          handle: dwell.meta.handle,
+          name: dwell.meta.name,
+          image: dwell.meta.image,
+          priceText: dwell.meta.priceText,
+        },
+      });
+      return;
+    }
+    const random = pickRandomCatalogItem(cartProductIds);
+    setPick(random ? { kind: "random", item: random } : null);
   }, [isOpen, cartProductIds.join("|")]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  if (!entry) return null;
-  const { meta } = entry;
+  if (!pick) return null;
+  const { item, kind } = pick;
+  const label = kind === "dwell" ? "ALSO ON YOUR MIND" : "YOU MAY ALSO LIKE";
 
   return (
     <div className="border-t border-neutral-50 px-6 lg:px-10 py-6 bg-neutral-50/40">
       <p className="text-[9px] font-bold uppercase tracking-[0.4em] opacity-40 mb-4">
-        ALSO ON YOUR MIND
+        {label}
       </p>
       <Link
-        href={`/product/${meta.handle}`}
+        href={`/product/${item.handle}`}
         onClick={onClose}
         className="flex gap-5 items-center group"
       >
         <div className="w-16 h-20 bg-white relative flex-shrink-0 border border-neutral-100 p-1.5">
-          {meta.image && (
+          {item.image && (
             <Image
-              src={meta.image}
-              alt={meta.name}
+              src={item.image}
+              alt={item.name}
               fill
               className="object-contain mix-blend-multiply"
             />
@@ -212,10 +242,10 @@ function DwellSuggestion({
         </div>
         <div className="flex-1 min-w-0 space-y-1.5">
           <p className="text-[10px] font-bold uppercase tracking-widest leading-tight truncate">
-            {meta.name}
+            {item.name}
           </p>
           <p className="text-[10px] font-medium tracking-tight opacity-70">
-            {meta.priceText}
+            {item.priceText}
           </p>
         </div>
         <span className="text-[9px] font-bold uppercase tracking-[0.3em] opacity-40 group-hover:opacity-100 transition-opacity">

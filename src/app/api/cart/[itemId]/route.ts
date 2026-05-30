@@ -3,6 +3,7 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import {
   getOrCreateCart,
   getOrCreateSessionId,
+  isCartTrackingEnabled,
   logEvent,
   readCartFull,
   touchCart,
@@ -14,6 +15,10 @@ export async function DELETE(
 ) {
   const { itemId } = await context.params;
   if (!itemId) return Response.json({ ok: false, error: 'bad_id' }, { status: 400 });
+
+  if (!isCartTrackingEnabled()) {
+    return Response.json({ ok: true, items: [], tracking: false });
+  }
 
   const { sessionId } = await getOrCreateSessionId();
   const cart = await getOrCreateCart(sessionId);

@@ -9,6 +9,16 @@ import { supabaseAdmin, toE164 } from './supabase-admin';
 export const SESSION_COOKIE = 'lb_session';
 const COOKIE_MAX_AGE_DAYS = 365;
 
+/**
+ * Master switch for the whole cart-tracking pipeline (session cookies,
+ * carts/cart_items/cart_events rows, abandoned-cart recovery flow). Off
+ * by default so the locked storefront doesn't accumulate empty cart rows.
+ * Set `NEXT_PUBLIC_CART_TRACKING=on` in Netlify env to turn it on.
+ */
+export function isCartTrackingEnabled(): boolean {
+  return (process.env.NEXT_PUBLIC_CART_TRACKING || '').toLowerCase() === 'on';
+}
+
 export interface CartRow {
   id: string;
   session_id: string;

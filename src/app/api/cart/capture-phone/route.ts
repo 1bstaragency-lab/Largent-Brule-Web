@@ -5,6 +5,7 @@
 import {
   getOrCreateCart,
   getOrCreateSessionId,
+  isCartTrackingEnabled,
   linkPhoneToCart,
 } from '@/lib/cart-session';
 
@@ -18,6 +19,13 @@ export async function POST(req: Request) {
   }
   if (!phone.trim()) {
     return Response.json({ ok: false, error: 'phone_required' }, { status: 400 });
+  }
+
+  // When cart tracking is off, swallow the call without minting a cart.
+  // VIP signups still land in the `early_access` table via the page's
+  // own supabase call — see src/app/page.tsx.
+  if (!isCartTrackingEnabled()) {
+    return Response.json({ ok: true, tracking: false });
   }
 
   const { sessionId } = await getOrCreateSessionId();

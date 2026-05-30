@@ -10,12 +10,19 @@ import { buildCheckoutUrl } from '@/lib/shopify';
 import {
   getOrCreateCart,
   getOrCreateSessionId,
+  isCartTrackingEnabled,
   logEvent,
   readCartFull,
   touchCart,
 } from '@/lib/cart-session';
 
 export async function POST() {
+  if (!isCartTrackingEnabled()) {
+    return Response.json(
+      { ok: false, error: 'cart_tracking_disabled' },
+      { status: 503 }
+    );
+  }
   const { sessionId } = await getOrCreateSessionId();
   const cart = await getOrCreateCart(sessionId);
   const full = await readCartFull(cart.id);

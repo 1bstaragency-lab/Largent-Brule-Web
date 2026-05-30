@@ -5,11 +5,15 @@ import { supabaseAdmin } from '@/lib/supabase-admin';
 import {
   getOrCreateCart,
   getOrCreateSessionId,
+  isCartTrackingEnabled,
   logEvent,
   touchCart,
 } from '@/lib/cart-session';
 
 export async function POST() {
+  if (!isCartTrackingEnabled()) {
+    return Response.json({ ok: true, tracking: false });
+  }
   const { sessionId } = await getOrCreateSessionId();
   const cart = await getOrCreateCart(sessionId);
 

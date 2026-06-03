@@ -10,7 +10,7 @@ import { ChevronDown } from "lucide-react";
 // ← change this to whatever password you want
 const SITE_PASSWORD = "SS26";
 
-const LAUNCH_DATE = new Date("2026-06-30T23:59:59");
+const LAUNCH_DATE = new Date("2026-07-13T23:59:59");
 
 const NAV_LINKS = [
   { label: "Lookbook", href: "/lookbook" },

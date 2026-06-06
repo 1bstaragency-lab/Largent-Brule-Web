@@ -28,16 +28,16 @@ export default function FAQPage() {
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
   return (
-    <div className="min-h-screen bg-white">
-      <main className="max-w-4xl mx-auto px-6 lg:px-20 py-32 space-y-20">
+    <div className="min-h-screen bg-white overflow-x-hidden">
+      <main className="max-w-4xl mx-auto px-5 sm:px-6 lg:px-20 py-20 lg:py-32 space-y-14 lg:space-y-20">
         {/* Header */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
           className="space-y-8"
         >
-          <h1 className="text-[24px] font-bold tracking-[0.6em] uppercase text-black text-center lg:text-left">
+          <h1 className="text-[20px] sm:text-[24px] font-bold tracking-[0.3em] sm:tracking-[0.6em] uppercase text-black text-center lg:text-left">
             FAQ
           </h1>
           <div className="h-[1px] w-20 bg-black mx-auto lg:mx-0" />
@@ -46,7 +46,7 @@ export default function FAQPage() {
         {/* FAQ List */}
         <div className="space-y-2">
           {faqData.map((item, idx) => (
-            <motion.div 
+            <motion.div
               key={idx}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -55,20 +55,27 @@ export default function FAQPage() {
             >
               <button
                 onClick={() => setActiveIdx(activeIdx === idx ? null : idx)}
-                className="w-full py-10 flex justify-between items-center text-[12px] font-bold uppercase tracking-[0.4em] text-black text-left hover:opacity-50 transition-all"
+                className="w-full py-7 lg:py-10 flex justify-between items-center gap-4 text-[11px] sm:text-[12px] font-bold uppercase tracking-[0.2em] sm:tracking-[0.4em] text-black text-left hover:opacity-50 transition-all"
               >
-                {item.question}
-                <Plus 
-                  size={16} 
-                  strokeWidth={1} 
-                  className={cn("transition-transform duration-500", activeIdx === idx && "rotate-45")} 
+                <span className="flex-1 min-w-0 break-words leading-relaxed">
+                  {item.question}
+                </span>
+                <Plus
+                  size={16}
+                  strokeWidth={1}
+                  className={cn(
+                    "flex-shrink-0 transition-transform duration-500",
+                    activeIdx === idx && "rotate-45"
+                  )}
                 />
               </button>
-              <div className={cn(
-                "overflow-hidden transition-all duration-700 ease-in-out",
-                activeIdx === idx ? "max-h-[300px] pb-10" : "max-h-0"
-              )}>
-                <p className="text-[11px] font-medium tracking-[0.1em] leading-relaxed text-neutral-400 uppercase max-w-2xl">
+              <div
+                className={cn(
+                  "overflow-hidden transition-all duration-700 ease-in-out",
+                  activeIdx === idx ? "max-h-[400px] pb-8 lg:pb-10" : "max-h-0"
+                )}
+              >
+                <p className="text-[11px] font-medium tracking-[0.08em] sm:tracking-[0.1em] leading-relaxed text-neutral-400 uppercase max-w-2xl break-words pr-2">
                   {item.answer}
                 </p>
               </div>
@@ -77,8 +84,8 @@ export default function FAQPage() {
         </div>
 
         {/* Verification Signature */}
-        <div className="pt-24 pb-12 text-center">
-          <p className="text-[9px] text-neutral-300 uppercase tracking-[0.5em]">
+        <div className="pt-16 lg:pt-24 pb-12 text-center">
+          <p className="text-[9px] text-neutral-300 uppercase tracking-[0.3em] sm:tracking-[0.5em]">
             L&apos;ARGENT BRÛLÉ &copy; 2026
           </p>
         </div>

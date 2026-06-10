@@ -20,6 +20,7 @@ interface JoinedSubmission {
   created_at: string;
   influencers: {
     handle: string;
+    platform: 'tiktok' | 'instagram';
     display_name: string | null;
     instagram_handle: string | null;
   } | null;
@@ -29,7 +30,7 @@ async function getSubmissions() {
   const { data } = await supabaseAdmin
     .from('influencer_submissions')
     .select(
-      'id, influencer_id, video_url, platform, caption_draft, status, reviewer_notes, reviewed_at, reviewed_by, created_at, influencers(handle, display_name, instagram_handle)'
+      'id, influencer_id, video_url, platform, caption_draft, status, reviewer_notes, reviewed_at, reviewed_by, created_at, influencers(handle, platform, display_name, instagram_handle)'
     )
     .order('created_at', { ascending: false })
     .limit(500);

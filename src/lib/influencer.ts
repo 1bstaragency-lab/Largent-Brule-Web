@@ -1,5 +1,11 @@
 // Shared helpers for the influencer review pipeline.
 
+export type LoginPlatform = 'tiktok' | 'instagram';
+
+export function isLoginPlatform(s: string): s is LoginPlatform {
+  return s === 'tiktok' || s === 'instagram';
+}
+
 export function normalizeHandle(raw: string): string {
   return (raw || '')
     .trim()
@@ -7,6 +13,11 @@ export function normalizeHandle(raw: string): string {
     .toLowerCase()
     .replace(/\s+/g, '');
 }
+
+export const PLATFORM_LABEL: Record<LoginPlatform, string> = {
+  tiktok: 'TIKTOK',
+  instagram: 'INSTAGRAM',
+};
 
 const URL_RE = /^https?:\/\/[^\s]+$/i;
 

@@ -1,17 +1,18 @@
-// POST /api/influencer/me  → { handle, instagram_handle?, display_name?, email? }
-// Get-or-create an influencer row by TikTok handle. Returns their record
-// plus all submissions in reverse-chronological order. This is the
-// "sign-in" entry point — no real auth, just a known handle. We trust
-// the brand-side review process to catch impersonation.
+// POST /api/influencer/me  → { handle, platform, display_name?, email? }
+// Get-or-create an influencer row by (handle, platform). Login accepts
+// either TikTok or Instagram. Returns the influencer record, all of
+// their submissions in reverse-chronological order, and a counts-by-status
+// breakdown for the dashboard stat panel. No real auth — the team-side
+// review process catches impersonation.
 import { supabaseAdmin } from '@/lib/supabase-admin';
-import { normalizeHandle } from '@/lib/influencer';
+import { isLoginPlatform, normalizeHandle } from '@/lib/influencer';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: Request) {
   let body: {
     handle?: string;
-    instagram_handle?: string;
+    platform?: string;
     display_name?: string;
     email?: string;
   };
@@ -22,22 +23,28 @@ export async function POST(req: Request) {
   }
 
   const handle = normalizeHandle(body.handle || '');
+  const platform = (body.platform || '').toLowerCase();
   if (!handle) {
     return Response.json({ ok: false, error: 'handle_required' }, { status: 400 });
   }
   if (handle.length > 50) {
     return Response.json({ ok: false, error: 'handle_too_long' }, { status: 400 });
   }
+  if (!isLoginPlatform(platform)) {
+    return Response.json({ ok: false, error: 'platform_required' }, { status: 400 });
+  }
 
-  // Upsert by handle.
-  const patch: Record<string, unknown> = { handle, last_seen_at: new Date().toISOString() };
-  if (body.instagram_handle) patch.instagram_handle = normalizeHandle(body.instagram_handle);
+  const patch: Record<string, unknown> = {
+    handle,
+    platform,
+    last_seen_at: new Date().toISOString(),
+  };
   if (body.display_name) patch.display_name = body.display_name.trim().slice(0, 100);
   if (body.email) patch.email = body.email.trim().slice(0, 200);
 
   const { data: influencer, error: upErr } = await supabaseAdmin
     .from('influencers')
-    .upsert(patch, { onConflict: 'handle' })
+    .upsert(patch, { onConflict: 'handle,platform' })
     .select('*')
     .single();
   if (upErr || !influencer) {
@@ -53,5 +60,14 @@ export async function POST(req: Request) {
     .eq('influencer_id', influencer.id)
     .order('created_at', { ascending: false });
 
-  return Response.json({ ok: true, influencer, submissions: submissions || [] });
+  const list = submissions || [];
+  const stats = {
+    total: list.length,
+    pending: list.filter((s) => s.status === 'pending').length,
+    approved: list.filter((s) => s.status === 'approved').length,
+    denied: list.filter((s) => s.status === 'denied').length,
+    changes_requested: list.filter((s) => s.status === 'changes_requested').length,
+  };
+
+  return Response.json({ ok: true, influencer, submissions: list, stats });
 }

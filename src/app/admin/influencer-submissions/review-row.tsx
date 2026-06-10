@@ -16,6 +16,7 @@ interface Props {
     created_at: string;
     influencers: {
       handle: string;
+      platform: 'tiktok' | 'instagram';
       display_name: string | null;
       instagram_handle: string | null;
     } | null;
@@ -77,12 +78,17 @@ export function ReviewRow({ submission }: Props) {
         className="w-full flex items-center justify-between gap-4 p-4 text-left hover:bg-neutral-50 transition-colors"
       >
         <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-3 mb-1">
+          <div className="flex items-center gap-3 mb-1 flex-wrap">
             <p className="text-[12px] font-bold uppercase tracking-[0.2em]">
               @{submission.influencers?.handle || "(deleted)"}
             </p>
+            {submission.influencers?.platform && (
+              <span className="text-[8px] font-bold uppercase tracking-[0.25em] border border-neutral-300 px-1.5 py-0.5">
+                {submission.influencers.platform}
+              </span>
+            )}
             <span className="text-[9px] uppercase tracking-[0.3em] text-neutral-400">
-              {submission.platform}
+              video: {submission.platform}
             </span>
           </div>
           <p className="text-[10px] text-neutral-500 truncate">

@@ -1,19 +1,28 @@
 "use client";
 
 // Public influencer portal. Single page, two modes:
-//   1) signed-out  → enter your @handle to start / return
-//   2) signed-in   → dashboard of past submissions + new submission form
-// Handle persists in localStorage under `lb_influencer_handle`. No real
-// auth — by design, per Joseph. The brand-side review process handles
-// impersonation if it ever happens.
+//   1) signed-out → pick platform (TikTok / Instagram) + enter @handle
+//   2) signed-in  → dashboard with video-count stats, list of past
+//                   submissions, and new submission form.
+// Identity persists in localStorage: lb_influencer_handle + lb_influencer_platform.
+// No real auth — the team-side review process catches impersonation.
 
 import { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { detectPlatform, normalizeHandle, STATUS_LABEL, type SubmissionStatus } from "@/lib/influencer";
+import {
+  detectPlatform,
+  isLoginPlatform,
+  normalizeHandle,
+  PLATFORM_LABEL,
+  STATUS_LABEL,
+  type LoginPlatform,
+  type SubmissionStatus,
+} from "@/lib/influencer";
 
 interface Influencer {
   id: string;
   handle: string;
+  platform: LoginPlatform;
   display_name: string | null;
   instagram_handle: string | null;
   email: string | null;
@@ -32,8 +41,16 @@ interface Submission {
   reviewed_by: string | null;
   created_at: string;
 }
+interface Stats {
+  total: number;
+  pending: number;
+  approved: number;
+  denied: number;
+  changes_requested: number;
+}
 
-const STORAGE_KEY = "lb_influencer_handle";
+const HANDLE_KEY = "lb_influencer_handle";
+const PLATFORM_KEY = "lb_influencer_platform";
 
 const STATUS_COLOR: Record<SubmissionStatus, string> = {
   pending: "text-amber-600 border-amber-600",
@@ -42,58 +59,88 @@ const STATUS_COLOR: Record<SubmissionStatus, string> = {
   changes_requested: "text-blue-700 border-blue-700",
 };
 
+const EMPTY_STATS: Stats = {
+  total: 0,
+  pending: 0,
+  approved: 0,
+  denied: 0,
+  changes_requested: 0,
+};
+
 export default function InfluencerPortal() {
+  const [platformChoice, setPlatformChoice] = useState<LoginPlatform>("tiktok");
   const [handleInput, setHandleInput] = useState("");
   const [influencer, setInfluencer] = useState<Influencer | null>(null);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
+  const [stats, setStats] = useState<Stats>(EMPTY_STATS);
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState("");
   const [hydrating, setHydrating] = useState(true);
 
-  const signIn = useCallback(async (rawHandle: string) => {
-    const handle = normalizeHandle(rawHandle);
-    if (!handle) {
-      setErrMsg("Enter your @ handle");
-      return;
-    }
-    setLoading(true);
-    setErrMsg("");
-    try {
-      const res = await fetch("/api/influencer/me", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ handle }),
-      });
-      const j = await res.json();
-      if (!j.ok) {
-        setErrMsg(j.error || "Could not load");
+  const signIn = useCallback(
+    async (rawHandle: string, platform: LoginPlatform) => {
+      const handle = normalizeHandle(rawHandle);
+      if (!handle) {
+        setErrMsg("Enter your @ handle");
         return;
       }
-      setInfluencer(j.influencer);
-      setSubmissions(j.submissions);
-      window.localStorage.setItem(STORAGE_KEY, handle);
-    } catch {
-      setErrMsg("Network error");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+      setLoading(true);
+      setErrMsg("");
+      try {
+        const res = await fetch("/api/influencer/me", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ handle, platform }),
+        });
+        const j = await res.json();
+        if (!j.ok) {
+          setErrMsg(j.error || "Could not load");
+          return;
+        }
+        setInfluencer(j.influencer);
+        setSubmissions(j.submissions);
+        setStats(j.stats || EMPTY_STATS);
+        window.localStorage.setItem(HANDLE_KEY, handle);
+        window.localStorage.setItem(PLATFORM_KEY, platform);
+      } catch {
+        setErrMsg("Network error");
+      } finally {
+        setLoading(false);
+      }
+    },
+    []
+  );
 
-  // On mount, auto-restore from localStorage.
+  // Auto-restore from localStorage.
   useEffect(() => {
-    const saved = window.localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      signIn(saved).finally(() => setHydrating(false));
+    const savedHandle = window.localStorage.getItem(HANDLE_KEY);
+    const savedPlatform = window.localStorage.getItem(PLATFORM_KEY) || "tiktok";
+    if (savedHandle && isLoginPlatform(savedPlatform)) {
+      signIn(savedHandle, savedPlatform).finally(() => setHydrating(false));
     } else {
       setHydrating(false);
     }
   }, [signIn]);
 
   const signOut = () => {
-    window.localStorage.removeItem(STORAGE_KEY);
+    window.localStorage.removeItem(HANDLE_KEY);
+    window.localStorage.removeItem(PLATFORM_KEY);
     setInfluencer(null);
     setSubmissions([]);
+    setStats(EMPTY_STATS);
     setHandleInput("");
+  };
+
+  // Keep stats in sync when submissions list mutates client-side.
+  const setSubmissionsWithStats = (next: Submission[]) => {
+    setSubmissions(next);
+    setStats({
+      total: next.length,
+      pending: next.filter((s) => s.status === "pending").length,
+      approved: next.filter((s) => s.status === "approved").length,
+      denied: next.filter((s) => s.status === "denied").length,
+      changes_requested: next.filter((s) => s.status === "changes_requested").length,
+    });
   };
 
   if (hydrating) {
@@ -127,13 +174,35 @@ export default function InfluencerPortal() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              signIn(handleInput);
+              signIn(handleInput, platformChoice);
             }}
-            className="space-y-3"
+            className="space-y-4"
           >
+            <div>
+              <span className="text-[9px] font-bold uppercase tracking-[0.4em] opacity-60 block mb-2">
+                Sign in with
+              </span>
+              <div className="grid grid-cols-2 gap-2">
+                {(["tiktok", "instagram"] as LoginPlatform[]).map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => setPlatformChoice(p)}
+                    className={`h-[48px] border text-[10px] font-bold uppercase tracking-[0.3em] transition-colors ${
+                      platformChoice === p
+                        ? "border-black bg-black text-white"
+                        : "border-neutral-300 text-black hover:border-black"
+                    }`}
+                  >
+                    {PLATFORM_LABEL[p]}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <label className="block">
               <span className="text-[9px] font-bold uppercase tracking-[0.4em] opacity-60">
-                Your TikTok Handle
+                Your {PLATFORM_LABEL[platformChoice]} Handle
               </span>
               <input
                 type="text"
@@ -166,7 +235,8 @@ export default function InfluencerPortal() {
     <Dashboard
       influencer={influencer}
       submissions={submissions}
-      onSubmissionsChanged={setSubmissions}
+      stats={stats}
+      onSubmissionsChanged={setSubmissionsWithStats}
       onSignOut={signOut}
     />
   );
@@ -175,18 +245,17 @@ export default function InfluencerPortal() {
 function Dashboard({
   influencer,
   submissions,
+  stats,
   onSubmissionsChanged,
   onSignOut,
 }: {
   influencer: Influencer;
   submissions: Submission[];
+  stats: Stats;
   onSubmissionsChanged: (s: Submission[]) => void;
   onSignOut: () => void;
 }) {
   const [showForm, setShowForm] = useState(submissions.length === 0);
-
-  const pendingCount = submissions.filter((s) => s.status === "pending").length;
-  const approvedCount = submissions.filter((s) => s.status === "approved").length;
 
   return (
     <div className="min-h-screen bg-white">
@@ -195,14 +264,11 @@ function Dashboard({
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div className="space-y-1">
             <p className="text-[9px] font-bold uppercase tracking-[0.4em] opacity-40">
-              Creator
+              {PLATFORM_LABEL[influencer.platform]} CREATOR
             </p>
             <h1 className="text-[20px] font-bold uppercase tracking-[0.15em]">
               @{influencer.handle}
             </h1>
-            <p className="text-[10px] uppercase tracking-[0.25em] text-neutral-500">
-              {submissions.length} submissions · {pendingCount} pending · {approvedCount} approved
-            </p>
           </div>
           <button
             onClick={onSignOut}
@@ -212,10 +278,14 @@ function Dashboard({
           </button>
         </div>
 
+        {/* Stats panel */}
+        <StatsPanel stats={stats} />
+
         {/* New submission */}
         {showForm ? (
           <NewSubmissionForm
             handle={influencer.handle}
+            platform={influencer.platform}
             onCreated={(newSub) => {
               onSubmissionsChanged([newSub, ...submissions]);
               setShowForm(false);
@@ -247,12 +317,36 @@ function Dashboard({
   );
 }
 
+function StatsPanel({ stats }: { stats: Stats }) {
+  const items: Array<{ label: string; value: number; tone: string }> = [
+    { label: "Total Videos", value: stats.total, tone: "text-black" },
+    { label: "Approved", value: stats.approved, tone: "text-green-700" },
+    { label: "Pending", value: stats.pending, tone: "text-amber-600" },
+    { label: "Needs Changes", value: stats.changes_requested, tone: "text-blue-700" },
+    { label: "Denied", value: stats.denied, tone: "text-red-600" },
+  ];
+  return (
+    <div className="grid grid-cols-2 sm:grid-cols-5 border border-neutral-200 divide-y sm:divide-y-0 sm:divide-x divide-neutral-200">
+      {items.map((it) => (
+        <div key={it.label} className="px-4 py-5 text-center bg-neutral-50/40">
+          <p className={`text-[26px] font-bold leading-none ${it.tone}`}>{it.value}</p>
+          <p className="mt-2 text-[8px] font-bold uppercase tracking-[0.3em] opacity-60">
+            {it.label}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function NewSubmissionForm({
   handle,
+  platform,
   onCreated,
   onCancel,
 }: {
   handle: string;
+  platform: LoginPlatform;
   onCreated: (s: Submission) => void;
   onCancel?: () => void;
 }) {
@@ -269,7 +363,12 @@ function NewSubmissionForm({
       const res = await fetch("/api/influencer/submissions", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ handle, video_url: videoUrl, caption_draft: caption }),
+        body: JSON.stringify({
+          handle,
+          platform,
+          video_url: videoUrl,
+          caption_draft: caption,
+        }),
       });
       const j = await res.json();
       if (!j.ok) {
@@ -286,7 +385,7 @@ function NewSubmissionForm({
     }
   };
 
-  const platform = videoUrl ? detectPlatform(videoUrl) : null;
+  const videoPlatform = videoUrl ? detectPlatform(videoUrl) : null;
 
   return (
     <form onSubmit={submit} className="border border-black p-6 space-y-5 bg-neutral-50/40">
@@ -303,9 +402,9 @@ function NewSubmissionForm({
           placeholder="https://drive.google.com/… or TikTok/IG link"
           className="mt-2 w-full h-[48px] bg-white border border-neutral-200 px-3 text-[12px] outline-none focus:border-black transition-colors"
         />
-        {platform && (
+        {videoPlatform && (
           <span className="mt-1 inline-block text-[9px] uppercase tracking-[0.3em] opacity-50">
-            Detected: {platform}
+            Detected: {videoPlatform}
           </span>
         )}
       </label>

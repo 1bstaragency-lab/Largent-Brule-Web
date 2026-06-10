@@ -26,6 +26,9 @@ export default function AdminNav() {
           <Link href="/admin/coupons" className="hover:text-black transition-colors">
             Coupons
           </Link>
+          <Link href="/admin/influencer-submissions" className="hover:text-black transition-colors">
+            Creators
+          </Link>
           <Link href="/admin/shopify" className="hover:text-black transition-colors">
             Shopify
           </Link>

@@ -392,21 +392,22 @@ function NewSubmissionForm({
       <p className="text-[10px] font-bold uppercase tracking-[0.4em]">New Submission</p>
       <label className="block">
         <span className="text-[9px] font-bold uppercase tracking-[0.4em] opacity-60">
-          Video URL
+          Post Link
         </span>
         <input
           type="url"
           required
           value={videoUrl}
           onChange={(e) => setVideoUrl(e.target.value)}
-          placeholder="https://drive.google.com/… or TikTok/IG link"
+          placeholder="https://www.tiktok.com/… or https://www.instagram.com/…"
           className="mt-2 w-full h-[48px] bg-white border border-neutral-200 px-3 text-[12px] outline-none focus:border-black transition-colors"
         />
-        {videoPlatform && (
-          <span className="mt-1 inline-block text-[9px] uppercase tracking-[0.3em] opacity-50">
-            Detected: {videoPlatform}
-          </span>
-        )}
+        <span className="mt-1 block text-[9px] uppercase tracking-[0.3em] opacity-50">
+          Paste the direct link to your TikTok or Instagram post.
+          {videoPlatform && videoPlatform !== "other" && (
+            <> Detected: {videoPlatform}</>
+          )}
+        </span>
       </label>
       <label className="block">
         <span className="text-[9px] font-bold uppercase tracking-[0.4em] opacity-60">

@@ -1,24 +1,58 @@
 import Link from 'next/link';
-import { blooioListChats, type BlooioChat } from '@/lib/blooio';
-import { supabaseAdmin } from '@/lib/supabase-admin';
+import { blooioListChats } from '@/lib/blooio';
+import { normalizePhone, supabaseAdmin } from '@/lib/supabase-admin';
 import SyncOptOutsButton from './sync-opt-outs-button';
 
+// The Blooio account is shared with other brands (e.g. GrounduP). To keep
+// the L'B admin inbox scoped to L'B traffic only, we intersect the live
+// Blooio chat list with the set of phones we have a record of in
+// early_access OR sent_messages. Anything outside that set belongs to a
+// sibling project and is hidden by default. Hidden count surfaced for
+// transparency.
+function toE164(rawDigits: string): string | null {
+  const d = rawDigits.replace(/\D/g, '');
+  if (d.length === 11 && d.startsWith('1')) return `+${d}`;
+  if (d.length === 10) return `+1${d}`;
+  return null;
+}
+
 async function getData() {
-  const [chatsResult, optsResult] = await Promise.all([
+  const [chatsResult, optsResult, subsResult, sentResult] = await Promise.all([
     blooioListChats({ limit: 200 }),
     supabaseAdmin.from('opt_outs').select('phone_number'),
+    supabaseAdmin.from('early_access').select('phone_number'),
+    supabaseAdmin.from('sent_messages').select('phone_number'),
   ]);
 
   const optSet = new Set(
     (optsResult.data || []).map((r: { phone_number: string }) => r.phone_number)
   );
 
-  // Sort by last activity desc
-  const chats = [...chatsResult.chats].sort(
+  // Build the L'B-known phone set as E.164.
+  const known = new Set<string>();
+  for (const r of (subsResult.data || []) as { phone_number: string }[]) {
+    const e164 = toE164(normalizePhone(r.phone_number));
+    if (e164) known.add(e164);
+  }
+  for (const r of (sentResult.data || []) as { phone_number: string }[]) {
+    const e164 = toE164(normalizePhone(r.phone_number));
+    if (e164) known.add(e164);
+  }
+
+  // Sort by last activity desc, then split into L'B vs other-brand.
+  const allChats = [...chatsResult.chats].sort(
     (a, b) => (b.last_message_time ?? 0) - (a.last_message_time ?? 0)
   );
+  const chats = allChats.filter((c) => known.has(c.id));
+  const hiddenCount = allChats.length - chats.length;
 
-  return { chats, ok: chatsResult.ok, status: chatsResult.status, optSet };
+  return {
+    chats,
+    hiddenCount,
+    ok: chatsResult.ok,
+    status: chatsResult.status,
+    optSet,
+  };
 }
 
 function fmtPhone(e164: string) {
@@ -46,7 +80,7 @@ function truncate(s: string, n = 80) {
 }
 
 export default async function InboxPage() {
-  const { chats, ok, status, optSet } = await getData();
+  const { chats, hiddenCount, ok, status, optSet } = await getData();
 
   const totalReplies = chats.reduce((sum, c) => sum + c.inbound_count, 0);
   const withReplies = chats.filter((c) => c.inbound_count > 0).length;
@@ -164,10 +198,16 @@ export default async function InboxPage() {
         </table>
       </div>
 
+      {hiddenCount > 0 && (
+        <p className="text-[10px] text-neutral-400 text-center leading-relaxed">
+          {hiddenCount} other-brand conversation{hiddenCount === 1 ? '' : 's'} hidden — they belong to a sibling project on the same Blooio account and aren&apos;t L&apos;B subscribers.
+        </p>
+      )}
+
       <p className="text-[10px] text-neutral-400 text-center leading-relaxed">
         Live from Blooio. Refresh the page to pull the latest. The Sync opt-outs button scans all
         inbound messages for STOP / UNSUBSCRIBE / opt out and adds matching phones to the
-        opt_outs table — they'll be skipped by every future campaign.
+        opt_outs table — they&apos;ll be skipped by every future campaign.
       </p>
     </div>
   );

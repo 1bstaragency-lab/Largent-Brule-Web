@@ -2,25 +2,11 @@
 
 import { useState } from "react";
 import { STATUS_LABEL, type SubmissionStatus } from "@/lib/influencer";
+import type { BoardSubmission } from "./review-board";
 
 interface Props {
-  submission: {
-    id: string;
-    video_url: string;
-    platform: string;
-    caption_draft: string | null;
-    status: SubmissionStatus;
-    reviewer_notes: string | null;
-    reviewed_at: string | null;
-    reviewed_by: string | null;
-    created_at: string;
-    influencers: {
-      handle: string;
-      platform: 'tiktok' | 'instagram';
-      display_name: string | null;
-      instagram_handle: string | null;
-    } | null;
-  };
+  submission: BoardSubmission;
+  onChanged?: (next: BoardSubmission) => void;
 }
 
 const STATUS_BG: Record<SubmissionStatus, string> = {
@@ -30,9 +16,9 @@ const STATUS_BG: Record<SubmissionStatus, string> = {
   changes_requested: "bg-blue-50 border-blue-300 text-blue-700",
 };
 
-export function ReviewRow({ submission }: Props) {
+export function ReviewRow({ submission, onChanged }: Props) {
   const [expanded, setExpanded] = useState(submission.status === "pending");
-  const [status, setStatus] = useState<SubmissionStatus>(submission.status);
+  const status = submission.status;
   const [notes, setNotes] = useState(submission.reviewer_notes || "");
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
@@ -61,7 +47,9 @@ export function ReviewRow({ submission }: Props) {
         setFeedback(j.error || "Save failed");
         return;
       }
-      setStatus(nextStatus);
+      // Bubble the updated row up so the board can re-group it
+      // into the new section without a refresh.
+      onChanged?.({ ...submission, ...(j.submission as BoardSubmission) });
       setFeedback("Saved");
       setTimeout(() => setFeedback(null), 2000);
     } catch {

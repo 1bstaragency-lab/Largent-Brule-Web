@@ -66,7 +66,16 @@ export default function Home() {
   };
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
-  const [submitState, setSubmitState] = useState<"idle" | "loading" | "success">("idle");
+  // Two-step flow:
+  //   phone   → entering phone     phoneLoading → posting phone
+  //   email   → entering email     emailLoading → posting email
+  //   success → final "on the list" message after either email submit or skip
+  const [step, setStep] = useState<
+    "phone" | "phoneLoading" | "email" | "emailLoading" | "success"
+  >("phone");
+  const [submittedDigits, setSubmittedDigits] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
 
   const timeLeft = useCountdown();
 
@@ -118,24 +127,55 @@ export default function Home() {
       setPhoneError("Enter your full 10-digit number including area code.");
       return;
     }
-    setSubmitState("loading");
+    setStep("phoneLoading");
     try {
       const { error } = await supabase
         .from("early_access")
         .insert([{ phone_number: digits }]);
       if (error && error.code !== "23505") {
         setPhoneError(error.message);
-        setSubmitState("idle");
+        setStep("phone");
       } else {
-        // Link this phone to the browser's cart session in the background.
+        // Link phone to the browser's cart session in the background.
         capturePhone(digits);
-        setSubmitState("success");
-        setPhone("");
+        setSubmittedDigits(digits);
+        setStep("email");
       }
     } catch {
       setPhoneError("Something went wrong. Try again.");
-      setSubmitState("idle");
+      setStep("phone");
     }
+  };
+
+  const handleEmailSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleaned = email.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleaned)) {
+      setEmailError("Enter a valid email.");
+      return;
+    }
+    setStep("emailLoading");
+    try {
+      const res = await fetch("/api/vip/attach-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: submittedDigits, email: cleaned }),
+      });
+      const j = await res.json();
+      if (!j.ok) {
+        setEmailError(j.error === "invalid_email" ? "Enter a valid email." : "Could not save email — try again.");
+        setStep("email");
+        return;
+      }
+      setStep("success");
+    } catch {
+      setEmailError("Network error — try again.");
+      setStep("email");
+    }
+  };
+
+  const handleEmailSkip = () => {
+    setStep("success");
   };
 
   return (
@@ -233,46 +273,98 @@ export default function Home() {
         )}
       </form>}
 
-      {/* Phone signup */}
-      <form onSubmit={handleSignup} className="w-full max-w-sm flex flex-col gap-3">
-        <div className={`flex items-center border rounded-sm bg-white px-4 py-3 gap-3 ${
-          phoneError ? "border-red-400" : "border-neutral-300 focus-within:border-neutral-500"
-        }`}>
-          <span className="text-lg leading-none">🇺🇸</span>
-          <span className="text-[11px] text-neutral-400">+1</span>
-          <div className="w-px h-4 bg-neutral-200" />
-          <input
-            type="tel"
-            value={phone}
-            onChange={handlePhoneChange}
-            placeholder="Phone Number"
-            className="flex-1 text-[13px] font-light text-black bg-transparent outline-none placeholder:text-neutral-400"
-          />
+      {/* Step 1 — Phone signup */}
+      {(step === "phone" || step === "phoneLoading") && (
+        <form onSubmit={handleSignup} className="w-full max-w-sm flex flex-col gap-3">
+          <div className={`flex items-center border rounded-sm bg-white px-4 py-3 gap-3 ${
+            phoneError ? "border-red-400" : "border-neutral-300 focus-within:border-neutral-500"
+          }`}>
+            <span className="text-lg leading-none">🇺🇸</span>
+            <span className="text-[11px] text-neutral-400">+1</span>
+            <div className="w-px h-4 bg-neutral-200" />
+            <input
+              type="tel"
+              value={phone}
+              onChange={handlePhoneChange}
+              placeholder="Phone Number"
+              className="flex-1 text-[13px] font-light text-black bg-transparent outline-none placeholder:text-neutral-400"
+            />
+          </div>
+          {phoneError && (
+            <p className="text-[9px] text-red-400 tracking-[0.1em] uppercase leading-relaxed">{phoneError}</p>
+          )}
+
+          <p className="text-[8px] text-neutral-300 leading-relaxed tracking-[0.03em]">
+            By submitting you consent to marketing texts. Msg &amp; data rates may apply. Reply STOP to unsubscribe.
+          </p>
+
+          <button
+            type="submit"
+            disabled={step === "phoneLoading"}
+            className="w-full py-4 rounded-sm text-[13px] font-semibold tracking-[0.05em] transition-colors bg-black hover:bg-[#111] text-white disabled:opacity-60"
+          >
+            {step === "phoneLoading"
+              ? "..."
+              : <span className="text-[11px] tracking-[0.4em] uppercase font-medium">Join VIP</span>}
+          </button>
+        </form>
+      )}
+
+      {/* Step 2 — Email capture */}
+      {(step === "email" || step === "emailLoading") && (
+        <form onSubmit={handleEmailSubmit} className="w-full max-w-sm flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <p className="text-[10px] text-neutral-500 uppercase tracking-[0.4em] text-center mb-1">
+            Phone added — add your email
+          </p>
+          <div className={`flex items-center border rounded-sm bg-white px-4 py-3 ${
+            emailError ? "border-red-400" : "border-neutral-300 focus-within:border-neutral-500"
+          }`}>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => { setEmail(e.target.value); if (emailError) setEmailError(""); }}
+              placeholder="Email Address"
+              autoCapitalize="none"
+              autoCorrect="off"
+              spellCheck={false}
+              className="flex-1 text-[13px] font-light text-black bg-transparent outline-none placeholder:text-neutral-400"
+            />
+          </div>
+          {emailError && (
+            <p className="text-[9px] text-red-400 tracking-[0.1em] uppercase leading-relaxed">{emailError}</p>
+          )}
+          <p className="text-[8px] text-neutral-300 leading-relaxed tracking-[0.03em]">
+            We&apos;ll only send drop notices and the occasional editorial.
+          </p>
+          <button
+            type="submit"
+            disabled={step === "emailLoading"}
+            className="w-full py-4 rounded-sm text-[13px] font-semibold tracking-[0.05em] transition-colors bg-black hover:bg-[#111] text-white disabled:opacity-60"
+          >
+            {step === "emailLoading"
+              ? "..."
+              : <span className="text-[11px] tracking-[0.4em] uppercase font-medium">Confirm</span>}
+          </button>
+          <button
+            type="button"
+            onClick={handleEmailSkip}
+            className="text-[9px] text-neutral-400 uppercase tracking-[0.3em] hover:text-black transition-colors py-1"
+          >
+            Skip
+          </button>
+        </form>
+      )}
+
+      {/* Final success */}
+      {step === "success" && (
+        <div className="w-full max-w-sm animate-in fade-in slide-in-from-bottom-2 duration-500">
+          <div className="w-full py-4 rounded-sm text-center bg-neutral-200 text-neutral-600">
+            <span className="text-[11px] tracking-[0.4em] uppercase font-medium">
+              You&apos;re on the list
+            </span>
+          </div>
         </div>
-        {phoneError && (
-          <p className="text-[9px] text-red-400 tracking-[0.1em] uppercase leading-relaxed">{phoneError}</p>
-        )}
-
-        <p className="text-[8px] text-neutral-300 leading-relaxed tracking-[0.03em]">
-          By submitting you consent to marketing texts. Msg &amp; data rates may apply. Reply STOP to unsubscribe.
-        </p>
-
-        <button
-          type="submit"
-          disabled={submitState === "loading" || submitState === "success"}
-          className={`w-full py-4 rounded-sm text-[13px] font-semibold tracking-[0.05em] transition-colors ${
-            submitState === "success"
-              ? "bg-neutral-300 text-neutral-500 cursor-default"
-              : "bg-black hover:bg-[#111] text-white"
-          }`}
-        >
-          {submitState === "loading"
-            ? "..."
-            : submitState === "success"
-            ? <span className="text-[11px] tracking-[0.4em] uppercase font-medium">You&apos;re on the list</span>
-            : <span className="text-[11px] tracking-[0.4em] uppercase font-medium">Join VIP</span>}
-        </button>
-      </form>
+      )}
 
     </div>
   );

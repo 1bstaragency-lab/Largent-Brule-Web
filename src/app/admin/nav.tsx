@@ -23,6 +23,9 @@ export default function AdminNav() {
           <Link href="/admin/campaigns" className="hover:text-black transition-colors">
             Campaigns
           </Link>
+          <Link href="/admin/early-access" className="hover:text-black transition-colors">
+            Early Access
+          </Link>
           <Link href="/admin/coupons" className="hover:text-black transition-colors">
             Coupons
           </Link>

@@ -1,17 +1,21 @@
 import { normalizePhone, supabaseAdmin } from '@/lib/supabase-admin';
 
-type Sub = { id: string; phone_number: string; created_at: string };
+type Sub = { id: string; phone_number: string; created_at: string; cohort: number };
 
 async function getData() {
-  const [subsRes, welcomedRes, sentRes, optsRes] = await Promise.all([
+  const [subsRes, welcomedRes, earlyAccessRes, sentRes, optsRes] = await Promise.all([
     supabaseAdmin
       .from('early_access')
-      .select('id, phone_number, created_at')
+      .select('id, phone_number, created_at, cohort')
       .order('created_at', { ascending: false }),
     supabaseAdmin
       .from('sent_messages')
       .select('phone_number')
       .eq('message_type', 'welcome'),
+    supabaseAdmin
+      .from('sent_messages')
+      .select('phone_number')
+      .eq('message_type', 'early_access'),
     supabaseAdmin
       .from('sent_messages')
       .select('phone_number, sent_at')
@@ -22,11 +26,13 @@ async function getData() {
   const welcomedSet = new Set(
     (welcomedRes.data || []).map((r: { phone_number: string }) => normalizePhone(r.phone_number))
   );
+  const earlyAccessSet = new Set(
+    (earlyAccessRes.data || []).map((r: { phone_number: string }) => normalizePhone(r.phone_number))
+  );
   const optSet = new Set(
     (optsRes.data || []).map((r: { phone_number: string }) => normalizePhone(r.phone_number))
   );
 
-  // Most recent send per phone, for "last contacted" column.
   const lastSentMap = new Map<string, string>();
   for (const row of (sentRes.data || []) as { phone_number: string; sent_at: string }[]) {
     const k = normalizePhone(row.phone_number);
@@ -36,6 +42,7 @@ async function getData() {
   return {
     subs: (subsRes.data || []) as Sub[],
     welcomedSet,
+    earlyAccessSet,
     optSet,
     lastSentMap,
   };
@@ -57,6 +64,10 @@ function fmtDate(iso: string) {
   });
 }
 
+function fmtShortDate(iso: string) {
+  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
 function fmtRelative(iso: string) {
   const diff = Date.now() - new Date(iso).getTime();
   const m = Math.floor(diff / 60000);
@@ -67,10 +78,54 @@ function fmtRelative(iso: string) {
   return `${d}d ago`;
 }
 
+interface CohortMeta {
+  num: number;
+  size: number;
+  first: string;
+  last: string;
+  earlyAccessSentCount: number;
+  label: string; // "May 12 → May 20" or "May 22" if single day
+}
+
+function buildCohortMeta(subs: Sub[], earlyAccessSet: Set<string>): CohortMeta[] {
+  const byCohort = new Map<number, Sub[]>();
+  for (const s of subs) {
+    if (!byCohort.has(s.cohort)) byCohort.set(s.cohort, []);
+    byCohort.get(s.cohort)!.push(s);
+  }
+  return Array.from(byCohort.entries())
+    .map(([num, rows]) => {
+      const sorted = [...rows].sort((a, b) => a.created_at.localeCompare(b.created_at));
+      const first = sorted[0].created_at;
+      const last = sorted[sorted.length - 1].created_at;
+      const firstShort = fmtShortDate(first);
+      const lastShort = fmtShortDate(last);
+      const label = firstShort === lastShort ? firstShort : `${firstShort} → ${lastShort}`;
+      const earlySent = rows.filter((r) =>
+        earlyAccessSet.has(normalizePhone(r.phone_number))
+      ).length;
+      return {
+        num,
+        size: rows.length,
+        first,
+        last,
+        earlyAccessSentCount: earlySent,
+        label,
+      };
+    })
+    .sort((a, b) => a.num - b.num);
+}
+
 export default async function SubscribersPage() {
-  const { subs, welcomedSet, optSet, lastSentMap } = await getData();
+  const { subs, welcomedSet, earlyAccessSet, optSet, lastSentMap } = await getData();
   const welcomed = subs.filter((s) => welcomedSet.has(normalizePhone(s.phone_number))).length;
   const pending = subs.length - welcomed;
+  const earlyAccessSent = subs.filter((s) =>
+    earlyAccessSet.has(normalizePhone(s.phone_number))
+  ).length;
+
+  const cohorts = buildCohortMeta(subs, earlyAccessSet);
+  const cohortLabelByNum = new Map(cohorts.map((c) => [c.num, c.label]));
 
   return (
     <div className="space-y-6">
@@ -81,6 +136,12 @@ export default async function SubscribersPage() {
           <p className="text-[11px] text-neutral-500 mt-2 tracking-wide">
             {welcomed} welcomed · {pending} pending welcome · {optSet.size} opted out
           </p>
+          <p className="text-[11px] text-neutral-500 mt-1 tracking-wide">
+            {earlyAccessSent} early-access SMS sent · {subs.length - earlyAccessSent} still to send
+          </p>
+          <p className="text-[11px] text-neutral-500 mt-1 tracking-wide">
+            {cohorts.length} groups (15 per group by SMS signup date)
+          </p>
         </div>
         <a
           href="/admin/subscribers/export"
@@ -90,14 +151,43 @@ export default async function SubscribersPage() {
         </a>
       </div>
 
+      {/* Group breakdown chips — labeled by date, with early-access send progress */}
+      {cohorts.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {cohorts.map((c) => {
+            const allSent = c.earlyAccessSentCount === c.size;
+            return (
+              <span
+                key={c.num}
+                className={`text-[9px] uppercase tracking-[0.3em] border px-3 py-1.5 ${
+                  allSent
+                    ? 'bg-green-50 border-green-300 text-green-700'
+                    : c.earlyAccessSentCount > 0
+                    ? 'bg-amber-50 border-amber-300 text-amber-700'
+                    : 'bg-white border-neutral-300 text-black'
+                }`}
+                title={`Group ${c.num}: ${c.earlyAccessSentCount}/${c.size} early-access SMS sent`}
+              >
+                {c.label}
+                <span className="opacity-60 ml-2">
+                  {c.earlyAccessSentCount}/{c.size}
+                </span>
+              </span>
+            );
+          })}
+        </div>
+      )}
+
       <div className="bg-white border border-neutral-200 rounded-sm overflow-hidden">
         <table className="w-full text-[12px]">
           <thead className="bg-neutral-50 text-[9px] uppercase tracking-[0.3em] text-neutral-500">
             <tr>
               <th className="px-4 py-3 text-left font-medium">Phone</th>
+              <th className="px-4 py-3 text-left font-medium w-40">Group</th>
               <th className="px-4 py-3 text-left font-medium">Joined</th>
+              <th className="px-4 py-3 text-left font-medium w-32">Early access</th>
               <th className="px-4 py-3 text-left font-medium">Last contacted</th>
-              <th className="px-4 py-3 text-left font-medium">Status</th>
+              <th className="px-4 py-3 text-left font-medium">Welcome</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-neutral-100">
@@ -105,11 +195,29 @@ export default async function SubscribersPage() {
               const key = normalizePhone(s.phone_number);
               const optedOut = optSet.has(key);
               const isWelcomed = welcomedSet.has(key);
+              const isEarlyAccessSent = earlyAccessSet.has(key);
               const lastSent = lastSentMap.get(key);
+              const groupLabel = cohortLabelByNum.get(s.cohort) || `#${s.cohort}`;
               return (
                 <tr key={s.id} className="hover:bg-neutral-50">
                   <td className="px-4 py-3 font-mono">{fmtPhone(s.phone_number)}</td>
+                  <td className="px-4 py-3">
+                    <span className="text-[9px] uppercase tracking-[0.25em] text-neutral-700 border border-neutral-300 px-2 py-0.5">
+                      {groupLabel}
+                    </span>
+                  </td>
                   <td className="px-4 py-3 text-neutral-600">{fmtDate(s.created_at)}</td>
+                  <td className="px-4 py-3">
+                    {isEarlyAccessSent ? (
+                      <span className="text-[9px] uppercase tracking-[0.3em] text-green-700">
+                        ✓ Sent
+                      </span>
+                    ) : (
+                      <span className="text-[9px] uppercase tracking-[0.3em] text-neutral-400">
+                        Not sent
+                      </span>
+                    )}
+                  </td>
                   <td className="px-4 py-3 text-neutral-500">
                     {lastSent ? fmtRelative(lastSent) : '—'}
                   </td>
@@ -133,7 +241,7 @@ export default async function SubscribersPage() {
             })}
             {subs.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-4 py-10 text-center text-neutral-400 text-[11px] uppercase tracking-[0.3em]">
+                <td colSpan={6} className="px-4 py-10 text-center text-neutral-400 text-[11px] uppercase tracking-[0.3em]">
                   No subscribers yet
                 </td>
               </tr>

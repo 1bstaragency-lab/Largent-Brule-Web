@@ -228,7 +228,7 @@ export default function Home() {
 
       {/* Logo — tap 5× to reveal admin password field */}
       <div
-        className="relative w-56 h-16 sm:w-72 sm:h-24 mb-2 sm:mb-4 cursor-default select-none flex-shrink-0"
+        className="relative w-56 h-16 sm:w-72 sm:h-24 mb-2 sm:mb-4 cursor-default select-none max-sm:shrink-0"
         onClick={handleLogoTap}
       >
         <Image

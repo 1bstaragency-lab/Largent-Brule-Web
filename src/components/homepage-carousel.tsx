@@ -45,7 +45,7 @@ export function HomepageCarousel() {
   if (!urls || urls.length === 0) return null;
 
   return (
-    <div className="relative w-full h-[42vh] sm:max-w-md sm:h-auto sm:aspect-[4/5] mb-4 sm:mb-8 overflow-hidden flex-shrink-0">
+    <div className="relative w-full h-[42vh] sm:max-w-md sm:h-auto sm:aspect-[4/5] mb-4 sm:mb-8 overflow-hidden max-sm:shrink-0">
       {urls.map((url, i) => {
         // Position relative to active index.
         // 0 = active (centered, full opacity)

@@ -26,6 +26,9 @@ export default function AdminNav() {
           <Link href="/admin/early-access" className="hover:text-black transition-colors">
             Early Access
           </Link>
+          <Link href="/admin/homepage" className="hover:text-black transition-colors">
+            Homepage
+          </Link>
           <Link href="/admin/coupons" className="hover:text-black transition-colors">
             Coupons
           </Link>

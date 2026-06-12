@@ -66,6 +66,7 @@ export default function Home() {
   };
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
+  const [carouselVideoUrl, setCarouselVideoUrl] = useState<string | null>(null);
   // Two-step flow:
   //   phone   → entering phone     phoneLoading → posting phone
   //   email   → entering email     emailLoading → posting email
@@ -88,6 +89,19 @@ export default function Home() {
     };
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  // Pull the homepage carousel video URL (set by /admin/homepage). If
+  // none is configured the slot collapses silently.
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/public/homepage-video")
+      .then((r) => r.json())
+      .then((j) => {
+        if (!cancelled) setCarouselVideoUrl((j.url as string) || null);
+      })
+      .catch(() => {/* leave null — homepage just won't show a video */});
+    return () => { cancelled = true; };
   }, []);
 
   const handleEnter = (e: React.FormEvent) => {
@@ -218,6 +232,20 @@ export default function Home() {
           priority
         />
       </div>
+
+      {/* Carousel video — set in /admin/homepage. Sits between logo and
+          the rest of the gate. Auto-plays muted, loops, hidden on mobile-data
+          if user disabled autoplay. */}
+      {carouselVideoUrl && (
+        <video
+          src={carouselVideoUrl}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="w-full max-w-md aspect-[4/5] object-cover mb-8 bg-black"
+        />
+      )}
 
       {/* VIP heading */}
       <div className="text-center mb-10 space-y-2">

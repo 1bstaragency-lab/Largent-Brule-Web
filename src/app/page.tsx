@@ -234,8 +234,9 @@ export default function Home() {
       </div>
 
       {/* Carousel video — set in /admin/homepage. Sits between logo and
-          the rest of the gate. Auto-plays muted, loops, hidden on mobile-data
-          if user disabled autoplay. */}
+          the rest of the gate. Auto-plays muted, loops. Page bg color is
+          set on the video so any letterbox/transparency edges blend
+          seamlessly with the gate. */}
       {carouselVideoUrl && (
         <video
           src={carouselVideoUrl}
@@ -243,7 +244,8 @@ export default function Home() {
           muted
           loop
           playsInline
-          className="w-full max-w-md aspect-[4/5] object-cover mb-8 bg-black"
+          className="w-full max-w-md aspect-[4/5] object-cover mb-8"
+          style={{ backgroundColor: '#f5f3ef' }}
         />
       )}
 

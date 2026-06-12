@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { ChevronDown } from "lucide-react";
+import { HomepageCarousel } from "@/components/homepage-carousel";
 
 // ← change this to whatever password you want
 const SITE_PASSWORD = "SS26";
@@ -233,11 +234,10 @@ export default function Home() {
         />
       </div>
 
-      {/* Carousel video — set in /admin/homepage. Sits between logo and
-          the rest of the gate. Auto-plays muted, loops. Page bg color is
-          set on the video so any letterbox/transparency edges blend
-          seamlessly with the gate. */}
-      {carouselVideoUrl && (
+      {/* Carousel — bg-removed product fits cycle here with a slide-fade.
+          Managed in /admin/homepage. Falls back to the legacy video URL
+          if no carousel images are configured. */}
+      {carouselVideoUrl ? (
         <video
           src={carouselVideoUrl}
           autoPlay
@@ -247,6 +247,8 @@ export default function Home() {
           className="w-full max-w-md aspect-[4/5] object-cover mb-8"
           style={{ backgroundColor: '#f5f3ef' }}
         />
+      ) : (
+        <HomepageCarousel />
       )}
 
       {/* VIP heading */}

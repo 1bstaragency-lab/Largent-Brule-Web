@@ -31,9 +31,17 @@ export async function blooioSend(opts: {
   phoneE164: string;
   text: string;
   idempotencyKey: string;
+  /** Optional image URL(s). Passed to Blooio as attachments — message
+   *  goes out as MMS / iMessage with media. */
+  imageUrls?: string[];
 }): Promise<SendResult> {
   const encoded = encodeURIComponent(opts.phoneE164); // "+" → "%2B"
   const url = `${BASE}/chats/${encoded}/messages`;
+
+  const payload: Record<string, unknown> = { text: opts.text };
+  if (opts.imageUrls && opts.imageUrls.length > 0) {
+    payload.attachments = opts.imageUrls.map((u) => ({ url: u, type: 'image' }));
+  }
 
   let res: Response;
   try {
@@ -43,7 +51,7 @@ export async function blooioSend(opts: {
         ...authHeaders(),
         'Idempotency-Key': opts.idempotencyKey,
       },
-      body: JSON.stringify({ text: opts.text }),
+      body: JSON.stringify(payload),
     });
   } catch (e) {
     return { ok: false, status: 0, body: String(e) };

@@ -1,4 +1,5 @@
 import { normalizePhone, supabaseAdmin } from '@/lib/supabase-admin';
+import { EarlyAccessPanel } from './early-access-panel';
 
 type Sub = { id: string; phone_number: string; created_at: string; cohort: number };
 
@@ -150,6 +151,16 @@ export default async function SubscribersPage() {
           Export CSV
         </a>
       </div>
+
+      {/* Early-access editor + per-group send buttons */}
+      <EarlyAccessPanel
+        groups={cohorts.map((c) => ({
+          num: c.num,
+          label: c.label,
+          size: c.size,
+          sent: c.earlyAccessSentCount,
+        }))}
+      />
 
       {/* Group breakdown chips — labeled by date, with early-access send progress */}
       {cohorts.length > 0 && (

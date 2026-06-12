@@ -194,7 +194,7 @@ export default function Home() {
   };
 
   return (
-    <div className="fixed inset-0 z-[110] bg-[#f5f3ef] flex flex-col items-center justify-center px-6 py-10 font-sans overflow-y-auto">
+    <div className="fixed inset-0 z-[110] bg-[#f5f3ef] flex flex-col items-center justify-center px-6 py-6 sm:py-10 font-sans overflow-y-auto">
 
       {/* Nav dropdown — top right */}
       <div className="fixed top-5 right-5 z-50" ref={dropdownRef}>
@@ -222,7 +222,7 @@ export default function Home() {
 
       {/* Logo — tap 5× to reveal admin password field */}
       <div
-        className="relative w-72 h-24 mb-4 cursor-default select-none"
+        className="relative w-56 h-16 sm:w-72 sm:h-24 mb-2 sm:mb-4 cursor-default select-none flex-shrink-0"
         onClick={handleLogoTap}
       >
         <Image
@@ -252,29 +252,29 @@ export default function Home() {
       )}
 
       {/* VIP heading */}
-      <div className="text-center mb-10 space-y-2">
-        <p className="text-[9px] text-neutral-500 uppercase tracking-[0.6em] font-light">
+      <div className="text-center mb-6 sm:mb-10 space-y-1.5 sm:space-y-2">
+        <p className="text-[8px] sm:text-[9px] text-neutral-500 uppercase tracking-[0.5em] sm:tracking-[0.6em] font-light">
           S/S 26 Collection
         </p>
-        <h1 className="text-[13px] font-medium uppercase tracking-[0.5em] text-black">
+        <h1 className="text-[11px] sm:text-[13px] font-medium uppercase tracking-[0.4em] sm:tracking-[0.5em] text-black">
           VIP Early Access
         </h1>
       </div>
 
       {/* Countdown */}
-      <div className="w-full max-w-sm border border-neutral-300 px-6 py-6 flex items-center justify-around mb-10">
+      <div className="w-full max-w-sm border border-neutral-300 px-4 sm:px-6 py-4 sm:py-6 flex items-center justify-around mb-6 sm:mb-10">
         {[
           { val: timeLeft.days, label: "Days" },
           { val: timeLeft.hours, label: "Hrs" },
           { val: timeLeft.minutes, label: "Min" },
           { val: timeLeft.seconds, label: "Sec" },
         ].map((unit, i, arr) => (
-          <div key={unit.label} className="flex items-center gap-3 md:gap-6">
-            <div className="flex flex-col items-center gap-2">
-              <span className="text-3xl font-light tracking-[0.1em]">{unit.val}</span>
-              <span className="text-[7px] text-neutral-400 uppercase tracking-[0.4em]">{unit.label}</span>
+          <div key={unit.label} className="flex items-center gap-2 sm:gap-3 md:gap-6">
+            <div className="flex flex-col items-center gap-1 sm:gap-2">
+              <span className="text-xl sm:text-3xl font-light tracking-[0.1em]">{unit.val}</span>
+              <span className="text-[7px] text-neutral-400 uppercase tracking-[0.3em] sm:tracking-[0.4em]">{unit.label}</span>
             </div>
-            {i < arr.length - 1 && <span className="text-neutral-300 font-thin mb-4">:</span>}
+            {i < arr.length - 1 && <span className="text-neutral-300 font-thin mb-3 sm:mb-4">:</span>}
           </div>
         ))}
       </div>
@@ -307,19 +307,19 @@ export default function Home() {
 
       {/* Step 1 — Phone signup */}
       {(step === "phone" || step === "phoneLoading") && (
-        <form onSubmit={handleSignup} className="w-full max-w-sm flex flex-col gap-3">
-          <div className={`flex items-center border rounded-sm bg-white px-4 py-3 gap-3 ${
+        <form onSubmit={handleSignup} className="w-full max-w-sm flex flex-col gap-2 sm:gap-3">
+          <div className={`flex items-center border rounded-sm bg-white px-3 sm:px-4 py-2.5 sm:py-3 gap-3 ${
             phoneError ? "border-red-400" : "border-neutral-300 focus-within:border-neutral-500"
           }`}>
-            <span className="text-lg leading-none">🇺🇸</span>
-            <span className="text-[11px] text-neutral-400">+1</span>
+            <span className="text-base sm:text-lg leading-none">🇺🇸</span>
+            <span className="text-[10px] sm:text-[11px] text-neutral-400">+1</span>
             <div className="w-px h-4 bg-neutral-200" />
             <input
               type="tel"
               value={phone}
               onChange={handlePhoneChange}
               placeholder="Phone Number"
-              className="flex-1 text-[13px] font-light text-black bg-transparent outline-none placeholder:text-neutral-400"
+              className="flex-1 text-[12px] sm:text-[13px] font-light text-black bg-transparent outline-none placeholder:text-neutral-400"
             />
           </div>
           {phoneError && (
@@ -333,11 +333,11 @@ export default function Home() {
           <button
             type="submit"
             disabled={step === "phoneLoading"}
-            className="w-full py-4 rounded-sm text-[13px] font-semibold tracking-[0.05em] transition-colors bg-black hover:bg-[#111] text-white disabled:opacity-60"
+            className="w-full py-3 sm:py-4 rounded-sm transition-colors bg-black hover:bg-[#111] text-white disabled:opacity-60"
           >
             {step === "phoneLoading"
               ? "..."
-              : <span className="text-[11px] tracking-[0.4em] uppercase font-medium">Join VIP</span>}
+              : <span className="text-[10px] sm:text-[11px] tracking-[0.35em] sm:tracking-[0.4em] uppercase font-medium">Join VIP</span>}
           </button>
         </form>
       )}

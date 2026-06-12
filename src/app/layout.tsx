@@ -12,7 +12,28 @@ export const metadata: Metadata = {
   title: "L'argent Brûlé | Official Flagship",
   description: "Luxury technical apparel for the volatile era.",
   openGraph: {
-    images: ["/og-image.png"],
+    title: "L'argent Brûlé | Official Flagship",
+    description: "Luxury technical apparel for the volatile era.",
+    url: "https://largentbrule.com",
+    siteName: "L'argent Brûlé",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 1200,
+        alt: "L'argent Brûlé",
+      },
+    ],
+    type: "website",
+  },
+  // iMessage / Safari / iOS home-screen use apple-touch-icon. Compact
+  // link previews ("Official Flagship" + small icon) pull from this.
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
   },
 };
 

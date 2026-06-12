@@ -32,6 +32,8 @@ export function EarlyAccessPanel({ groups }: { groups: GroupItem[] }) {
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [sendingGroup, setSendingGroup] = useState<number | null>(null);
   const [resultByGroup, setResultByGroup] = useState<Record<number, SendResult>>({});
@@ -68,6 +70,44 @@ export function EarlyAccessPanel({ groups }: { groups: GroupItem[] }) {
     } finally {
       setSaving(false);
     }
+  };
+
+  const uploadImage = async (file: File) => {
+    setUploadError(null);
+    setUploading(true);
+    try {
+      const form = new FormData();
+      form.append("file", file);
+      const r = await fetch("/api/admin/early-access/upload-image", {
+        method: "POST",
+        body: form,
+      });
+      const j = await r.json();
+      if (!j.ok) {
+        setUploadError(j.error || "Upload failed");
+        return;
+      }
+      setImageUrl(j.url);
+      // Persist the new URL right away so a refresh keeps it.
+      await fetch("/api/admin/early-access/message", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image_url: j.url }),
+      });
+    } catch {
+      setUploadError("Network error");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const clearImage = async () => {
+    setImageUrl("");
+    await fetch("/api/admin/early-access/message", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ image_url: "" }),
+    });
   };
 
   const sendToGroup = async (cohort: number) => {
@@ -135,26 +175,76 @@ export function EarlyAccessPanel({ groups }: { groups: GroupItem[] }) {
         </label>
 
         <div className="space-y-3">
-          <label className="block">
-            <span className="text-[9px] font-bold uppercase tracking-[0.4em] opacity-60 block mb-2">
-              Preview image URL (optional)
-            </span>
+          <span className="text-[9px] font-bold uppercase tracking-[0.4em] opacity-60 block">
+            Preview image (optional)
+          </span>
+
+          {/* Drop / pick zone */}
+          <label
+            className={`block border-2 border-dashed cursor-pointer transition-colors ${
+              uploading
+                ? "border-neutral-300 bg-neutral-50"
+                : "border-neutral-300 hover:border-black bg-white"
+            } p-4 text-center`}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              const f = e.dataTransfer.files?.[0];
+              if (f) uploadImage(f);
+            }}
+          >
+            <input
+              type="file"
+              accept="image/png,image/jpeg,image/webp,image/heic,image/heif,image/gif"
+              className="hidden"
+              onChange={(e) => {
+                const f = e.target.files?.[0];
+                if (f) uploadImage(f);
+                e.target.value = "";
+              }}
+            />
+            <p className="text-[10px] font-bold uppercase tracking-[0.3em]">
+              {uploading ? "Uploading…" : imageUrl ? "Replace image" : "Click or drop to upload"}
+            </p>
+            <p className="text-[9px] uppercase tracking-[0.25em] opacity-50 mt-1">
+              PNG · JPG · WebP · HEIC · GIF · max 5 MB
+            </p>
+          </label>
+
+          {uploadError && (
+            <p className="text-[10px] text-red-600 uppercase tracking-[0.2em]">
+              {uploadError}
+            </p>
+          )}
+
+          {/* Power-user URL field — collapsed unless an image is set or user types */}
+          <details className="text-[10px]">
+            <summary className="cursor-pointer text-[9px] uppercase tracking-[0.3em] opacity-50 hover:opacity-100">
+              Or paste a URL instead
+            </summary>
             <input
               type="url"
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
-              placeholder="https://largentbrule.com/early-access-preview.jpg"
-              className="w-full h-[40px] border border-neutral-200 px-3 text-[12px] outline-none focus:border-black transition-colors"
+              placeholder="https://…"
+              className="mt-2 w-full h-[36px] border border-neutral-200 px-3 text-[12px] outline-none focus:border-black transition-colors"
             />
-            <span className="text-[9px] uppercase tracking-[0.25em] opacity-50 mt-1 inline-block">
-              Sent as MMS attachment. Leave blank for text-only.
-            </span>
-          </label>
+          </details>
+
           {imageUrl && (
             <div className="border border-neutral-200 p-2 bg-neutral-50">
-              <p className="text-[8px] font-bold uppercase tracking-[0.4em] opacity-50 mb-2">
-                Preview
-              </p>
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-[8px] font-bold uppercase tracking-[0.4em] opacity-50">
+                  Preview
+                </p>
+                <button
+                  type="button"
+                  onClick={clearImage}
+                  className="text-[8px] uppercase tracking-[0.3em] opacity-50 hover:opacity-100 hover:text-red-600 transition-colors"
+                >
+                  Remove
+                </button>
+              </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={imageUrl}

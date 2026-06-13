@@ -14,6 +14,9 @@ export default function AdminNav() {
           <Link href="/admin/subscribers" className="hover:text-black transition-colors">
             Subscribers
           </Link>
+          <Link href="/admin/welcome" className="hover:text-black transition-colors">
+            Welcome
+          </Link>
           <Link href="/admin/inbox" className="hover:text-black transition-colors">
             Inbox
           </Link>

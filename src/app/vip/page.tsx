@@ -168,7 +168,9 @@ export default function EarlyAccessPage() {
                     src={hoveredProduct === p.handle ? p.modelImage : p.image}
                     alt={p.name}
                     fill
-                    className="object-contain mix-blend-multiply transition-opacity duration-300 ease-out p-4 will-change-transform"
+                    className={`object-contain mix-blend-multiply transition-opacity duration-300 ease-out will-change-transform ${
+                      p.handle === "leather-pants" ? "p-8" : "p-4"
+                    }`}
                     style={{ filter: "contrast(1.1) brightness(1.05)" }}
                     sizes="(max-width: 768px) 100vw, 50vw"
                     priority

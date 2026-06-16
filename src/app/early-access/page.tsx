@@ -45,7 +45,7 @@ export default function EarlyAccessPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessError, setAccessError] = useState("");
 
-  const EARLY_ACCESS_CODE = "VIP2026";
+  const EARLY_ACCESS_CODE = "LBVIP";
 
   const handleAccessSubmit = (e: React.FormEvent) => {
     e.preventDefault();

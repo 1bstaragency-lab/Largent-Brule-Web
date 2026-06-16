@@ -19,9 +19,9 @@ const PRODUCT = {
     "Classic silhouette",
     "Timeless design",
   ],
-  heroImage: "/leathers.png",
+  heroImage: "/pants_leather.png",
   galleryImages: [
-    "/leather_pants_front.png",
+    "/leathers.png",
     "/leathers_detail.png",
   ],
 };

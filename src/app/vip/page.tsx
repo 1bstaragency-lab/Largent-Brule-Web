@@ -53,7 +53,7 @@ export default function EarlyAccessPage() {
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
   const [videoWatched, setVideoWatched] = useState(false);
 
-  const EARLY_ACCESS_CODE = "LBVIP";
+  const EARLY_ACCESS_CODE = "SS26";
   const SIZES = ["1", "2", "3", "4", "5"];
 
   useEffect(() => {

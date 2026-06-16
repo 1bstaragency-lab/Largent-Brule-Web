@@ -154,12 +154,12 @@ export default function EarlyAccessPage() {
   return (
     <div className="px-4 sm:px-10 pb-40 bg-white min-h-screen">
       <div className="h-8 lg:h-0" />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-12 w-full mb-20">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-10 w-full mb-20">
         {EARLY_ACCESS_PRODUCTS.map((p) => (
-          <div key={p.handle} className="group block space-y-5">
+          <div key={p.handle} className="group block space-y-3">
             <Link href={`/product/${p.handle}`} className="block">
               <div
-                className="aspect-[3/4] bg-white relative overflow-hidden flex items-center justify-center p-6 border border-transparent group-hover:border-neutral-200 transition-all duration-500 will-change-transform"
+                className="aspect-[3/4] bg-white relative overflow-hidden flex items-center justify-center p-5 border border-transparent group-hover:border-neutral-200 transition-all duration-500 will-change-transform"
                 onMouseEnter={() => setHoveredProduct(p.handle)}
                 onMouseLeave={() => setHoveredProduct(null)}
               >
@@ -181,7 +181,7 @@ export default function EarlyAccessPage() {
                 )}
               </div>
             </Link>
-            <div className="space-y-2 text-[13px] tracking-[0.3em]">
+            <div className="space-y-2 text-[12px] tracking-[0.2em]">
               <p className="font-bold uppercase">{p.name}</p>
               <div className="flex items-center justify-between opacity-50">
                 <p className="font-medium">{p.price}</p>

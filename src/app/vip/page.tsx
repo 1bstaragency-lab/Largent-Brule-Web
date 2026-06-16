@@ -169,7 +169,7 @@ export default function EarlyAccessPage() {
                     alt={p.name}
                     fill
                     className={`object-contain mix-blend-multiply transition-opacity duration-300 ease-out will-change-transform ${
-                      p.handle === "leather-pants" ? "p-8" : "p-4"
+                      p.handle === "leather-pants" ? "p-16" : "p-4"
                     }`}
                     style={{ filter: "contrast(1.1) brightness(1.05)" }}
                     sizes="(max-width: 768px) 100vw, 50vw"

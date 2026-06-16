@@ -24,9 +24,6 @@ const PRODUCT = {
     "/parsian product shot.png",
     "/parisian xtra.png",
     "/parsian full.png",
-    "/fit leather v1.png",
-    "/leather detail v1.png",
-    "/leather shot v1.png",
   ],
 };
 

@@ -218,14 +218,6 @@ export default function EarlyAccessPage() {
           </p>
         </div>
       </div>
-      <div className="fixed bottom-10 right-10">
-        <button
-          onClick={handleSignOut}
-          className="text-[9px] opacity-40 hover:opacity-60 transition-opacity uppercase tracking-[0.3em]"
-        >
-          Sign Out
-        </button>
-      </div>
     </div>
   );
 }

@@ -36,7 +36,7 @@ const EARLY_ACCESS_PRODUCTS = [
     handle: "leather-pants",
     name: "BEAUTÉ DU CUIR CARPENTERS",
     price: "240 USD",
-    image: "/leathers.png",
+    image: "/pants_leather_studio.png",
     modelImage: "/leathers_detail.png",
     tag: "NEW",
     available: true,

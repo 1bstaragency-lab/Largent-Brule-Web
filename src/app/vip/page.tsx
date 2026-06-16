@@ -93,8 +93,14 @@ export default function EarlyAccessPage() {
       <div className="w-full min-h-screen bg-black flex items-center justify-center lg:bg-white lg:px-4">
         {/* Mobile Video Entry */}
         <div className="w-screen h-screen lg:hidden flex flex-col items-center justify-center bg-black relative fixed inset-0">
-          <Link href="/" className="absolute top-6 left-4 z-10 hover:opacity-70 transition-opacity text-white text-sm font-bold tracking-[0.2em] uppercase">
-            LB VIP
+          <Link href="/" className="absolute top-6 left-4 w-20 h-7 z-10 hover:opacity-70 transition-opacity">
+            <Image
+              src="/lb vip logo.png"
+              alt="Home"
+              fill
+              className="object-contain"
+              unoptimized
+            />
           </Link>
 
           <video

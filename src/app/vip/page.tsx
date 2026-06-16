@@ -92,7 +92,17 @@ export default function EarlyAccessPage() {
     return (
       <div className="w-full min-h-screen bg-black flex items-center justify-center lg:bg-white lg:px-4">
         {/* Mobile Video Entry */}
-        <div className="w-full lg:hidden flex flex-col items-center justify-center pt-12 px-4 pb-4 min-h-screen bg-black">
+        <div className="w-full lg:hidden flex flex-col items-center justify-center pt-12 px-4 pb-4 min-h-screen bg-black relative">
+          <Link href="/" className="absolute top-6 left-4 w-20 h-7 z-10 hover:opacity-70 transition-opacity">
+            <Image
+              src="/lb vip.png"
+              alt="Home"
+              fill
+              className="object-contain brightness-0 invert"
+              unoptimized
+            />
+          </Link>
+
           <div className="w-full aspect-video relative rounded-lg overflow-hidden">
             <video
               autoPlay

@@ -154,12 +154,12 @@ export default function EarlyAccessPage() {
   return (
     <div className="px-4 sm:px-10 pb-40 bg-white min-h-screen">
       <div className="h-8 lg:h-0" />
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16 w-full mb-20">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-12 w-full mb-20">
         {EARLY_ACCESS_PRODUCTS.map((p) => (
           <div key={p.handle} className="group block space-y-5">
             <Link href={`/product/${p.handle}`} className="block">
               <div
-                className="aspect-[3/4] bg-white relative overflow-hidden flex items-center justify-center p-8 border border-transparent group-hover:border-neutral-200 transition-all duration-500 will-change-transform"
+                className="aspect-[3/4] bg-white relative overflow-hidden flex items-center justify-center p-6 border border-transparent group-hover:border-neutral-200 transition-all duration-500 will-change-transform"
                 onMouseEnter={() => setHoveredProduct(p.handle)}
                 onMouseLeave={() => setHoveredProduct(null)}
               >

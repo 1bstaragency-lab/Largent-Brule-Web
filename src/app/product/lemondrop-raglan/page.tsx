@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { useCart } from "@/components/cart-drawer";
 import { cn } from "@/lib/utils";
 
@@ -82,7 +83,7 @@ export default function LemonDropRaglanPage() {
       <div className="w-full h-12 border-b border-neutral-200 flex items-center justify-between px-6 sticky top-0 bg-white z-40">
         <div></div>
 
-        <div className="relative w-24 h-8">
+        <Link href="/early-access" className="relative w-24 h-8 hover:opacity-70 transition-opacity">
           <Image
             src="/lb vip.png"
             alt="Club L'argent Brûlé VIP"
@@ -90,7 +91,7 @@ export default function LemonDropRaglanPage() {
             className="object-contain"
             unoptimized
           />
-        </div>
+        </Link>
 
         <button className="relative w-6 h-6 flex items-center justify-center">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -129,7 +130,7 @@ export default function LemonDropRaglanPage() {
 
         {/* Center - Main Image */}
         <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto">
-          <div className="w-full max-w-md aspect-[3/4] relative">
+          <div className="w-full max-w-3xl aspect-[3/4] relative">
             <Image
               src={displayImage}
               alt={PRODUCT.title}

@@ -153,7 +153,7 @@ export default function EarlyAccessPage() {
 
   return (
     <div className="px-4 sm:px-10 pb-40 bg-white min-h-screen">
-      <div className="h-8 lg:h-0" />
+      <div className="h-4 lg:h-0" />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-8 w-full mb-20">
         {EARLY_ACCESS_PRODUCTS.map((p) => (
           <div key={p.handle} className="group block space-y-2">

@@ -17,7 +17,7 @@ const EARLY_ACCESS_PRODUCTS = [
     handle: "lemondrop-raglan",
     name: "LEMONDROP RAGLAN",
     price: "165 USD",
-    image: "/lemondrop1.png",
+    image: "/lemondrop main.png",
     tag: "NEW",
     available: true,
   },

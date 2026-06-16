@@ -79,7 +79,7 @@ export default function LeatherPantsPage() {
       <div className="w-full h-12 border-b border-neutral-200 flex items-center justify-between px-6 sticky top-0 bg-white z-40">
         <div></div>
 
-        <Link href="/early-access" className="relative w-24 h-8 hover:opacity-70 transition-opacity">
+        <Link href="/vip" className="relative w-24 h-8 hover:opacity-70 transition-opacity">
           <Image
             src="/lb vip.png"
             alt="Club L'argent Brûlé VIP"
@@ -126,7 +126,7 @@ export default function LeatherPantsPage() {
 
         {/* Center - Main Image */}
         <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto">
-          <div className="w-full max-w-3xl aspect-[3/4] relative">
+          <div className="w-full max-w-2xl aspect-[3/4] relative">
             <Image
               src={displayImage}
               alt={PRODUCT.title}

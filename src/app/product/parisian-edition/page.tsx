@@ -35,12 +35,21 @@ const SIZES = [
   { value: "5", label: "XXL" },
 ];
 
+const NAV_ITEMS = [
+  { label: "COLLECTIONS", href: "/collections" },
+  { label: "OUR STORY", href: "/" },
+  { label: "LOOKBOOK", href: "/" },
+  { label: "FAQ", href: "/faq" },
+  { label: "SIGN IN", href: "/" },
+  { label: "REGISTER", href: "/" },
+];
+
 export default function ParisianEditionPage() {
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [addingState, setAddingState] = useState<"idle" | "adding" | "added" | "error">("idle");
   const [errMsg, setErrMsg] = useState("");
   const [cartCount, setCartCount] = useState(0);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [navOpen, setNavOpen] = useState(false);
   const [displayImage, setDisplayImage] = useState(PRODUCT.heroImage);
   const { addItem, items } = useCart();
 
@@ -78,10 +87,10 @@ export default function ParisianEditionPage() {
 
   return (
     <div className="w-full bg-white min-h-screen" style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
-      {/* Top Bar - Minimal */}
+      {/* Top Bar */}
       <div className="w-full h-12 border-b border-neutral-200 flex items-center justify-between px-6 sticky top-0 bg-white z-40">
         <button
-          onClick={() => setSidebarOpen(!sidebarOpen)}
+          onClick={() => setNavOpen(!navOpen)}
           className="flex flex-col gap-1 w-5 h-5 justify-center"
         >
           <div className="w-full h-px bg-black"></div>
@@ -105,133 +114,110 @@ export default function ParisianEditionPage() {
         </button>
       </div>
 
-      <div className="flex w-full">
-        {/* Left Sidebar - Collapsible */}
-        <div
-          className={cn(
-            "border-r border-neutral-200 bg-white overflow-y-auto transition-all duration-300",
-            sidebarOpen ? "w-64" : "w-0"
-          )}
-          style={{ maxHeight: "calc(100vh - 48px)" }}
-        >
-          {sidebarOpen && (
-            <div className="p-6 space-y-6">
-              <div>
-                <h2 className="text-[13px] font-semibold mb-2">{PRODUCT.title}</h2>
-                <p className="text-[12px] font-light text-neutral-600 leading-relaxed">
-                  {PRODUCT.description}
-                </p>
-              </div>
+      {/* Navigation Sidebar */}
+      {navOpen && (
+        <div className="fixed inset-0 top-12 z-30 bg-black/20" onClick={() => setNavOpen(false)}>
+          <div className="absolute top-0 left-0 w-64 h-screen bg-white border-r border-neutral-200 p-6 space-y-4" onClick={(e) => e.stopPropagation()}>
+            {NAV_ITEMS.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="block text-[12px] font-light uppercase tracking-wider hover:opacity-60 transition-opacity"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
-              <div className="space-y-3">
-                <p className="text-[11px] font-semibold uppercase tracking-wider">Details</p>
-                <ul className="space-y-1">
-                  {PRODUCT.specs.map((spec, idx) => (
-                    <li key={idx} className="text-[11px] font-light text-neutral-600">
-                      • {spec}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          )}
+      <div className="flex w-full" style={{ height: "calc(100vh - 48px)" }}>
+        {/* Left - Details */}
+        <div className="w-64 border-r border-neutral-200 overflow-y-auto p-6 space-y-6">
+          <div>
+            <h2 className="text-[13px] font-semibold mb-2">{PRODUCT.title}</h2>
+            <p className="text-[12px] font-light text-neutral-600 leading-relaxed">
+              {PRODUCT.description}
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            <p className="text-[11px] font-semibold uppercase tracking-wider">Details</p>
+            <ul className="space-y-1">
+              {PRODUCT.specs.map((spec, idx) => (
+                <li key={idx} className="text-[11px] font-light text-neutral-600">
+                  • {spec}
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        {/* Center - Product Image & Gallery */}
-        <div className="flex-1 flex flex-col items-center justify-start p-8 overflow-y-auto" style={{ maxHeight: "calc(100vh - 48px)" }}>
-          {/* Main Product Image */}
-          <div className="w-full max-w-lg aspect-[3/4] relative mb-8">
+        {/* Center - Main Image */}
+        <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto">
+          <div className="w-full max-w-md aspect-[3/4] relative">
             <Image
               src={displayImage}
               alt={PRODUCT.title}
               fill
               className="object-contain"
               priority
-              sizes="(max-width: 768px) 100vw, 60vw"
+              sizes="(max-width: 1024px) 100vw, 50vw"
               unoptimized
             />
           </div>
-
-          {/* Gallery - Hover to Swap */}
-          {PRODUCT.galleryImages.length > 0 && (
-            <div className="w-full max-w-lg space-y-2">
-              <p className="text-[11px] font-light text-neutral-500">Gallery</p>
-              <div className="flex gap-3 overflow-x-auto">
-                {PRODUCT.galleryImages.map((img, idx) => (
-                  <div
-                    key={idx}
-                    className="w-20 h-28 relative flex-shrink-0 cursor-pointer border border-transparent hover:border-black transition-all"
-                    onMouseEnter={() => setDisplayImage(img)}
-                    onMouseLeave={() => setDisplayImage(PRODUCT.heroImage)}
-                  >
-                    <Image
-                      src={img}
-                      alt={`View ${idx + 1}`}
-                      fill
-                      className="object-contain"
-                      sizes="80px"
-                      unoptimized
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
 
-        {/* Right Sidebar - Purchase Options */}
-        <div
-          className="w-80 border-l border-neutral-200 bg-white overflow-y-auto p-8"
-          style={{ maxHeight: "calc(100vh - 48px)" }}
-        >
+        {/* Right - Purchase Section */}
+        <div className="w-80 border-l border-neutral-200 overflow-y-auto p-8">
           <div className="space-y-6">
             {/* Price */}
             <div>
-              <p className="text-[15px] font-semibold">${PRODUCT.price} USD</p>
+              <p className="text-[16px] font-semibold">${PRODUCT.price} USD</p>
             </div>
 
             {/* Size Selector */}
             <div className="space-y-3">
-              <select
-                value={selectedSize}
-                onChange={(e) => setSelectedSize(e.target.value)}
-                className="w-full h-10 border border-neutral-300 px-3 text-[13px] font-light focus:outline-none focus:border-black"
-              >
-                <option value="">SELECT A SIZE</option>
+              <p className="text-[11px] font-semibold uppercase tracking-wider">SELECT SIZE</p>
+              <div className="flex flex-wrap gap-2">
                 {SIZES.map((size) => (
-                  <option key={size.value} value={size.value}>
-                    {size.label}
-                  </option>
+                  <button
+                    key={size.value}
+                    onClick={() => setSelectedSize(size.value)}
+                    className={cn(
+                      "px-3 py-2 border text-[11px] font-light transition-all",
+                      selectedSize === size.value
+                        ? "border-black bg-black text-white"
+                        : "border-neutral-300 text-black hover:border-black"
+                    )}
+                  >
+                    {size.value} <span className="text-[9px]">({size.label})</span>
+                  </button>
                 ))}
-              </select>
+              </div>
             </div>
 
-            {/* Add to Bag Button */}
-            <button
-              onClick={handleAddToCart}
-              disabled={!canAdd || addingState === "adding"}
-              className={cn(
-                "w-full h-11 text-[13px] font-semibold uppercase tracking-widest transition-all",
-                inStock
-                  ? addingState === "added"
-                    ? "bg-green-600 text-white"
-                    : "bg-black text-white hover:bg-neutral-800 disabled:opacity-50"
-                  : "bg-neutral-300 text-neutral-500 cursor-not-allowed"
-              )}
-            >
-              {!inStock
-                ? "SOLD OUT"
-                : addingState === "adding"
-                ? "ADDING…"
-                : addingState === "added"
-                ? "ADDED ✓"
-                : "ADD TO BAG"}
-            </button>
+            {/* Buttons - Side by Side */}
+            <div className="flex gap-3">
+              <button
+                onClick={handleAddToCart}
+                disabled={!canAdd || addingState === "adding"}
+                className={cn(
+                  "flex-1 h-11 text-[12px] font-semibold uppercase tracking-widest transition-all",
+                  inStock
+                    ? addingState === "added"
+                      ? "bg-green-600 text-white"
+                      : "bg-black text-white hover:bg-neutral-800 disabled:opacity-50"
+                    : "bg-neutral-300 text-neutral-500 cursor-not-allowed"
+                )}
+              >
+                {addingState === "added" ? "ADDED ✓" : "ADD TO BAG"}
+              </button>
 
-            {/* Wishlist Button */}
-            <button className="w-full h-11 border border-black text-[13px] font-semibold uppercase tracking-widest hover:bg-neutral-50 transition-colors">
-              ADD TO WISHLIST
-            </button>
+              <button className="flex-1 h-11 border border-black text-[12px] font-semibold uppercase tracking-widest hover:bg-neutral-50 transition-colors">
+                WISHLIST
+              </button>
+            </div>
 
             {errMsg && (
               <p className="text-[11px] text-red-600 text-center">{errMsg}</p>
@@ -246,6 +232,32 @@ export default function ParisianEditionPage() {
                 Free shipping on orders over $150 USD and free returns on all orders.
               </p>
             </div>
+
+            {/* Gallery */}
+            {PRODUCT.galleryImages.length > 0 && (
+              <div className="pt-4 border-t border-neutral-200 space-y-3">
+                <p className="text-[11px] font-light text-neutral-500">GALLERY</p>
+                <div className="space-y-2">
+                  {PRODUCT.galleryImages.map((img, idx) => (
+                    <div
+                      key={idx}
+                      className="w-full h-24 relative cursor-pointer border border-transparent hover:border-black transition-all"
+                      onMouseEnter={() => setDisplayImage(img)}
+                      onMouseLeave={() => setDisplayImage(PRODUCT.heroImage)}
+                    >
+                      <Image
+                        src={img}
+                        alt={`View ${idx + 1}`}
+                        fill
+                        className="object-contain"
+                        sizes="100%"
+                        unoptimized
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

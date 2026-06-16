@@ -114,7 +114,7 @@ export default function EarlyAccessPage() {
 
           <button
             onClick={() => setVideoWatched(true)}
-            className="absolute bottom-12 left-1/2 transform -translate-x-1/2 text-white text-2xl font-light tracking-wide bg-black px-6 py-3 hover:opacity-70 transition-opacity z-10 rounded"
+            className="absolute bottom-20 left-1/2 transform -translate-x-1/2 text-white text-xl font-light tracking-wide bg-black px-8 py-2 hover:opacity-70 transition-opacity z-10"
             style={{ fontFamily: "cursive" }}
           >
             Enter

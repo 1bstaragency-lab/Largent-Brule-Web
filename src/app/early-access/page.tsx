@@ -186,32 +186,12 @@ export default function EarlyAccessPage() {
                 </div>
               </div>
               {p.available && (
-                <div className="space-y-2">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.4em] opacity-60">SELECT SIZE</p>
-                  <div className="grid grid-cols-5 gap-2">
-                    {SIZES.map((size) => (
-                      <button
-                        key={size}
-                        onClick={() => setSelectedSizes({ ...selectedSizes, [p.handle]: size })}
-                        className={`h-10 border text-[11px] font-bold transition-all ${
-                          selectedSizes[p.handle] === size
-                            ? "border-black bg-black text-white"
-                            : "border-neutral-200 text-black hover:border-black"
-                        }`}
-                      >
-                        {size}
-                      </button>
-                    ))}
-                  </div>
-                  {selectedSizes[p.handle] && (
-                    <Link
-                      href={`/product/${p.handle}`}
-                      className="block w-full h-[44px] bg-black text-white text-center leading-[44px] text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-neutral-800 transition-colors mt-3"
-                    >
-                      ADD TO CART
-                    </Link>
-                  )}
-                </div>
+                <Link
+                  href={`/product/${p.handle}`}
+                  className="block w-full h-[44px] bg-black text-white text-center leading-[44px] text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-neutral-800 transition-colors"
+                >
+                  VIEW PRODUCT
+                </Link>
               )}
               {!p.available && (
                 <p className="text-[10px] text-neutral-400 uppercase tracking-[0.2em]">Notify when available</p>

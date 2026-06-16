@@ -102,8 +102,22 @@ export default function LemonDropRaglanPage() {
     <div className="w-full bg-white min-h-screen" style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
       {/* Header */}
       <div className="w-full h-12 border-b border-neutral-200 flex items-center justify-between px-4 md:px-6 sticky top-0 bg-white z-40">
-        <div></div>
-        <Link href="/vip" className="relative w-20 h-7 hover:opacity-70 transition-opacity">
+        {/* Logo - Mobile Left */}
+        <Link href="/vip" className="relative w-20 h-7 hover:opacity-70 transition-opacity lg:hidden">
+          <Image
+            src="/lb vip.png"
+            alt="Club L'argent Brûlé VIP"
+            fill
+            className="object-contain"
+            unoptimized
+          />
+        </Link>
+
+        {/* Empty Space - Desktop Left */}
+        <div className="hidden lg:block"></div>
+
+        {/* Logo - Desktop Center */}
+        <Link href="/vip" className="relative w-20 h-7 hover:opacity-70 transition-opacity hidden lg:block">
           <Image
             src="/lb vip.png"
             alt="Club L'argent Brûlé VIP"

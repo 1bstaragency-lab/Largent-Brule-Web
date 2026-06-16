@@ -6,10 +6,26 @@ import Link from "next/link";
 
 const EARLY_ACCESS_PRODUCTS = [
   {
-    handle: "bomber",
-    name: "CROPPED BOMBER JACKET",
-    price: "310 USD",
-    image: "/bomber_final_studio.jpg",
+    handle: "parisian-edition",
+    name: "PARISIAN EDITION TEE",
+    price: "145 USD",
+    image: "/parsian tee.png",
+    tag: "NEW",
+    available: true,
+  },
+  {
+    handle: "lemondrop-raglan",
+    name: "LEMONDROP RAGLAN",
+    price: "165 USD",
+    image: "/lemondrop1.png",
+    tag: "NEW",
+    available: true,
+  },
+  {
+    handle: "world-tour-2004",
+    name: "WORLD TOUR 2004 TEE",
+    price: "145 USD",
+    image: "/2004.png",
     tag: "NEW",
     available: true,
   },
@@ -18,22 +34,6 @@ const EARLY_ACCESS_PRODUCTS = [
     name: "BEAUTÉ DU CUIR CARPENTERS",
     price: "240 USD",
     image: "/leather_pants_front.png",
-    tag: "ARCHIVE",
-    available: true,
-  },
-  {
-    handle: "hoodie",
-    name: "LEMONDROP HOODIE",
-    price: "185 USD",
-    image: "/hoodie_front_v16.png",
-    tag: "NEW",
-    available: true,
-  },
-  {
-    handle: "raglan",
-    name: "RAGLAN L/S TEE",
-    price: "87 USD",
-    image: "/raglan_front_white_v2.png",
     tag: "NEW",
     available: true,
   },
@@ -44,8 +44,10 @@ export default function EarlyAccessPage() {
   const [passwordInput, setPasswordInput] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessError, setAccessError] = useState("");
+  const [selectedSizes, setSelectedSizes] = useState<{ [key: string]: string }>({});
 
   const EARLY_ACCESS_CODE = "LBVIP";
+  const SIZES = ["1", "2", "3", "4", "5"];
 
   const handleAccessSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,36 +135,68 @@ export default function EarlyAccessPage() {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-32 w-full mb-20">
         {EARLY_ACCESS_PRODUCTS.map((p) => (
-          <Link key={p.handle} href={`/product/${p.handle}`} className="group block space-y-8">
-            <div className="aspect-[3/4] bg-white relative overflow-hidden flex items-center justify-center p-12 border border-transparent group-hover:border-neutral-200 transition-all duration-500 will-change-transform">
-              {p.image && (
-                <Image
-                  src={p.image}
-                  alt={p.name}
-                  fill
-                  className="object-contain mix-blend-multiply group-hover:scale-120 transition-transform duration-500 ease-out p-2 will-change-transform"
-                  style={{ filter: "contrast(1.1) brightness(1.05)" }}
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  priority
-                />
-              )}
-              {!p.available && (
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                  <p className="text-white text-[11px] font-bold uppercase tracking-[0.3em]">Coming Soon</p>
+          <div key={p.handle} className="group block space-y-8">
+            <Link href={`/product/${p.handle}`} className="block">
+              <div className="aspect-[3/4] bg-white relative overflow-hidden flex items-center justify-center p-12 border border-transparent group-hover:border-neutral-200 transition-all duration-500 will-change-transform">
+                {p.image && (
+                  <Image
+                    src={p.image}
+                    alt={p.name}
+                    fill
+                    className="object-contain mix-blend-multiply group-hover:scale-120 transition-transform duration-500 ease-out p-2 will-change-transform"
+                    style={{ filter: "contrast(1.1) brightness(1.05)" }}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    priority
+                  />
+                )}
+                {!p.available && (
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <p className="text-white text-[11px] font-bold uppercase tracking-[0.3em]">Coming Soon</p>
+                  </div>
+                )}
+              </div>
+            </Link>
+            <div className="space-y-4 text-[13px] tracking-[0.3em]">
+              <div>
+                <p className="font-bold uppercase">{p.name}</p>
+                <div className="flex items-center justify-between opacity-50 mt-2">
+                  <p className="font-medium">{p.price}</p>
+                  <p className="font-bold text-[10px] uppercase border-l border-black/20 pl-4">{p.tag}</p>
+                </div>
+              </div>
+              {p.available && (
+                <div className="space-y-2">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.4em] opacity-60">SELECT SIZE</p>
+                  <div className="grid grid-cols-5 gap-2">
+                    {SIZES.map((size) => (
+                      <button
+                        key={size}
+                        onClick={() => setSelectedSizes({ ...selectedSizes, [p.handle]: size })}
+                        className={`h-10 border text-[11px] font-bold transition-all ${
+                          selectedSizes[p.handle] === size
+                            ? "border-black bg-black text-white"
+                            : "border-neutral-200 text-black hover:border-black"
+                        }`}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
+                  {selectedSizes[p.handle] && (
+                    <Link
+                      href={`/product/${p.handle}`}
+                      className="block w-full h-[44px] bg-black text-white text-center leading-[44px] text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-neutral-800 transition-colors mt-3"
+                    >
+                      ADD TO CART
+                    </Link>
+                  )}
                 </div>
               )}
-            </div>
-            <div className="space-y-3 text-[13px] tracking-[0.3em]">
-              <p className="font-bold uppercase">{p.name}</p>
-              <div className="flex items-center justify-between opacity-50">
-                <p className="font-medium">{p.price}</p>
-                <p className="font-bold text-[10px] uppercase border-l border-black/20 pl-4">{p.tag}</p>
-              </div>
               {!p.available && (
                 <p className="text-[10px] text-neutral-400 uppercase tracking-[0.2em]">Notify when available</p>
               )}
             </div>
-          </Link>
+          </div>
         ))}
       </div>
       <div className="max-w-2xl mx-auto border-t border-neutral-100 pt-20 space-y-12">

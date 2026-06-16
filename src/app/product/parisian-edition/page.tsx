@@ -20,8 +20,8 @@ const PRODUCT = {
     "Worn-in aesthetic",
   ],
   heroImage: "/parsian tee.png",
-  hoverImage: "/parsian product shot.png",
   galleryImages: [
+    "/parsian product shot.png",
     "/parisian xtra.png",
     "/parsian full.png",
   ],
@@ -40,8 +40,8 @@ export default function ParisianEditionPage() {
   const [addingState, setAddingState] = useState<"idle" | "adding" | "added" | "error">("idle");
   const [errMsg, setErrMsg] = useState("");
   const [cartCount, setCartCount] = useState(0);
-  const [isHovering, setIsHovering] = useState(false);
-  const [expandedSection, setExpandedSection] = useState<string | null>(null);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [displayImage, setDisplayImage] = useState(PRODUCT.heroImage);
   const { addItem, items } = useCart();
 
   useEffect(() => {
@@ -61,7 +61,7 @@ export default function ParisianEditionPage() {
       await addItem({
         id: PRODUCT.id,
         name: PRODUCT.title,
-        price: `${PRODUCT.price} ${PRODUCT.currency}`,
+        price: `${PRODUCT.price}`,
         image: PRODUCT.heroImage,
         variant: SIZES.find((s) => s.value === selectedSize)?.label,
       });
@@ -77,190 +77,174 @@ export default function ParisianEditionPage() {
   const canAdd = !!selectedSize && inStock;
 
   return (
-    <div className="w-full bg-white min-h-screen">
-      {/* Header */}
-      <header className="fixed top-0 w-full bg-white border-b border-neutral-100 z-50 h-16">
-        <div className="flex items-center justify-between px-6 lg:px-12 h-full max-w-[1920px] mx-auto">
-          <Link href="/" className="text-[13px] font-bold uppercase tracking-[0.3em]">
-            Largent Brulé
-          </Link>
+    <div className="w-full bg-white min-h-screen" style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
+      {/* Top Bar - Minimal */}
+      <div className="w-full h-12 border-b border-neutral-200 flex items-center justify-between px-6 sticky top-0 bg-white z-40">
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="flex flex-col gap-1 w-5 h-5 justify-center"
+        >
+          <div className="w-full h-px bg-black"></div>
+          <div className="w-full h-px bg-black"></div>
+          <div className="w-full h-px bg-black"></div>
+        </button>
 
-          <button className="relative w-8 h-8 flex items-center justify-center">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4l1-12z" />
-            </svg>
-            {cartCount > 0 && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-black text-white text-[8px] font-bold rounded-full flex items-center justify-center">
-                {cartCount}
-              </span>
-            )}
-          </button>
+        <div className="absolute left-1/2 -translate-x-1/2 text-[13px] font-light tracking-wide">
+          {PRODUCT.title}
         </div>
-      </header>
 
-      {/* Main Content */}
-      <div className="pt-16 w-full">
-        <div className="flex flex-col lg:flex-row w-full min-h-[calc(100vh-64px)] max-w-[1920px] mx-auto">
-          {/* Left: Product Image - Centered */}
-          <div className="w-full lg:w-1/2 flex items-center justify-center bg-white p-8 lg:p-16 lg:border-r lg:border-neutral-100">
-            <div className="w-full h-full flex items-center justify-center">
-              <div
-                className="w-full max-w-sm aspect-[3/4] relative cursor-pointer"
-                onMouseEnter={() => setIsHovering(true)}
-                onMouseLeave={() => setIsHovering(false)}
-              >
-                <Image
-                  src={isHovering && PRODUCT.hoverImage ? PRODUCT.hoverImage : PRODUCT.heroImage}
-                  alt={PRODUCT.title}
-                  fill
-                  className="object-contain"
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  unoptimized
-                />
-              </div>
-            </div>
-          </div>
+        <button className="relative w-6 h-6 flex items-center justify-center">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4l1-12z" />
+          </svg>
+          {cartCount > 0 && (
+            <span className="absolute -top-2 -right-2 w-4 h-4 bg-black text-white text-[9px] font-medium rounded-full flex items-center justify-center">
+              {cartCount}
+            </span>
+          )}
+        </button>
+      </div>
 
-          {/* Right: Product Details */}
-          <div className="w-full lg:w-1/2 flex flex-col p-8 lg:p-16 lg:overflow-y-auto lg:max-h-[calc(100vh-64px)]">
-            <div className="space-y-8 max-w-lg">
-              {/* Title */}
-              <div className="space-y-4">
-                <h1 className="text-[20px] lg:text-[24px] font-bold uppercase tracking-[0.15em] leading-tight">
-                  {PRODUCT.title}
-                </h1>
-              </div>
-
-              {/* Price & Description */}
-              <div className="space-y-4">
-                <p className="text-[16px] font-bold tracking-[0.1em]">
-                  ${PRODUCT.price}
-                </p>
-                <p className="text-[13px] text-neutral-700 leading-relaxed">
+      <div className="flex w-full">
+        {/* Left Sidebar - Collapsible */}
+        <div
+          className={cn(
+            "border-r border-neutral-200 bg-white overflow-y-auto transition-all duration-300",
+            sidebarOpen ? "w-64" : "w-0"
+          )}
+          style={{ maxHeight: "calc(100vh - 48px)" }}
+        >
+          {sidebarOpen && (
+            <div className="p-6 space-y-6">
+              <div>
+                <h2 className="text-[13px] font-semibold mb-2">{PRODUCT.title}</h2>
+                <p className="text-[12px] font-light text-neutral-600 leading-relaxed">
                   {PRODUCT.description}
                 </p>
               </div>
 
-              {/* Details Section */}
-              <div className="space-y-4 border-t border-neutral-200 pt-6">
-                <div className="space-y-3">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.3em] opacity-70">Product Details</p>
-                  <ul className="space-y-2">
-                    {PRODUCT.specs.map((spec, idx) => (
-                      <li key={idx} className="text-[12px] text-neutral-600">
-                        {spec}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Shipping Dropdown */}
-                <button
-                  onClick={() => setExpandedSection(expandedSection === "shipping" ? null : "shipping")}
-                  className="w-full flex items-center justify-between py-4 border-t border-neutral-200 hover:bg-neutral-50 transition-colors -mx-8 lg:-mx-16 px-8 lg:px-16"
-                >
-                  <p className="text-[12px] font-bold uppercase tracking-[0.2em]">Shipping</p>
-                  <span className={`text-[11px] transition-transform ${expandedSection === "shipping" ? "rotate-180" : ""}`}>▼</span>
-                </button>
-                {expandedSection === "shipping" && (
-                  <div className="text-[12px] text-neutral-600 space-y-2 pb-4">
-                    <p>Standard Shipping: 5-7 business days</p>
-                    <p>Express Shipping: 2-3 business days</p>
-                    <p>Free shipping on orders over $150</p>
-                  </div>
-                )}
-
-                {/* Size Chart Dropdown */}
-                <button
-                  onClick={() => setExpandedSection(expandedSection === "size" ? null : "size")}
-                  className="w-full flex items-center justify-between py-4 border-t border-neutral-200 hover:bg-neutral-50 transition-colors -mx-8 lg:-mx-16 px-8 lg:px-16"
-                >
-                  <p className="text-[12px] font-bold uppercase tracking-[0.2em]">Size Guide</p>
-                  <span className={`text-[11px] transition-transform ${expandedSection === "size" ? "rotate-180" : ""}`}>▼</span>
-                </button>
-                {expandedSection === "size" && (
-                  <div className="text-[12px] text-neutral-600 space-y-2 pb-4">
-                    <p className="font-bold">Chest measurements (inches):</p>
-                    <div className="grid grid-cols-2 gap-2">
-                      <p>S: 34-36"</p>
-                      <p>M: 37-40"</p>
-                      <p>L: 41-44"</p>
-                      <p>XL: 45-48"</p>
-                      <p>XXL: 49-52"</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Size Selector */}
-              <div className="space-y-3 border-t border-neutral-200 pt-6">
-                <p className="text-[11px] font-bold uppercase tracking-[0.3em] opacity-70">Select Size</p>
-                <div className="flex gap-2">
-                  {SIZES.map((size) => (
-                    <button
-                      key={size.value}
-                      onClick={() => setSelectedSize(size.value)}
-                      className={cn(
-                        "h-11 w-11 border text-[12px] font-bold transition-all",
-                        selectedSize === size.value
-                          ? "border-black bg-black text-white"
-                          : "border-neutral-300 text-black hover:border-black"
-                      )}
-                    >
-                      {size.label}
-                    </button>
+              <div className="space-y-3">
+                <p className="text-[11px] font-semibold uppercase tracking-wider">Details</p>
+                <ul className="space-y-1">
+                  {PRODUCT.specs.map((spec, idx) => (
+                    <li key={idx} className="text-[11px] font-light text-neutral-600">
+                      • {spec}
+                    </li>
                   ))}
-                </div>
+                </ul>
               </div>
+            </div>
+          )}
+        </div>
 
-              {/* Add to Cart */}
-              <div className="space-y-3 pt-4 border-t border-neutral-200">
-                <button
-                  onClick={handleAddToCart}
-                  disabled={!canAdd || addingState === "adding"}
-                  className={cn(
-                    "w-full h-12 text-[12px] font-bold uppercase tracking-[0.2em] transition-all",
-                    inStock
-                      ? addingState === "added"
-                        ? "bg-green-500 text-white"
-                        : "bg-black text-white hover:bg-neutral-800 disabled:opacity-40"
-                      : "bg-neutral-300 text-neutral-500 cursor-not-allowed"
-                  )}
-                >
-                  {!inStock
-                    ? "SOLD OUT"
-                    : addingState === "adding"
-                    ? "ADDING…"
-                    : addingState === "added"
-                    ? "ADDED ✓"
-                    : "ADD TO BAG"}
-                </button>
-                {errMsg && (
-                  <p className="text-[11px] text-red-500 text-center">{errMsg}</p>
-                )}
-              </div>
+        {/* Center - Product Image & Gallery */}
+        <div className="flex-1 flex flex-col items-center justify-start p-8 overflow-y-auto" style={{ maxHeight: "calc(100vh - 48px)" }}>
+          {/* Main Product Image */}
+          <div className="w-full max-w-lg aspect-[3/4] relative mb-8">
+            <Image
+              src={displayImage}
+              alt={PRODUCT.title}
+              fill
+              className="object-contain"
+              priority
+              sizes="(max-width: 768px) 100vw, 60vw"
+              unoptimized
+            />
+          </div>
 
-              {/* Gallery */}
-              {PRODUCT.galleryImages.length > 0 && (
-                <div className="border-t border-neutral-200 pt-8">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.3em] opacity-70 mb-4">Gallery</p>
-                  <div className="flex gap-3 overflow-x-auto pb-2">
-                    {PRODUCT.galleryImages.map((img, idx) => (
-                      <div key={idx} className="w-24 h-32 relative flex-shrink-0">
-                        <Image
-                          src={img}
-                          alt={`View ${idx + 1}`}
-                          fill
-                          className="object-contain"
-                          sizes="96px"
-                          unoptimized
-                        />
-                      </div>
-                    ))}
+          {/* Gallery - Hover to Swap */}
+          {PRODUCT.galleryImages.length > 0 && (
+            <div className="w-full max-w-lg space-y-2">
+              <p className="text-[11px] font-light text-neutral-500">Gallery</p>
+              <div className="flex gap-3 overflow-x-auto">
+                {PRODUCT.galleryImages.map((img, idx) => (
+                  <div
+                    key={idx}
+                    className="w-20 h-28 relative flex-shrink-0 cursor-pointer border border-transparent hover:border-black transition-all"
+                    onMouseEnter={() => setDisplayImage(img)}
+                    onMouseLeave={() => setDisplayImage(PRODUCT.heroImage)}
+                  >
+                    <Image
+                      src={img}
+                      alt={`View ${idx + 1}`}
+                      fill
+                      className="object-contain"
+                      sizes="80px"
+                      unoptimized
+                    />
                   </div>
-                </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Right Sidebar - Purchase Options */}
+        <div
+          className="w-80 border-l border-neutral-200 bg-white overflow-y-auto p-8"
+          style={{ maxHeight: "calc(100vh - 48px)" }}
+        >
+          <div className="space-y-6">
+            {/* Price */}
+            <div>
+              <p className="text-[15px] font-semibold">${PRODUCT.price} USD</p>
+            </div>
+
+            {/* Size Selector */}
+            <div className="space-y-3">
+              <select
+                value={selectedSize}
+                onChange={(e) => setSelectedSize(e.target.value)}
+                className="w-full h-10 border border-neutral-300 px-3 text-[13px] font-light focus:outline-none focus:border-black"
+              >
+                <option value="">SELECT A SIZE</option>
+                {SIZES.map((size) => (
+                  <option key={size.value} value={size.value}>
+                    {size.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Add to Bag Button */}
+            <button
+              onClick={handleAddToCart}
+              disabled={!canAdd || addingState === "adding"}
+              className={cn(
+                "w-full h-11 text-[13px] font-semibold uppercase tracking-widest transition-all",
+                inStock
+                  ? addingState === "added"
+                    ? "bg-green-600 text-white"
+                    : "bg-black text-white hover:bg-neutral-800 disabled:opacity-50"
+                  : "bg-neutral-300 text-neutral-500 cursor-not-allowed"
               )}
+            >
+              {!inStock
+                ? "SOLD OUT"
+                : addingState === "adding"
+                ? "ADDING…"
+                : addingState === "added"
+                ? "ADDED ✓"
+                : "ADD TO BAG"}
+            </button>
+
+            {/* Wishlist Button */}
+            <button className="w-full h-11 border border-black text-[13px] font-semibold uppercase tracking-widest hover:bg-neutral-50 transition-colors">
+              ADD TO WISHLIST
+            </button>
+
+            {errMsg && (
+              <p className="text-[11px] text-red-600 text-center">{errMsg}</p>
+            )}
+
+            {/* Info Section */}
+            <div className="pt-4 border-t border-neutral-200 space-y-3">
+              <p className="text-[11px] font-light text-neutral-600">
+                Model is 6'1" and wears size M. <u>SIZE GUIDE</u>
+              </p>
+              <p className="text-[11px] font-light text-neutral-600">
+                Free shipping on orders over $150 USD and free returns on all orders.
+              </p>
             </div>
           </div>
         </div>

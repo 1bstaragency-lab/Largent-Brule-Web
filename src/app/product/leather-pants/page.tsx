@@ -31,6 +31,27 @@ const SIZES = [
   { value: "5", label: "XXL" },
 ];
 
+const RELATED_PRODUCTS = [
+  {
+    id: "world-tour-2004",
+    title: "WORLD TOUR 2004 TEE",
+    price: 145,
+    image: "/2004.png",
+  },
+  {
+    id: "parisian-edition",
+    title: "PARISIAN EDITION RINGER TEE",
+    price: 145,
+    image: "/parsian tee.png",
+  },
+  {
+    id: "lemondrop-raglan",
+    title: "LEMONDROP RAGLAN",
+    price: 165,
+    image: "/lemondrop main.png",
+  },
+];
+
 
 export default function LeatherPantsPage() {
   const [selectedSize, setSelectedSize] = useState<string>("");
@@ -99,25 +120,25 @@ export default function LeatherPantsPage() {
         </button>
       </div>
 
-      {/* Mobile-First Single Column Layout */}
-      <div className="w-full overflow-y-auto">
+      {/* Mobile Layout (default) */}
+      <div className="lg:hidden w-full overflow-y-auto">
         {/* Product Image */}
-        <div className="w-full bg-neutral-50 flex items-center justify-center p-4 md:p-8">
-          <div className="w-full max-w-md aspect-[3/4] relative md:max-w-2xl">
+        <div className="w-full bg-neutral-50 flex items-center justify-center p-4">
+          <div className="w-full max-w-md aspect-[3/4] relative">
             <Image
               src={displayImage}
               alt={PRODUCT.title}
               fill
               className="object-contain"
               priority
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 50vw"
+              sizes="100vw"
               unoptimized
             />
           </div>
         </div>
 
         {/* Purchase Section */}
-        <div className="w-full px-4 md:px-8 py-6 md:py-8 max-w-2xl mx-auto">
+        <div className="w-full px-4 py-6 max-w-2xl mx-auto">
           {/* Product Info */}
           <div className="mb-6 space-y-3">
             <div>
@@ -220,6 +241,169 @@ export default function LeatherPantsPage() {
               </div>
             </div>
           )}
+
+          {/* You May Also Like */}
+          <div className="border-t border-neutral-200 mt-8 pt-8 space-y-6">
+            <p className="text-xs font-light text-neutral-500 uppercase tracking-wide">YOU MAY ALSO LIKE</p>
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
+              {RELATED_PRODUCTS.map((product) => (
+                <Link
+                  key={product.id}
+                  href={`/product/${product.id}`}
+                  className="group space-y-3 cursor-pointer"
+                >
+                  <div className="aspect-[3/4] relative bg-neutral-50 overflow-hidden">
+                    <Image
+                      src={product.image}
+                      alt={product.title}
+                      fill
+                      className="object-contain group-hover:opacity-80 transition-opacity"
+                      sizes="(max-width: 640px) 50vw, 300px"
+                      unoptimized
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-xs font-light text-neutral-900">{product.title}</p>
+                    <p className="text-sm font-semibold">${product.price} USD</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Layout (lg and up) */}
+      <div className="hidden lg:flex w-full" style={{ height: "calc(100vh - 48px)" }}>
+        {/* Left - Product Details */}
+        <div className="w-64 overflow-y-auto px-8 py-12 flex flex-col justify-center border-r border-neutral-200">
+          <div className="space-y-6 text-[11px] leading-relaxed">
+            <div>
+              <p className="font-light text-neutral-900">L'ARGENT BRÛLÉ</p>
+              <p className="font-light text-neutral-900 mt-2">{PRODUCT.title}</p>
+            </div>
+
+            <p className="font-light text-neutral-700">{PRODUCT.description}</p>
+
+            <div className="space-y-2">
+              {PRODUCT.specs.map((spec, idx) => (
+                <p key={idx} className="font-light text-neutral-700">• {spec}</p>
+              ))}
+            </div>
+
+            <p className="font-light text-neutral-600">100% authentic materials. Crafted with premium construction.</p>
+
+            <p className="font-light text-neutral-600">Free shipping on orders over $150 USD. All items ship within 2-3 business days.</p>
+          </div>
+        </div>
+
+        {/* Center - Main Image */}
+        <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto bg-neutral-50">
+          <div className="w-full max-w-2xl aspect-[3/4] relative">
+            <Image
+              src={displayImage}
+              alt={PRODUCT.title}
+              fill
+              className="object-contain"
+              priority
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              unoptimized
+            />
+          </div>
+        </div>
+
+        {/* Right - Purchase Section */}
+        <div className="w-80 border-l border-neutral-200 overflow-y-auto p-8">
+          <div className="space-y-6 pt-32">
+            {/* Product Name */}
+            <div className="text-center pb-4">
+              <p className="text-[12px] font-light uppercase tracking-wide">{PRODUCT.title}</p>
+            </div>
+
+            {/* Price */}
+            <div className="text-center">
+              <p className="text-[16px] font-semibold">${PRODUCT.price} USD</p>
+            </div>
+
+            {/* Size Dropdown */}
+            <div className="space-y-3">
+              <label className="text-[11px] font-semibold uppercase tracking-wider block">SELECT SIZE</label>
+              <select
+                value={selectedSize}
+                onChange={(e) => setSelectedSize(e.target.value)}
+                className="w-full h-11 border border-neutral-300 px-3 text-[13px] font-light focus:outline-none focus:border-black appearance-none bg-white cursor-pointer"
+              >
+                <option value="">Choose size...</option>
+                {SIZES.map((size) => (
+                  <option key={size.value} value={size.value}>
+                    {size.value} ({size.label})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Buttons - Side by Side */}
+            <div className="flex gap-3">
+              <button
+                onClick={handleAddToCart}
+                disabled={!canAdd || addingState === "adding"}
+                className={cn(
+                  "flex-1 h-11 text-[12px] font-semibold uppercase tracking-widest transition-all",
+                  inStock
+                    ? addingState === "added"
+                      ? "bg-green-600 text-white"
+                      : "bg-black text-white hover:bg-neutral-800 disabled:opacity-50"
+                    : "bg-neutral-300 text-neutral-500 cursor-not-allowed"
+                )}
+              >
+                {addingState === "added" ? "ADDED ✓" : "ADD TO BAG"}
+              </button>
+
+              <button className="flex-1 h-11 border border-black text-[12px] font-semibold uppercase tracking-widest hover:bg-neutral-50 transition-colors">
+                WISHLIST
+              </button>
+            </div>
+
+            {errMsg && (
+              <p className="text-[11px] text-red-600 text-center">{errMsg}</p>
+            )}
+
+            {/* Info Section */}
+            <div className="pt-4 border-t border-neutral-200 space-y-3">
+              <p className="text-[11px] font-light text-neutral-600">
+                Model is 6'1" and wears size M. <button onClick={() => setShowSizeGuide(true)} className="underline cursor-pointer hover:opacity-60">SIZE GUIDE</button>
+              </p>
+              <p className="text-[11px] font-light text-neutral-600">
+                Free shipping on orders over $150 USD and free returns on all orders.
+              </p>
+            </div>
+
+            {/* Gallery */}
+            {PRODUCT.galleryImages.length > 0 && (
+              <div className="pt-4 border-t border-neutral-200 space-y-3">
+                <p className="text-[11px] font-light text-neutral-500">GALLERY</p>
+                <div className="space-y-2">
+                  {PRODUCT.galleryImages.map((img, idx) => (
+                    <div
+                      key={idx}
+                      className="w-full h-24 relative cursor-pointer border border-transparent hover:border-black transition-all"
+                      onMouseEnter={() => setDisplayImage(img)}
+                      onMouseLeave={() => setDisplayImage(PRODUCT.heroImage)}
+                    >
+                      <Image
+                        src={img}
+                        alt={`View ${idx + 1}`}
+                        fill
+                        className="object-contain"
+                        sizes="100%"
+                        unoptimized
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

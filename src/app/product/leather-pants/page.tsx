@@ -21,8 +21,9 @@ const PRODUCT = {
   ],
   heroImage: "/pants_leather_studio.png",
   galleryImages: [
-    "/leathers.png",
-    "/leathers_detail.png",
+    "/fit leather v1.png",
+    "/leather detail v1.png",
+    "/leather shot v1.png",
   ],
 };
 

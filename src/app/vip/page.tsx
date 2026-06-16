@@ -160,7 +160,7 @@ export default function EarlyAccessPage() {
               value={passwordInput}
               onChange={(e) => setPasswordInput(e.target.value.toUpperCase())}
               placeholder="VIP CODE"
-              className="w-full h-[52px] bg-white border border-black text-[11px] font-bold uppercase tracking-[0.4em] px-4 outline-none focus:bg-neutral-50 transition-colors"
+              className="w-full h-[52px] bg-white border border-black text-base font-bold uppercase tracking-[0.4em] px-4 outline-none focus:bg-neutral-50 transition-colors"
               autoFocus
             />
             {accessError && (

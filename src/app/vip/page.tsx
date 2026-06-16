@@ -92,7 +92,7 @@ export default function EarlyAccessPage() {
     return (
       <div className="w-full min-h-screen bg-black flex items-center justify-center lg:bg-white lg:px-4">
         {/* Mobile Video Entry */}
-        <div className="w-full lg:hidden flex flex-col items-center justify-center pt-12 px-4 pb-4 min-h-screen bg-black relative">
+        <div className="w-screen h-screen lg:hidden flex flex-col items-center justify-center bg-black relative fixed inset-0">
           <Link href="/" className="absolute top-6 left-4 w-20 h-7 z-10 hover:opacity-70 transition-opacity">
             <Image
               src="/lb vip.png"
@@ -103,22 +103,21 @@ export default function EarlyAccessPage() {
             />
           </Link>
 
-          <div className="w-full aspect-video relative rounded-lg overflow-hidden">
-            <video
-              autoPlay
-              muted
-              playsInline
-              className="w-full h-full object-cover"
-            >
-              <source src="/home vip entry.mp4" type="video/mp4" />
-            </video>
-          </div>
+          <video
+            autoPlay
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src="/home vip entry.mp4" type="video/mp4" />
+          </video>
+
           <button
             onClick={() => setVideoWatched(true)}
-            className="mt-8 text-white text-2xl font-light tracking-wide hover:opacity-70 transition-opacity"
+            className="absolute bottom-12 left-1/2 transform -translate-x-1/2 text-white text-2xl font-light tracking-wide hover:opacity-70 transition-opacity z-10"
             style={{ fontFamily: "cursive" }}
           >
-            enter
+            Enter
           </button>
         </div>
 

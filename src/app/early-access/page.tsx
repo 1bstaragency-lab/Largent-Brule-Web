@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -45,14 +45,24 @@ export default function EarlyAccessPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessError, setAccessError] = useState("");
   const [selectedSizes, setSelectedSizes] = useState<{ [key: string]: string }>({});
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const EARLY_ACCESS_CODE = "LBVIP";
   const SIZES = ["1", "2", "3", "4", "5"];
+
+  useEffect(() => {
+    const stored = localStorage.getItem("lb-vip-access");
+    if (stored === "true") {
+      setIsAuthenticated(true);
+    }
+    setIsLoaded(true);
+  }, []);
 
   const handleAccessSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (passwordInput.toUpperCase() === EARLY_ACCESS_CODE) {
       setIsAuthenticated(true);
+      localStorage.setItem("lb-vip-access", "true");
       setAccessError("");
       setPasswordInput("");
     } else {
@@ -60,6 +70,17 @@ export default function EarlyAccessPage() {
       setPasswordInput("");
     }
   };
+
+  const handleSignOut = () => {
+    setIsAuthenticated(false);
+    setShowPassword(false);
+    setPasswordInput("");
+    localStorage.removeItem("lb-vip-access");
+  };
+
+  if (!isLoaded) {
+    return <div className="w-full min-h-screen bg-white" />;
+  }
 
   if (!isAuthenticated && !showPassword) {
     return (
@@ -228,11 +249,7 @@ export default function EarlyAccessPage() {
       </div>
       <div className="fixed bottom-10 right-10">
         <button
-          onClick={() => {
-            setIsAuthenticated(false);
-            setShowPassword(false);
-            setPasswordInput("");
-          }}
+          onClick={handleSignOut}
           className="text-[9px] opacity-40 hover:opacity-60 transition-opacity uppercase tracking-[0.3em]"
         >
           Sign Out

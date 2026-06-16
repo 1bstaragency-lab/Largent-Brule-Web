@@ -1,197 +1,208 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ChevronRight, Smartphone } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+
+const EARLY_ACCESS_PRODUCTS = [
+  {
+    handle: "bomber",
+    name: "CROPPED BOMBER JACKET",
+    price: "310 USD",
+    image: "/bomber_final_studio.jpg",
+    tag: "NEW",
+    available: true,
+  },
+  {
+    handle: "leather-pants",
+    name: "BEAUTÉ DU CUIR CARPENTERS",
+    price: "240 USD",
+    image: "/leather_pants_front.png",
+    tag: "ARCHIVE",
+    available: true,
+  },
+  {
+    handle: "hoodie",
+    name: "LEMONDROP HOODIE",
+    price: "185 USD",
+    image: "/hoodie_front_v16.png",
+    tag: "NEW",
+    available: true,
+  },
+  {
+    handle: "raglan",
+    name: "RAGLAN L/S TEE",
+    price: "87 USD",
+    image: "/raglan_front_white_v2.png",
+    tag: "NEW",
+    available: true,
+  },
+];
 
 export default function EarlyAccessPage() {
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [activeBlurb, setActiveBlurb] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [accessError, setAccessError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const EARLY_ACCESS_CODE = "VIP2026";
+
+  const handleAccessSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!phoneNumber) return;
-
-    // Clinical Environment Validation
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      alert("CONFIGURATION ERROR: SUPABASE ENVIRONMENT VARIABLES MISSING.");
-      return;
-    }
-    
-    setIsLoading(true);
-    
-    try {
-      console.log("Attempting VIP capture for:", phoneNumber);
-      const { error } = await supabase
-        .from('early_access')
-        .insert([{ phone_number: phoneNumber }]);
-
-      if (error) {
-        console.error("Supabase Error Detail:", error);
-        if (error.code === '23505') {
-          setIsSubmitted(true);
-        } else {
-          alert(`ERROR [${error.code}]: ${error.message}`);
-        }
-      } else {
-        setIsSubmitted(true);
-      }
-    } catch (err: any) {
-      console.error("Critical System Error:", err);
-      alert(`CLINICAL SYSTEM ERROR: ${err.message || "UNKNOWN FAILURE"}`);
-    } finally {
-      setIsLoading(false);
+    if (passwordInput.toUpperCase() === EARLY_ACCESS_CODE) {
+      setIsAuthenticated(true);
+      setAccessError("");
+      setPasswordInput("");
+    } else {
+      setAccessError("Invalid access code");
+      setPasswordInput("");
     }
   };
 
-  if (isSubmitted) {
+  if (!isAuthenticated && !showPassword) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-10 text-center space-y-12">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="space-y-8"
-        >
-          <div className="relative w-64 h-16 mx-auto">
-            <Image src="/logo_script_final.png" alt="L'argent Brûlé" fill className="object-contain" />
+      <div className="w-full min-h-screen bg-white flex items-center justify-center px-4">
+        <div className="max-w-md w-full space-y-8">
+          <div className="text-center space-y-2">
+            <h1 className="text-[14px] uppercase font-bold tracking-[0.4em]">EARLY ACCESS</h1>
+            <p className="text-[11px] tracking-[0.2em] opacity-50 uppercase">VIP Members Only</p>
           </div>
-          <div className="space-y-4">
-            <h1 className="text-[14px] font-bold tracking-[0.4em] uppercase text-black">ACCESS GRANTED</h1>
-            <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-neutral-400 max-w-xs mx-auto leading-relaxed">
-              YOU ARE NOW PART OF THE SELECTION. YOU WILL RECEIVE A TEXT MESSAGE SHORTLY.
+          <div className="bg-neutral-50 p-8 border border-neutral-100 space-y-6">
+            <p className="text-[11px] tracking-[0.2em] text-center opacity-60">
+              Enter your VIP access code to unlock the exclusive shop.
             </p>
+            <button
+              onClick={() => setShowPassword(true)}
+              className="w-full h-[52px] bg-black text-white text-[11px] font-bold uppercase tracking-[0.4em] hover:bg-neutral-800 transition-colors"
+            >
+              Enter Access Code
+            </button>
           </div>
-          <Link href="/" className="inline-block text-[10px] uppercase font-bold tracking-[0.4em] opacity-40 hover:opacity-100 transition-opacity pt-10">
-            RETURN TO COLLECTIONS
-          </Link>
-        </motion.div>
+          <p className="text-[9px] text-center opacity-40 uppercase tracking-[0.3em]">
+            Don't have a code? Contact us for VIP access.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="w-full min-h-screen bg-white flex items-center justify-center px-4">
+        <div className="max-w-md w-full space-y-6">
+          <div className="text-center space-y-2">
+            <h1 className="text-[14px] uppercase font-bold tracking-[0.4em]">EARLY ACCESS CODE</h1>
+          </div>
+          <form onSubmit={handleAccessSubmit} className="space-y-4">
+            <input
+              type="password"
+              value={passwordInput}
+              onChange={(e) => setPasswordInput(e.target.value.toUpperCase())}
+              placeholder="VIP CODE"
+              className="w-full h-[52px] bg-white border border-black text-[11px] font-bold uppercase tracking-[0.4em] px-4 outline-none focus:bg-neutral-50 transition-colors"
+              autoFocus
+            />
+            {accessError && (
+              <p className="text-[10px] text-red-500 text-center tracking-wide">{accessError}</p>
+            )}
+            <button
+              type="submit"
+              className="w-full h-[52px] bg-black text-white text-[11px] font-bold uppercase tracking-[0.4em] hover:bg-neutral-800 transition-colors"
+            >
+              Unlock Shop
+            </button>
+          </form>
+          <button
+            onClick={() => setShowPassword(false)}
+            className="w-full text-[10px] opacity-40 hover:opacity-60 transition-opacity uppercase tracking-[0.3em]"
+          >
+            Back
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center py-20 px-10">
-      {/* Main Content */}
-      <main className="w-full max-w-md space-y-16">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-center space-y-6"
-        >
-          <div className="flex flex-col items-center gap-3">
-            <span className="text-[10px] bg-black text-white px-3 py-1 font-bold tracking-[0.3em] uppercase">PRIVATE ACCESS</span>
-            <h1 className="text-[18px] font-bold tracking-[0.5em] uppercase text-black">SMS EARLY ACCESS</h1>
-          </div>
-          <p className="text-[11px] font-medium tracking-[0.2em] uppercase text-neutral-400 leading-relaxed">
-            MEMBERS ONLY UPDATES AND NEWS.
-          </p>
-        </motion.div>
-
-        <motion.form 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          onSubmit={handleSubmit}
-          className="space-y-8"
-        >
-          <div className="relative border-b border-neutral-200 group focus-within:border-black transition-colors">
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 opacity-20 group-focus-within:opacity-100 transition-opacity">
-              <Smartphone size={16} strokeWidth={1.5} />
+    <div className="px-4 sm:px-10 pb-40 bg-white min-h-screen">
+      <div className="h-8 lg:h-0" />
+      <div className="mb-20 space-y-3">
+        <p className="text-[10px] uppercase tracking-[0.5em] opacity-30">VIP EARLY ACCESS</p>
+        <h1 className="text-[14px] uppercase font-bold tracking-[0.3em]">EXCLUSIVE SHOP</h1>
+        <p className="text-[11px] uppercase tracking-[0.3em] opacity-40">Members only. Limited quantities available.</p>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-32 w-full mb-20">
+        {EARLY_ACCESS_PRODUCTS.map((p) => (
+          <Link key={p.handle} href={`/product/${p.handle}`} className="group block space-y-8">
+            <div className="aspect-[3/4] bg-white relative overflow-hidden flex items-center justify-center p-12 border border-transparent group-hover:border-neutral-200 transition-all duration-500 will-change-transform">
+              {p.image && (
+                <Image
+                  src={p.image}
+                  alt={p.name}
+                  fill
+                  className="object-contain mix-blend-multiply group-hover:scale-120 transition-transform duration-500 ease-out p-2 will-change-transform"
+                  style={{ filter: "contrast(1.1) brightness(1.05)" }}
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority
+                />
+              )}
+              {!p.available && (
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                  <p className="text-white text-[11px] font-bold uppercase tracking-[0.3em]">Coming Soon</p>
+                </div>
+              )}
             </div>
-            <input 
-              type="tel" 
-              placeholder="PHONE NUMBER" 
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              className="w-full pl-8 py-5 text-[12px] font-bold tracking-[0.3em] uppercase outline-none bg-transparent placeholder:text-neutral-200"
-              required
-            />
-          </div>
-
-          <button 
-            type="submit"
-            disabled={isLoading}
-            className="w-full h-16 bg-black text-white text-[11px] font-bold uppercase tracking-[0.5em] hover:bg-neutral-900 transition-all flex items-center justify-center gap-4 group"
-          >
-            {isLoading ? (
-              <span className="animate-pulse">LOADING...</span>
-            ) : (
-              <>
-                JOIN THE SELECTION
-                <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
-              </>
-            )}
-          </button>
-        </motion.form>
-      </main>
-
-      {/* Footer Meta */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.4 }}
-        transition={{ delay: 0.6 }}
-        className="text-center space-y-6 pt-12"
-      >
-        <p className="text-[8px] uppercase tracking-[0.3em] font-medium text-neutral-400">
-          BY JOINING, YOU AGREE TO RECEIVE RECURRING AUTOMATED MARKETING MESSAGES FROM L&apos;ARGENT BRÛLÉ.
-        </p>
-        <div className="flex justify-center gap-8 text-[8px] font-bold uppercase tracking-widest text-neutral-300">
-          <button 
-            onClick={() => setActiveBlurb("PRIVACY")}
-            className="hover:text-black transition-colors"
-          >
-            PRIVACY
-          </button>
-          <button 
-            onClick={() => setActiveBlurb("TERMS")}
-            className="hover:text-black transition-colors"
-          >
-            TERMS
-          </button>
+            <div className="space-y-3 text-[13px] tracking-[0.3em]">
+              <p className="font-bold uppercase">{p.name}</p>
+              <div className="flex items-center justify-between opacity-50">
+                <p className="font-medium">{p.price}</p>
+                <p className="font-bold text-[10px] uppercase border-l border-black/20 pl-4">{p.tag}</p>
+              </div>
+              {!p.available && (
+                <p className="text-[10px] text-neutral-400 uppercase tracking-[0.2em]">Notify when available</p>
+              )}
+            </div>
+          </Link>
+        ))}
+      </div>
+      <div className="max-w-2xl mx-auto border-t border-neutral-100 pt-20 space-y-12">
+        <div className="space-y-4">
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.4em]">VIP BENEFITS</h2>
+          <ul className="space-y-2 text-[11px] tracking-[0.1em] opacity-60">
+            <li>✓ Early access to new collections</li>
+            <li>✓ Exclusive VIP-only items</li>
+            <li>✓ Priority shipping on all orders</li>
+            <li>✓ Special member pricing</li>
+          </ul>
         </div>
-      </motion.div>
-
-      {/* Privacy/Terms Blurb Overlay */}
-      {activeBlurb && (
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="fixed inset-0 z-[5000] bg-white/40 backdrop-blur-xl flex items-center justify-center p-10"
-          onClick={() => setActiveBlurb(null)}
+        <div className="space-y-4">
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.4em]">SHIPPING & RETURNS</h2>
+          <p className="text-[11px] tracking-[0.1em] opacity-60">
+            Free shipping on all early access orders. 30-day returns for VIP members.
+            All items ship within 2-3 business days.
+          </p>
+        </div>
+        <div className="space-y-4 pb-20">
+          <h2 className="text-[11px] font-bold uppercase tracking-[0.4em]">QUESTIONS?</h2>
+          <p className="text-[11px] tracking-[0.1em] opacity-60">
+            Email us at{" "}
+            <a href="mailto:vip@largentbrule.com" className="opacity-100 hover:opacity-60 transition-opacity border-b border-black/20 hover:border-black/60">
+              vip@largentbrule.com
+            </a>
+          </p>
+        </div>
+      </div>
+      <div className="fixed bottom-10 right-10">
+        <button
+          onClick={() => {
+            setIsAuthenticated(false);
+            setShowPassword(false);
+            setPasswordInput("");
+          }}
+          className="text-[9px] opacity-40 hover:opacity-60 transition-opacity uppercase tracking-[0.3em]"
         >
-          <motion.div 
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="max-w-md w-full bg-white p-12 border border-neutral-100 shadow-2xl space-y-8 text-center"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="text-[10px] font-bold tracking-[0.4em] uppercase text-black">
-              {activeBlurb} POLICY
-            </h2>
-            <p className="text-[10px] font-medium tracking-[0.2em] uppercase text-neutral-400 leading-relaxed">
-              L&apos;ARGENT BRÛLÉ VALUES YOUR PRIVACY. BY JOINING THE SELECTION, YOU CONSENT TO RECEIVE EXCLUSIVE UPDATES AND MARKETING NEWS VIA SMS. YOUR DATA IS PROTECTED AND WILL NEVER BE SOLD. OPT-OUT AT ANY TIME BY REPLYING &apos;STOP&apos;.
-            </p>
-            <button 
-              onClick={() => setActiveBlurb(null)}
-              className="text-[9px] font-bold uppercase tracking-[0.4em] text-black pt-4 block w-full border-t border-neutral-50"
-            >
-              CLOSE
-            </button>
-          </motion.div>
-        </motion.div>
-      )}
-
-      {/* Technical Signature */}
-      <div className="absolute bottom-8 right-8 hidden lg:block">
-        <p className="text-[9px] text-neutral-200 uppercase tracking-[0.5em]">
-          L&apos;ARGENT BRÛLÉ &copy; 2026
-        </p>
+          Sign Out
+        </button>
       </div>
     </div>
   );

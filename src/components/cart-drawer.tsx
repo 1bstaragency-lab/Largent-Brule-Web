@@ -3,6 +3,7 @@
 import { useState, useEffect, createContext, useContext, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { getTopDwell } from "@/hooks/useDwell";
 import { pickRandomCatalogItem, type CatalogItem } from "@/lib/catalog";
@@ -304,10 +305,11 @@ function CartDrawer({
         />
       )}
 
-      <div
-        className={`fixed top-0 right-0 h-screen w-full sm:w-[450px] bg-white z-[2200] border-l border-neutral-100 transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] transform ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+      <motion.div
+        initial={false}
+        animate={{ x: isOpen ? 0 : "100%" }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+        className="fixed top-0 right-0 h-screen w-full sm:w-[450px] bg-white z-[2200] border-l border-neutral-100"
       >
         <div className="flex flex-col h-full">
           {/* Header */}
@@ -332,11 +334,22 @@ function CartDrawer({
                 </p>
               </div>
             ) : (
-              items.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex gap-8 group animate-in fade-in slide-in-from-right-4 duration-700"
-                >
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  visible: { transition: { staggerChildren: 0.08 } },
+                }}
+              >
+                {items.map((item, idx) => (
+                  <motion.div
+                    key={item.id}
+                    variants={{
+                      hidden: { opacity: 0, x: 16 },
+                      visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: "easeOut" } },
+                    }}
+                    className="flex gap-8 group"
+                  >
                   <div className="w-24 h-32 bg-white relative flex-shrink-0 border border-neutral-50 p-2">
                     {item.image && (
                       <Image
@@ -369,8 +382,10 @@ function CartDrawer({
                       REMOVE
                     </button>
                   </div>
-                </div>
+                </motion.div>
               ))
+              }
+              </motion.div>
             )}
           </div>
 
@@ -418,7 +433,7 @@ function CartDrawer({
             </div>
           )}
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }

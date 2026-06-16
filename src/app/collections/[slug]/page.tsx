@@ -169,13 +169,13 @@ export default async function CollectionPage({
             href={`/product/${p.handle}`}
             className="group block space-y-8"
           >
-            <div className="aspect-[3/4] bg-white relative overflow-hidden flex items-center justify-center p-12 border border-transparent group-hover:border-border transition-all duration-700">
+            <div className="aspect-[3/4] bg-white relative overflow-hidden flex items-center justify-center p-12 border border-transparent group-hover:border-neutral-200 transition-all duration-500 will-change-transform">
               {p.imageUrl && (
                 <Image
                   src={p.imageUrl}
                   alt={p.title}
                   fill
-                  className="object-contain mix-blend-multiply group-hover:scale-125 transition-transform duration-1000 ease-out p-2"
+                  className="object-contain mix-blend-multiply group-hover:scale-120 transition-transform duration-500 ease-out p-2 will-change-transform"
                   style={{ filter: "contrast(1.1) brightness(1.05)" }}
                   sizes="(max-width: 768px) 100vw, 50vw"
                   unoptimized={p.imageUrl.includes("cdn.shopify.com")}

@@ -6,8 +6,9 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
+import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { ChevronRight, Plus } from "lucide-react";
+import { ChevronRight, Plus, Check } from "lucide-react";
 import { useCart } from "@/components/cart-drawer";
 import { useDwell } from "@/hooks/useDwell";
 import type { ShopifyProduct, ShopifyVariant } from "@/lib/shopify";
@@ -87,7 +88,7 @@ export default function ShopifyProductView({ product }: Props) {
         shopify_variant_legacy_id: matchedVariant.legacyId,
       });
       setAddingState("added");
-      setTimeout(() => setAddingState("idle"), 2200);
+      setTimeout(() => setAddingState("idle"), 1500);
     } catch (e) {
       setErrMsg(e instanceof Error ? e.message : "could not add");
       setAddingState("error");
@@ -365,18 +366,25 @@ function AddToCartButton({
 
   return (
     <div className="w-full space-y-2">
-      <button
+      <motion.button
         onClick={onClick}
         disabled={!canAdd || addingState === "adding"}
+        animate={addingState === "added" ? { scale: [1, 1.03, 1] } : {}}
+        transition={{ duration: 0.4, ease: "easeOut" }}
         className={cn(
           "w-full h-[52px] text-[11px] font-bold uppercase tracking-[0.4em] transition-colors",
           inStock
-            ? "bg-black text-white hover:bg-neutral-800 disabled:opacity-40"
+            ? addingState === "added"
+              ? "bg-green-500 text-white"
+              : "bg-black text-white hover:bg-neutral-800 disabled:opacity-40"
             : "bg-neutral-300 text-neutral-500 cursor-not-allowed"
         )}
       >
-        {label}
-      </button>
+        <span className="flex items-center justify-center gap-2">
+          {addingState === "added" && <Check size={16} strokeWidth={2.5} />}
+          {label}
+        </span>
+      </motion.button>
       {errMsg && (
         <p className="text-[10px] text-red-500 tracking-wide text-center">{errMsg}</p>
       )}

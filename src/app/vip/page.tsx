@@ -98,7 +98,7 @@ export default function EarlyAccessPage() {
               src="/lb vip logo.png"
               alt="Home"
               fill
-              className="object-contain"
+              className="object-contain brightness-0 invert"
               unoptimized
             />
           </Link>

@@ -106,6 +106,7 @@ export default function EarlyAccessPage() {
           <video
             autoPlay
             muted
+            loop
             playsInline
             className="w-full h-full object-cover"
           >

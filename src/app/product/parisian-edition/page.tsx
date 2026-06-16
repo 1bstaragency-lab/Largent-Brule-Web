@@ -11,7 +11,7 @@ const PRODUCT = {
   title: "PARISIAN EDITION RINGER TEE",
   price: 145,
   currency: "USD",
-  description: "Slub ringer tee, slightly distressed, washed for that worn-in feel.",
+  description: "Slub ringer tee with signature distressed detailing and vintage wash. Crafted for that perfect worn-in aesthetic.",
   specs: [
     "Slub fabric blend",
     "Ringer style",
@@ -20,8 +20,8 @@ const PRODUCT = {
     "Worn-in aesthetic",
   ],
   heroImage: "/parsian tee.png",
+  hoverImage: "/parsian product shot.png",
   galleryImages: [
-    "/parsian product shot.png",
     "/parisian xtra.png",
     "/parsian full.png",
   ],
@@ -41,6 +41,8 @@ export default function ParisianEditionPage() {
   const [errMsg, setErrMsg] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
+  const [expandedSection, setExpandedSection] = useState<string | null>(null);
   const { addItem, items } = useCart();
 
   useEffect(() => {
@@ -132,17 +134,24 @@ export default function ParisianEditionPage() {
         {/* Left: Product Image (60%) */}
         <div className="w-full lg:w-[60%] flex items-center justify-center bg-white p-6 lg:p-12 lg:sticky lg:top-16 lg:h-[calc(100vh-64px)] lg:overflow-y-auto">
           <div className="w-full max-w-2xl space-y-12">
-            {/* Hero Image */}
-            <div className="w-full aspect-[3/4] relative">
+            {/* Hero Image with Hover Swap */}
+            <div
+              className="w-full aspect-[3/4] relative cursor-pointer group"
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
+            >
               <Image
-                src={PRODUCT.heroImage}
+                src={isHovering && PRODUCT.hoverImage ? PRODUCT.hoverImage : PRODUCT.heroImage}
                 alt={PRODUCT.title}
                 fill
-                className="object-contain"
+                className="object-contain transition-opacity duration-300"
                 priority
                 sizes="(max-width: 768px) 100vw, 60vw"
                 unoptimized
               />
+              <div className="absolute bottom-4 left-4 text-[10px] opacity-0 group-hover:opacity-100 transition-opacity">
+                {isHovering ? "View Product" : "Hover for Model"}
+              </div>
             </div>
 
             {/* Gallery */}
@@ -187,13 +196,50 @@ export default function ParisianEditionPage() {
             </div>
 
             {/* Details */}
-            <div className="border-t border-neutral-100 pt-8 space-y-4">
-              <p className="text-[10px] font-bold uppercase tracking-[0.4em] opacity-60">Details</p>
-              <ul className="space-y-2 text-[11px] lg:text-[12px] text-neutral-600 tracking-[0.05em]">
-                {PRODUCT.specs.map((spec, idx) => (
-                  <li key={idx}>• {spec}</li>
-                ))}
-              </ul>
+            <div className="border-t border-neutral-100 pt-8 space-y-6">
+              <div className="space-y-4">
+                <p className="text-[10px] font-bold uppercase tracking-[0.4em] opacity-60">Details</p>
+                <ul className="space-y-2 text-[11px] lg:text-[12px] text-neutral-600 tracking-[0.05em]">
+                  {PRODUCT.specs.map((spec, idx) => (
+                    <li key={idx}>• {spec}</li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Shipping Dropdown */}
+              <button
+                onClick={() => setExpandedSection(expandedSection === "shipping" ? null : "shipping")}
+                className="w-full flex items-center justify-between py-3 border-t border-neutral-100 hover:bg-neutral-50 transition-colors"
+              >
+                <p className="text-[11px] font-bold uppercase tracking-[0.2em]">Shipping</p>
+                <span className={`text-[12px] transition-transform ${expandedSection === "shipping" ? "rotate-180" : ""}`}>▼</span>
+              </button>
+              {expandedSection === "shipping" && (
+                <div className="text-[11px] text-neutral-600 space-y-2 pb-3">
+                  <p>• Standard Shipping: 5-7 business days</p>
+                  <p>• Express Shipping: 2-3 business days</p>
+                  <p>• Free shipping on orders over $150</p>
+                </div>
+              )}
+
+              {/* Size Chart Dropdown */}
+              <button
+                onClick={() => setExpandedSection(expandedSection === "size" ? null : "size")}
+                className="w-full flex items-center justify-between py-3 border-t border-neutral-100 hover:bg-neutral-50 transition-colors"
+              >
+                <p className="text-[11px] font-bold uppercase tracking-[0.2em]">Size Chart</p>
+                <span className={`text-[12px] transition-transform ${expandedSection === "size" ? "rotate-180" : ""}`}>▼</span>
+              </button>
+              {expandedSection === "size" && (
+                <div className="text-[11px] text-neutral-600 space-y-2 pb-3">
+                  <p className="font-bold mb-2">Chest measurements (inches):</p>
+                  <p>• S: 34-36</p>
+                  <p>• M: 37-40</p>
+                  <p>• L: 41-44</p>
+                  <p>• XL: 45-48</p>
+                  <p>• XXL: 49-52</p>
+                </div>
+              )}
             </div>
 
             {/* Size Selector */}

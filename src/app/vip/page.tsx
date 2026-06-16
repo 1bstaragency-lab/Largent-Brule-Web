@@ -51,6 +51,7 @@ export default function EarlyAccessPage() {
   const [selectedSizes, setSelectedSizes] = useState<{ [key: string]: string }>({});
   const [isLoaded, setIsLoaded] = useState(false);
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
+  const [videoWatched, setVideoWatched] = useState(false);
 
   const EARLY_ACCESS_CODE = "LBVIP";
   const SIZES = ["1", "2", "3", "4", "5"];
@@ -87,10 +88,30 @@ export default function EarlyAccessPage() {
     return <div className="w-full min-h-screen bg-white" />;
   }
 
-  if (!isAuthenticated && !showPassword) {
+  if (!isAuthenticated && !showPassword && !videoWatched) {
     return (
-      <div className="w-full min-h-screen bg-white flex items-center justify-center px-4">
-        <div className="max-w-md w-full space-y-8">
+      <div className="w-full min-h-screen bg-black flex items-center justify-center lg:bg-white lg:px-4">
+        {/* Mobile Video Entry */}
+        <div className="w-full h-screen relative lg:hidden flex flex-col items-center justify-center">
+          <video
+            autoPlay
+            muted
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src="/home vip entry.mp4" type="video/mp4" />
+          </video>
+          <button
+            onClick={() => setVideoWatched(true)}
+            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white text-2xl font-light tracking-wide hover:opacity-70 transition-opacity"
+            style={{ fontFamily: "cursive" }}
+          >
+            enter
+          </button>
+        </div>
+
+        {/* Desktop Access Screen */}
+        <div className="hidden lg:flex max-w-md w-full space-y-8 flex-col">
           <div className="text-center space-y-2">
             <h1 className="text-[14px] uppercase font-bold tracking-[0.4em]">EARLY ACCESS</h1>
             <p className="text-[11px] tracking-[0.2em] opacity-50 uppercase">VIP Members Only</p>

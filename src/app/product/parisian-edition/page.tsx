@@ -132,27 +132,6 @@ export default function ParisianEditionPage() {
       )}
 
       <div className="flex w-full" style={{ height: "calc(100vh - 48px)" }}>
-        {/* Left - Details */}
-        <div className="w-64 border-r border-neutral-200 overflow-y-auto p-6 space-y-6">
-          <div>
-            <h2 className="text-[13px] font-semibold mb-2">{PRODUCT.title}</h2>
-            <p className="text-[12px] font-light text-neutral-600 leading-relaxed">
-              {PRODUCT.description}
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            <p className="text-[11px] font-semibold uppercase tracking-wider">Details</p>
-            <ul className="space-y-1">
-              {PRODUCT.specs.map((spec, idx) => (
-                <li key={idx} className="text-[11px] font-light text-neutral-600">
-                  • {spec}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
         {/* Center - Main Image */}
         <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto">
           <div className="w-full max-w-md aspect-[3/4] relative">
@@ -176,25 +155,21 @@ export default function ParisianEditionPage() {
               <p className="text-[16px] font-semibold">${PRODUCT.price} USD</p>
             </div>
 
-            {/* Size Selector */}
+            {/* Size Dropdown */}
             <div className="space-y-3">
-              <p className="text-[11px] font-semibold uppercase tracking-wider">SELECT SIZE</p>
-              <div className="flex flex-wrap gap-2">
+              <label className="text-[11px] font-semibold uppercase tracking-wider block">SELECT SIZE</label>
+              <select
+                value={selectedSize}
+                onChange={(e) => setSelectedSize(e.target.value)}
+                className="w-full h-11 border border-neutral-300 px-3 text-[13px] font-light focus:outline-none focus:border-black appearance-none bg-white cursor-pointer"
+              >
+                <option value="">Choose size...</option>
                 {SIZES.map((size) => (
-                  <button
-                    key={size.value}
-                    onClick={() => setSelectedSize(size.value)}
-                    className={cn(
-                      "px-3 py-2 border text-[11px] font-light transition-all",
-                      selectedSize === size.value
-                        ? "border-black bg-black text-white"
-                        : "border-neutral-300 text-black hover:border-black"
-                    )}
-                  >
-                    {size.value} <span className="text-[9px]">({size.label})</span>
-                  </button>
+                  <option key={size.value} value={size.value}>
+                    {size.value} ({size.label})
+                  </option>
                 ))}
-              </div>
+              </select>
             </div>
 
             {/* Buttons - Side by Side */}

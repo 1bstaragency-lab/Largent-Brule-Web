@@ -1,11 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Scriptina } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/components/cart-drawer";
 import { CartToggle } from "@/components/cart-toggle";
 import { RootLayoutClient } from "@/components/root-layout-client";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const scriptina = Scriptina({ weight: "400", subsets: ["latin"], variable: "--font-scriptina" });
 
 export const metadata: Metadata = {
   title: "L'argent Brûlé | Official Flagship",
@@ -48,7 +49,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased bg-white overflow-x-hidden`}>
+      <body className={`${inter.variable} ${scriptina.variable} font-sans antialiased bg-white overflow-x-hidden`}>
         <CartProvider>
           <CartToggle />
           <RootLayoutClient>{children}</RootLayoutClient>

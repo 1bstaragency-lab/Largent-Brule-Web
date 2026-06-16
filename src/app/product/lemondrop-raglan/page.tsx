@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useCart } from "@/components/cart-drawer";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
 
 const PRODUCT = {
   id: "lemondrop-raglan",
@@ -35,22 +34,14 @@ const SIZES = [
   { value: "5", label: "XXL" },
 ];
 
-const NAV_ITEMS = [
-  { label: "COLLECTIONS", href: "/collections" },
-  { label: "OUR STORY", href: "/" },
-  { label: "LOOKBOOK", href: "/" },
-  { label: "FAQ", href: "/faq" },
-  { label: "SIGN IN", href: "/" },
-  { label: "REGISTER", href: "/" },
-];
 
 export default function LemonDropRaglanPage() {
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [addingState, setAddingState] = useState<"idle" | "adding" | "added" | "error">("idle");
   const [errMsg, setErrMsg] = useState("");
   const [cartCount, setCartCount] = useState(0);
-  const [navOpen, setNavOpen] = useState(false);
   const [displayImage, setDisplayImage] = useState(PRODUCT.heroImage);
+  const [showSizeGuide, setShowSizeGuide] = useState(false);
   const { addItem, items } = useCart();
 
   useEffect(() => {
@@ -89,17 +80,16 @@ export default function LemonDropRaglanPage() {
     <div className="w-full bg-white min-h-screen" style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
       {/* Top Bar */}
       <div className="w-full h-12 border-b border-neutral-200 flex items-center justify-between px-6 sticky top-0 bg-white z-40">
-        <button
-          onClick={() => setNavOpen(!navOpen)}
-          className="flex flex-col gap-1 w-5 h-5 justify-center"
-        >
-          <div className="w-full h-px bg-black"></div>
-          <div className="w-full h-px bg-black"></div>
-          <div className="w-full h-px bg-black"></div>
-        </button>
+        <div></div>
 
-        <div className="absolute left-1/2 -translate-x-1/2 text-[13px] font-light tracking-wide">
-          {PRODUCT.title}
+        <div className="relative w-24 h-8">
+          <Image
+            src="/lb vip.png"
+            alt="Club L'argent Brûlé VIP"
+            fill
+            className="object-contain"
+            unoptimized
+          />
         </div>
 
         <button className="relative w-6 h-6 flex items-center justify-center">
@@ -114,24 +104,29 @@ export default function LemonDropRaglanPage() {
         </button>
       </div>
 
-      {/* Navigation Sidebar */}
-      {navOpen && (
-        <div className="fixed inset-0 top-12 z-30 bg-black/20" onClick={() => setNavOpen(false)}>
-          <div className="absolute top-0 left-0 w-64 h-screen bg-white border-r border-neutral-200 p-6 space-y-4" onClick={(e) => e.stopPropagation()}>
-            {NAV_ITEMS.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="block text-[12px] font-light uppercase tracking-wider hover:opacity-60 transition-opacity"
-              >
-                {item.label}
-              </Link>
-            ))}
+      <div className="flex w-full" style={{ height: "calc(100vh - 48px)" }}>
+        {/* Left - Product Details */}
+        <div className="w-64 overflow-y-auto px-8 py-12 flex flex-col justify-center">
+          <div className="space-y-6 text-[11px] leading-relaxed">
+            <div>
+              <p className="font-light text-neutral-900">L'ARGENT BRÛLÉ</p>
+              <p className="font-light text-neutral-900 mt-2">{PRODUCT.title}</p>
+            </div>
+
+            <p className="font-light text-neutral-700">{PRODUCT.description}</p>
+
+            <div className="space-y-2">
+              {PRODUCT.specs.map((spec, idx) => (
+                <p key={idx} className="font-light text-neutral-700">• {spec}</p>
+              ))}
+            </div>
+
+            <p className="font-light text-neutral-600">100% authentic materials. Crafted with premium construction.</p>
+
+            <p className="font-light text-neutral-600">Free shipping on orders over $150 USD. All items ship within 2-3 business days.</p>
           </div>
         </div>
-      )}
 
-      <div className="flex w-full" style={{ height: "calc(100vh - 48px)" }}>
         {/* Center - Main Image */}
         <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto">
           <div className="w-full max-w-md aspect-[3/4] relative">
@@ -149,9 +144,14 @@ export default function LemonDropRaglanPage() {
 
         {/* Right - Purchase Section */}
         <div className="w-80 border-l border-neutral-200 overflow-y-auto p-8">
-          <div className="space-y-6">
+          <div className="space-y-6 pt-32">
+            {/* Product Name */}
+            <div className="text-center pb-4">
+              <p className="text-[12px] font-light uppercase tracking-wide">{PRODUCT.title}</p>
+            </div>
+
             {/* Price */}
-            <div>
+            <div className="text-center">
               <p className="text-[16px] font-semibold">${PRODUCT.price} USD</p>
             </div>
 
@@ -201,7 +201,7 @@ export default function LemonDropRaglanPage() {
             {/* Info Section */}
             <div className="pt-4 border-t border-neutral-200 space-y-3">
               <p className="text-[11px] font-light text-neutral-600">
-                Model is 6'1" and wears size M. <u>SIZE GUIDE</u>
+                Model is 6'1" and wears size L. <button onClick={() => setShowSizeGuide(true)} className="underline cursor-pointer hover:opacity-60">SIZE GUIDE</button>
               </p>
               <p className="text-[11px] font-light text-neutral-600">
                 Free shipping on orders over $150 USD and free returns on all orders.
@@ -235,6 +235,64 @@ export default function LemonDropRaglanPage() {
             )}
           </div>
         </div>
+
+        {/* Size Guide Modal */}
+        {showSizeGuide && (
+          <div className="fixed inset-0 bg-black/20 z-50 flex items-center justify-center p-4" onClick={() => setShowSizeGuide(false)}>
+            <div
+              className="bg-white rounded-lg p-8 max-w-sm w-full animate-in fade-in zoom-in duration-300"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-[14px] font-semibold uppercase tracking-wider mb-6">SIZE GUIDE</h2>
+
+              <div className="space-y-4 mb-6">
+                <div className="grid grid-cols-2 gap-4 text-center text-[12px]">
+                  <div className="border border-neutral-200 p-3 rounded">
+                    <p className="font-semibold">XS</p>
+                    <p className="text-[10px] text-neutral-600 mt-1">Width: 18"</p>
+                    <p className="text-[10px] text-neutral-600">Length: 27"</p>
+                  </div>
+                  <div className="border border-neutral-200 p-3 rounded">
+                    <p className="font-semibold">S</p>
+                    <p className="text-[10px] text-neutral-600 mt-1">Width: 19"</p>
+                    <p className="text-[10px] text-neutral-600">Length: 28"</p>
+                  </div>
+                  <div className="border border-neutral-200 p-3 rounded">
+                    <p className="font-semibold">M</p>
+                    <p className="text-[10px] text-neutral-600 mt-1">Width: 20"</p>
+                    <p className="text-[10px] text-neutral-600">Length: 29"</p>
+                  </div>
+                  <div className="border border-neutral-200 p-3 rounded">
+                    <p className="font-semibold">L</p>
+                    <p className="text-[10px] text-neutral-600 mt-1">Width: 21"</p>
+                    <p className="text-[10px] text-neutral-600">Length: 30"</p>
+                  </div>
+                  <div className="border border-neutral-200 p-3 rounded">
+                    <p className="font-semibold">XL</p>
+                    <p className="text-[10px] text-neutral-600 mt-1">Width: 22"</p>
+                    <p className="text-[10px] text-neutral-600">Length: 31"</p>
+                  </div>
+                  <div className="border border-neutral-200 p-3 rounded">
+                    <p className="font-semibold">XXL</p>
+                    <p className="text-[10px] text-neutral-600 mt-1">Width: 23"</p>
+                    <p className="text-[10px] text-neutral-600">Length: 32"</p>
+                  </div>
+                </div>
+              </div>
+
+              <p className="text-[11px] text-neutral-600 text-center mb-6">
+                All measurements are approximate and taken from the center of the garment.
+              </p>
+
+              <button
+                onClick={() => setShowSizeGuide(false)}
+                className="w-full h-10 bg-black text-white text-[12px] font-semibold uppercase tracking-wider rounded hover:bg-neutral-800 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ const EARLY_ACCESS_PRODUCTS = [
     name: "PARISIAN EDITION TEE",
     price: "145 USD",
     image: "/parsian tee.png",
+    modelImage: "/parsian product shot.png",
     tag: "NEW",
     available: true,
   },
@@ -18,6 +19,7 @@ const EARLY_ACCESS_PRODUCTS = [
     name: "LEMONDROP RAGLAN",
     price: "165 USD",
     image: "/lemondrop main.png",
+    modelImage: "/lemondrop1.png",
     tag: "NEW",
     available: true,
   },
@@ -26,6 +28,7 @@ const EARLY_ACCESS_PRODUCTS = [
     name: "WORLD TOUR 2004 TEE",
     price: "145 USD",
     image: "/2004.png",
+    modelImage: "/20041.png",
     tag: "NEW",
     available: true,
   },
@@ -34,6 +37,7 @@ const EARLY_ACCESS_PRODUCTS = [
     name: "BEAUTÉ DU CUIR CARPENTERS",
     price: "240 USD",
     image: "/leather_pants_front.png",
+    modelImage: "/leather_pants_front.png",
     tag: "NEW",
     available: true,
   },
@@ -46,6 +50,7 @@ export default function EarlyAccessPage() {
   const [accessError, setAccessError] = useState("");
   const [selectedSizes, setSelectedSizes] = useState<{ [key: string]: string }>({});
   const [isLoaded, setIsLoaded] = useState(false);
+  const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
 
   const EARLY_ACCESS_CODE = "LBVIP";
   const SIZES = ["1", "2", "3", "4", "5"];
@@ -149,22 +154,21 @@ export default function EarlyAccessPage() {
   return (
     <div className="px-4 sm:px-10 pb-40 bg-white min-h-screen">
       <div className="h-8 lg:h-0" />
-      <div className="mb-20 space-y-3">
-        <p className="text-[10px] uppercase tracking-[0.5em] opacity-30">VIP EARLY ACCESS</p>
-        <h1 className="text-[14px] uppercase font-bold tracking-[0.3em]">EXCLUSIVE SHOP</h1>
-        <p className="text-[11px] uppercase tracking-[0.3em] opacity-40">Members only. Limited quantities available.</p>
-      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-32 w-full mb-20">
         {EARLY_ACCESS_PRODUCTS.map((p) => (
           <div key={p.handle} className="group block space-y-8">
             <Link href={`/product/${p.handle}`} className="block">
-              <div className="aspect-[3/4] bg-white relative overflow-hidden flex items-center justify-center p-12 border border-transparent group-hover:border-neutral-200 transition-all duration-500 will-change-transform">
+              <div
+                className="aspect-[3/4] bg-white relative overflow-hidden flex items-center justify-center p-12 border border-transparent group-hover:border-neutral-200 transition-all duration-500 will-change-transform"
+                onMouseEnter={() => setHoveredProduct(p.handle)}
+                onMouseLeave={() => setHoveredProduct(null)}
+              >
                 {p.image && (
                   <Image
-                    src={p.image}
+                    src={hoveredProduct === p.handle ? p.modelImage : p.image}
                     alt={p.name}
                     fill
-                    className="object-contain mix-blend-multiply group-hover:scale-120 transition-transform duration-500 ease-out p-2 will-change-transform"
+                    className="object-contain mix-blend-multiply transition-opacity duration-300 ease-out p-2 will-change-transform"
                     style={{ filter: "contrast(1.1) brightness(1.05)" }}
                     sizes="(max-width: 768px) 100vw, 50vw"
                     priority

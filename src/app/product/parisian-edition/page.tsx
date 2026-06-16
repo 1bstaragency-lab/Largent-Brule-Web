@@ -201,7 +201,7 @@ export default function ParisianEditionPage() {
             {/* Info Section */}
             <div className="pt-4 border-t border-neutral-200 space-y-3">
               <p className="text-[11px] font-light text-neutral-600">
-                Model is 6'1" and wears size M. <u>SIZE GUIDE</u>
+                Model is 6'1" and wears size L. <u>SIZE GUIDE</u>
               </p>
               <p className="text-[11px] font-light text-neutral-600">
                 Free shipping on orders over $150 USD and free returns on all orders.

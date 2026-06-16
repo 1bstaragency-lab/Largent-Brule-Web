@@ -3,13 +3,15 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function MobileNavbar() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
+  const isVipPage = pathname === "/vip";
 
   const navItems = [
     { label: "COLLECTIONS", href: "/collections" },
@@ -21,26 +23,48 @@ export function MobileNavbar() {
   ];
 
   return (
-    <header className="lg:hidden sticky top-0 z-[100] w-full bg-white border-b border-neutral-100 h-20 flex items-center px-6">
-      {/* Menu Trigger - Left */}
-      <button onClick={() => setIsOpen(true)} className="p-2 -ml-2">
-        <Menu size={20} strokeWidth={1.5} />
-      </button>
+    <header className="lg:hidden sticky top-0 z-[100] w-full bg-white border-b border-neutral-100 h-12 flex items-center justify-between px-4">
+      {isVipPage ? (
+        <>
+          {/* VIP Page - Logo Left, Cart Right */}
+          <Link href="/vip" className="relative w-20 h-7 hover:opacity-70 transition-opacity">
+            <Image
+              src="/lb vip.png"
+              alt="L'argent Brûlé VIP"
+              fill
+              className="object-contain"
+              unoptimized
+            />
+          </Link>
+          <button className="relative w-6 h-6 flex items-center justify-center">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4l1-12z" />
+            </svg>
+          </button>
+        </>
+      ) : (
+        <>
+          {/* Regular Pages - Menu Left, Centered Logo, Cart Right */}
+          <button onClick={() => setIsOpen(true)} className="p-2 -ml-2">
+            <Menu size={20} strokeWidth={1.5} />
+          </button>
 
-      {/* Centered Logo - Script */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-20">
-        <Link href="/" className="relative block w-full h-full">
-          <Image 
-            src="/logo_script_final.png" 
-            alt="L'ARGENT BRÛLÉ" 
-            fill
-            className="object-contain"
-            priority
-          />
-        </Link>
-      </div>
+          {/* Centered Logo - Script */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-20">
+            <Link href="/" className="relative block w-full h-full">
+              <Image
+                src="/logo_script_final.png"
+                alt="L'ARGENT BRÛLÉ"
+                fill
+                className="object-contain"
+                priority
+              />
+            </Link>
+          </div>
 
-      <div className="w-10 h-10 ml-auto" /> {/* Balance spacer */}
+          <div className="w-10 h-10 ml-auto" /> {/* Balance spacer */}
+        </>
+      )}
 
       {/* Mobile Menu Overlay - Celine Clinical Spec */}
       <AnimatePresence>

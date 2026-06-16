@@ -20,7 +20,10 @@ const PRODUCT = {
     "Timeless design",
   ],
   heroImage: "/leather_pants_front.png",
-  galleryImages: [],
+  galleryImages: [
+    "/leathers.png",
+    "/leathers 2.png",
+  ],
 };
 
 const SIZES = [

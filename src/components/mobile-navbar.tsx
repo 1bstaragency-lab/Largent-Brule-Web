@@ -23,10 +23,10 @@ export function MobileNavbar() {
   ];
 
   return (
-    <header className="lg:hidden sticky top-0 z-[100] w-full bg-white border-b border-neutral-100 h-12 flex items-center justify-between px-4">
+    <header className="lg:hidden sticky top-0 z-[100] w-full bg-white border-b border-neutral-100 h-12 flex items-center justify-center px-4 relative">
       {isVipPage ? (
         <>
-          {/* VIP Page - Logo Left, Cart Right */}
+          {/* VIP Page - Logo Center, Cart Right */}
           <Link href="/vip" className="relative w-20 h-7 hover:opacity-70 transition-opacity">
             <Image
               src="/lb vip.png"
@@ -36,7 +36,7 @@ export function MobileNavbar() {
               unoptimized
             />
           </Link>
-          <button className="relative w-6 h-6 flex items-center justify-center">
+          <button className="absolute right-4 relative w-6 h-6 flex items-center justify-center">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4l1-12z" />
             </svg>

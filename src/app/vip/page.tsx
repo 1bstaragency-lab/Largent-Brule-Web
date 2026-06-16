@@ -226,33 +226,6 @@ export default function EarlyAccessPage() {
           </div>
         ))}
       </div>
-      <div className="max-w-2xl mx-auto border-t border-neutral-100 pt-20 space-y-12">
-        <div className="space-y-4">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.4em]">VIP BENEFITS</h2>
-          <ul className="space-y-2 text-[11px] tracking-[0.1em] opacity-60">
-            <li>✓ Early access to new collections</li>
-            <li>✓ Exclusive VIP-only items</li>
-            <li>✓ Priority shipping on all orders</li>
-            <li>✓ Special member pricing</li>
-          </ul>
-        </div>
-        <div className="space-y-4">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.4em]">SHIPPING & RETURNS</h2>
-          <p className="text-[11px] tracking-[0.1em] opacity-60">
-            Free shipping on all early access orders. 30-day returns for VIP members.
-            All items ship within 2-3 business days.
-          </p>
-        </div>
-        <div className="space-y-4 pb-20">
-          <h2 className="text-[11px] font-bold uppercase tracking-[0.4em]">QUESTIONS?</h2>
-          <p className="text-[11px] tracking-[0.1em] opacity-60">
-            Email us at{" "}
-            <a href="mailto:vip@largentbrule.com" className="opacity-100 hover:opacity-60 transition-opacity border-b border-black/20 hover:border-black/60">
-              vip@largentbrule.com
-            </a>
-          </p>
-        </div>
-      </div>
     </div>
   );
 }

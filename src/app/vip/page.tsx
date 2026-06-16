@@ -93,14 +93,8 @@ export default function EarlyAccessPage() {
       <div className="w-full min-h-screen bg-black flex items-center justify-center lg:bg-white lg:px-4">
         {/* Mobile Video Entry */}
         <div className="w-screen h-screen lg:hidden flex flex-col items-center justify-center bg-black relative fixed inset-0">
-          <Link href="/" className="absolute top-6 left-4 w-20 h-7 z-10 hover:opacity-70 transition-opacity">
-            <Image
-              src="/lb vip.png"
-              alt="Home"
-              fill
-              className="object-contain brightness-0 invert"
-              unoptimized
-            />
+          <Link href="/" className="absolute top-6 left-4 z-10 hover:opacity-70 transition-opacity text-white text-sm font-light tracking-wide" style={{ fontFamily: "cursive" }}>
+            L'argent Brûlé
           </Link>
 
           <video
@@ -114,7 +108,7 @@ export default function EarlyAccessPage() {
 
           <button
             onClick={() => setVideoWatched(true)}
-            className="absolute bottom-20 left-1/2 transform -translate-x-1/2 text-white text-xl font-light tracking-wide bg-black px-8 py-2 hover:opacity-70 transition-opacity z-10"
+            className="absolute bottom-20 left-1/2 transform -translate-x-1/2 text-white text-xl font-light tracking-wide bg-white/20 backdrop-blur-sm px-8 py-2 hover:bg-white/30 transition-all z-10"
             style={{ fontFamily: "cursive" }}
           >
             Enter

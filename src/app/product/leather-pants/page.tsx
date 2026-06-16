@@ -22,7 +22,7 @@ const PRODUCT = {
   heroImage: "/leather_pants_front.png",
   galleryImages: [
     "/leathers.png",
-    "/leathers 2.png",
+    "/leathers_detail.png",
   ],
 };
 

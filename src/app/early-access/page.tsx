@@ -177,25 +177,12 @@ export default function EarlyAccessPage() {
                 )}
               </div>
             </Link>
-            <div className="space-y-4 text-[13px] tracking-[0.3em]">
-              <div>
-                <p className="font-bold uppercase">{p.name}</p>
-                <div className="flex items-center justify-between opacity-50 mt-2">
-                  <p className="font-medium">{p.price}</p>
-                  <p className="font-bold text-[10px] uppercase border-l border-black/20 pl-4">{p.tag}</p>
-                </div>
+            <div className="space-y-2 text-[13px] tracking-[0.3em]">
+              <p className="font-bold uppercase">{p.name}</p>
+              <div className="flex items-center justify-between opacity-50">
+                <p className="font-medium">{p.price}</p>
+                <p className="font-bold text-[10px] uppercase border-l border-black/20 pl-4">{p.tag}</p>
               </div>
-              {p.available && (
-                <Link
-                  href={`/product/${p.handle}`}
-                  className="block w-full h-[44px] bg-black text-white text-center leading-[44px] text-[11px] font-bold uppercase tracking-[0.3em] hover:bg-neutral-800 transition-colors"
-                >
-                  VIEW PRODUCT
-                </Link>
-              )}
-              {!p.available && (
-                <p className="text-[10px] text-neutral-400 uppercase tracking-[0.2em]">Notify when available</p>
-              )}
             </div>
           </div>
         ))}

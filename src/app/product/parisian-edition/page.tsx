@@ -239,7 +239,7 @@ export default function ParisianEditionPage() {
           {PRODUCT.galleryImages.length > 0 && (
             <div className="border-t border-neutral-200 mt-6 pt-6 space-y-3">
               <p className="text-xs font-light text-neutral-500 uppercase">GALLERY</p>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3 max-w-xs">
                 {PRODUCT.galleryImages.map((img, idx) => (
                   <div
                     key={idx}

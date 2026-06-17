@@ -317,7 +317,7 @@ export default function WorldTour2004Page() {
 
         {/* Center - Main Image */}
         <div className="flex-1 flex items-center justify-center p-8 overflow-y-auto bg-neutral-50">
-          <div className={`w-full aspect-[3/4] relative ${displayImage === PRODUCT.heroImage ? 'max-w-2xl' : 'max-w-lg'}`}>
+          <div className={`w-full aspect-[3/4] relative ${displayImage === PRODUCT.heroImage ? 'max-w-2xl' : 'max-w-xl'}`}>
             <Image
               src={displayImage}
               alt={PRODUCT.title}

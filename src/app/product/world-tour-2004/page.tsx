@@ -141,7 +141,7 @@ export default function WorldTour2004Page() {
       {/* Mobile Layout (default) */}
       <div className="lg:hidden w-full overflow-y-auto">
         {/* Product Image */}
-        <div className="w-full bg-neutral-50 flex items-center justify-center p-4 pt-20">
+        <div className="w-full bg-neutral-50 flex items-center justify-center p-4 pt-40">
           <div className="w-full max-w-md aspect-[3/4] relative">
             <Image
               src={displayImage}

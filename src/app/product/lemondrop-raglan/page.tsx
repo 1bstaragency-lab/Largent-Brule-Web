@@ -404,7 +404,7 @@ export default function LemonDropRaglanPage() {
                   {PRODUCT.galleryImages.map((img, idx) => (
                     <div
                       key={idx}
-                      className="w-full h-24 relative cursor-pointer border border-transparent hover:border-black transition-all"
+                      className="w-full h-12 relative cursor-pointer border border-transparent hover:border-black transition-all"
                       onMouseEnter={() => setDisplayImage(img)}
                       onMouseLeave={() => setDisplayImage(PRODUCT.heroImage)}
                     >

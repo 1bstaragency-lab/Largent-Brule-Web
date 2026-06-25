@@ -9,6 +9,10 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const greatVibes = Great_Vibes({ weight: "400", subsets: ["latin"], variable: "--font-scriptina" });
 
 export const metadata: Metadata = {
+  // Resolves all relative OG/icon URLs to absolute https://largentbrule.com/...
+  // Without this, Next falls back to localhost and link previews (iMessage,
+  // etc.) can't load the thumbnail — they render as a bare link bubble.
+  metadataBase: new URL("https://largentbrule.com"),
   title: "L'argent Brûlé | Official Flagship",
   description: "Luxury technical apparel for the volatile era.",
   openGraph: {

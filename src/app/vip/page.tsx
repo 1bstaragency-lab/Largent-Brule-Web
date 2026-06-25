@@ -3,8 +3,18 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 const EARLY_ACCESS_PRODUCTS = [
+  {
+    handle: "leather-pants",
+    name: "BEAUTÉ DU CUIR CARPENTERS",
+    price: "240 USD",
+    image: "/pants_product.png",
+    modelImage: "/pants_detail.png",
+    tag: "NEW",
+    available: true,
+  },
   {
     handle: "parisian-edition",
     name: "PARISIAN EDITION TEE",
@@ -32,18 +42,14 @@ const EARLY_ACCESS_PRODUCTS = [
     tag: "NEW",
     available: true,
   },
-  {
-    handle: "leather-pants",
-    name: "BEAUTÉ DU CUIR CARPENTERS",
-    price: "240 USD",
-    image: "/pants_product.png",
-    modelImage: "/pants_detail.png",
-    tag: "NEW",
-    available: true,
-  },
 ];
 
 export default function EarlyAccessPage() {
+  const params = useParams();
+  // Route param is the full slug e.g. "group-1" — pull the digits out.
+  const rawGroup = params?.group as string | undefined;
+  const groupId = rawGroup ? (parseInt(rawGroup.replace(/\D/g, ""), 10) || null) : null;
+
   const [showPassword, setShowPassword] = useState(false);
   const [passwordInput, setPasswordInput] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -53,7 +59,13 @@ export default function EarlyAccessPage() {
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
   const [videoWatched, setVideoWatched] = useState(false);
 
-  const EARLY_ACCESS_CODE = "SS26";
+  const getEarlyAccessCode = () => {
+    if (groupId === null) return "SS26"; // Default code for /vip
+    if (groupId < 1 || groupId > 42) return "SS26";
+    return `SS26-${groupId}`;
+  };
+
+  const EARLY_ACCESS_CODE = getEarlyAccessCode();
   const SIZES = ["1", "2", "3", "4", "5"];
 
   useEffect(() => {

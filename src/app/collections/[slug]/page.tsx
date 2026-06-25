@@ -43,7 +43,7 @@ const HARDCODED: Record<
     label: "CLASSICS",
     description: "The permanent archive. Foundational silhouettes built to last.",
     products: [
-      { id: "bomber", name: "CROPPED BOMBER JACKET", price: "310 USD", image: "/bomber_final_studio.jpg", tag: "NEW" },
+      // Bomber turned off for now.
       { id: "leather-pants", name: "BEAUTÉ DU CUIR CARPENTERS", price: "240 USD", image: "/leather_pants_front.png", tag: "ARCHIVE" },
     ],
   },

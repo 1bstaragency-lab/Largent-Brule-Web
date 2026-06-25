@@ -91,7 +91,7 @@ export async function POST(req: Request) {
     });
 
     if (result.ok) {
-      await supabaseAdmin.from('sent_messages').upsert(
+      const { error: logErr } = await supabaseAdmin.from('sent_messages').upsert(
         {
           phone_number: e164,
           message_type: 'vip_early_access',
@@ -102,7 +102,17 @@ export async function POST(req: Request) {
         },
         { onConflict: 'idempotency_key' }
       );
-      queued++;
+      if (logErr) {
+        // The message went out but we could not record it. Surface this loudly
+        // — a missing idempotency row is exactly what caused earlier double-sends.
+        failures.push({
+          phone: e164,
+          status: -1,
+          error: `SENT_BUT_NOT_LOGGED: ${logErr.message}`,
+        });
+      } else {
+        queued++;
+      }
     } else {
       failures.push({
         phone: e164,

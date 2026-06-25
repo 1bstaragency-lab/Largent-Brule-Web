@@ -27,12 +27,12 @@ const PRODUCT = {
   ],
 };
 
+// Sizes wired to the Shopify "World Tour 2004 Tee" variants (made to order).
 const SIZES = [
-  { value: "1", label: "S" },
-  { value: "2", label: "M" },
-  { value: "3", label: "L" },
-  { value: "4", label: "XL" },
-  { value: "5", label: "XXL" },
+  { value: "S", label: "S", variantId: "47948422283415" },
+  { value: "M", label: "M", variantId: "47948422316183" },
+  { value: "L", label: "L", variantId: "47948422348951" },
+  { value: "XL", label: "XL", variantId: "47948422381719" },
 ];
 
 const RELATED_PRODUCTS = [
@@ -77,6 +77,13 @@ export default function WorldTour2004Page() {
       return;
     }
 
+    const sizeObj = SIZES.find((s) => s.value === selectedSize);
+    if (!sizeObj?.variantId) {
+      setErrMsg("This size isn't available online yet — contact us for a custom order.");
+      setAddingState("error");
+      return;
+    }
+
     setAddingState("adding");
     setErrMsg("");
     try {
@@ -85,7 +92,8 @@ export default function WorldTour2004Page() {
         name: PRODUCT.title,
         price: `${PRODUCT.price}`,
         image: PRODUCT.heroImage,
-        variant: SIZES.find((s) => s.value === selectedSize)?.label,
+        variant: sizeObj.label,
+        shopify_variant_legacy_id: sizeObj.variantId,
       });
       setAddingState("added");
       setTimeout(() => setAddingState("idle"), 1500);
@@ -177,7 +185,7 @@ export default function WorldTour2004Page() {
               <option value="">Choose size...</option>
               {SIZES.map((size) => (
                 <option key={size.value} value={size.value}>
-                  {size.value} ({size.label})
+                  {size.label}
                 </option>
               ))}
             </select>
@@ -354,7 +362,7 @@ export default function WorldTour2004Page() {
                 <option value="">Choose size...</option>
                 {SIZES.map((size) => (
                   <option key={size.value} value={size.value}>
-                    {size.value} ({size.label})
+                    {size.label}
                   </option>
                 ))}
               </select>

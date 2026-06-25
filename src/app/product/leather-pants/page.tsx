@@ -26,12 +26,15 @@ const PRODUCT = {
   ],
 };
 
+// Waist ranges per numbered size. variantId = Shopify variant legacyResourceId
+// for the matching "Black Leather / N" variant (required for checkout).
+// Size 5 has no Shopify variant yet, so it's shown but not yet purchasable.
 const SIZES = [
-  { value: "1", label: "S" },
-  { value: "2", label: "M" },
-  { value: "3", label: "L" },
-  { value: "4", label: "XL" },
-  { value: "5", label: "XXL" },
+  { value: "1", label: '28–30"', variantId: "47851303895191" },
+  { value: "2", label: '30–32"', variantId: "47851303927959" },
+  { value: "3", label: '32–34"', variantId: "47851303960727" },
+  { value: "4", label: '34–36"', variantId: "47851303993495" },
+  { value: "5", label: '36–38"', variantId: "47948430606487" },
 ];
 
 const RELATED_PRODUCTS = [
@@ -76,6 +79,13 @@ export default function LeatherPantsPage() {
       return;
     }
 
+    const sizeObj = SIZES.find((s) => s.value === selectedSize);
+    if (!sizeObj?.variantId) {
+      setErrMsg("This size isn't available online yet — contact us for a custom order.");
+      setAddingState("error");
+      return;
+    }
+
     setAddingState("adding");
     setErrMsg("");
     try {
@@ -84,7 +94,8 @@ export default function LeatherPantsPage() {
         name: PRODUCT.title,
         price: `${PRODUCT.price}`,
         image: PRODUCT.heroImage,
-        variant: SIZES.find((s) => s.value === selectedSize)?.label,
+        variant: `Size ${sizeObj.value} (${sizeObj.label})`,
+        shopify_variant_legacy_id: sizeObj.variantId,
       });
       setAddingState("added");
       setTimeout(() => setAddingState("idle"), 1500);

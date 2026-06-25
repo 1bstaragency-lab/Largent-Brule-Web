@@ -11,12 +11,7 @@ export interface CatalogItem {
 }
 
 export const CATALOG: CatalogItem[] = [
-  {
-    handle: "bomber",
-    name: "CROPPED BOMBER JACKET IN TECHNICAL NYLON",
-    image: "/charcoal_front_exact.png",
-    priceText: "310 USD",
-  },
+  // Bomber turned off for now — excluded from "you may also like" suggestions.
   {
     handle: "raglan",
     name: "L'ARGENT BRÛLÉ RAGLAN LONG-SLEEVE TEE",

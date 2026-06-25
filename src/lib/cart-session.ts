@@ -11,12 +11,13 @@ const COOKIE_MAX_AGE_DAYS = 365;
 
 /**
  * Master switch for the whole cart-tracking pipeline (session cookies,
- * carts/cart_items/cart_events rows, abandoned-cart recovery flow). Off
- * by default so the locked storefront doesn't accumulate empty cart rows.
- * Set `NEXT_PUBLIC_CART_TRACKING=on` in Netlify env to turn it on.
+ * carts/cart_items/cart_events rows, abandoned-cart recovery flow).
+ * Always on — the storefront is live and selling, so add-to-bag and
+ * checkout must work without depending on a deploy-time env var.
+ * (Set NEXT_PUBLIC_CART_TRACKING=off to force-disable if ever needed.)
  */
 export function isCartTrackingEnabled(): boolean {
-  return (process.env.NEXT_PUBLIC_CART_TRACKING || '').toLowerCase() === 'on';
+  return (process.env.NEXT_PUBLIC_CART_TRACKING || 'on').toLowerCase() !== 'off';
 }
 
 export interface CartRow {

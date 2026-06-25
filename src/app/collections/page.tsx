@@ -8,7 +8,7 @@ const collections = [
     slug: "classics",
     label: "CLASSICS",
     description: "The permanent archive. Foundational silhouettes built to last.",
-    image: "/bomber_final_studio.jpg",
+    image: "/leather_pants_front.png",
   },
   {
     slug: "ss26",

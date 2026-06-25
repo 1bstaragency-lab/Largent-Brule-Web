@@ -12,7 +12,15 @@
 // so customers see L'B in the address bar during checkout.
 
 const DOMAIN = process.env.SHOPIFY_STORE_DOMAIN || '';
-const CHECKOUT_DOMAIN = process.env.SHOPIFY_CHECKOUT_DOMAIN || DOMAIN;
+// Use the branded checkout subdomain so customers see shop.largentbrule.com
+// (not the raw *.myshopify.com) during checkout. We deliberately ignore any
+// *.myshopify.com value from the env so the branded domain always wins in
+// production, regardless of how the host's env vars are configured.
+const ENV_CHECKOUT_DOMAIN = process.env.SHOPIFY_CHECKOUT_DOMAIN || '';
+const CHECKOUT_DOMAIN =
+  ENV_CHECKOUT_DOMAIN && !ENV_CHECKOUT_DOMAIN.includes('myshopify')
+    ? ENV_CHECKOUT_DOMAIN
+    : 'shop.largentbrule.com';
 const TOKEN = process.env.SHOPIFY_ADMIN_TOKEN || '';
 const API_VERSION = process.env.SHOPIFY_API_VERSION || '2026-04';
 

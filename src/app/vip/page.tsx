@@ -30,7 +30,7 @@ const EARLY_ACCESS_PRODUCTS = [
     price: "145 USD",
     image: "/nostee1.png",
     modelImage: "/nostee2.png",
-    tag: "NEW",
+    tag: "LIVE",
     available: true,
   },
 ];

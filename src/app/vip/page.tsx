@@ -24,6 +24,15 @@ const EARLY_ACCESS_PRODUCTS = [
     tag: "NEW",
     available: true,
   },
+  {
+    handle: "nos-origines-tee",
+    name: "NOS ORIGINES TEE",
+    price: "145 USD",
+    image: "/nostee1.png",
+    modelImage: "/nostee2.png",
+    tag: "NEW",
+    available: true,
+  },
 ];
 
 export default function EarlyAccessPage() {

@@ -439,7 +439,9 @@ function CartDrawer({
             )}
           </div>
 
-          {/* Dwell-based suggestion — the product the customer lingered on. */}
+          {/* "You may also like" hidden for now — only 2 items in the shop,
+              so cross-sell suggestions aren't useful yet. Re-enable when the
+              catalog grows.
           {items.length > 0 && (
             <DwellSuggestion
               cartProductIds={items.map((i) => i.productId)}
@@ -447,6 +449,7 @@ function CartDrawer({
               onClose={() => setIsOpen(false)}
             />
           )}
+          */}
 
           {/* Footer */}
           {items.length > 0 && (

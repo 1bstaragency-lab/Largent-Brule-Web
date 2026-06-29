@@ -268,8 +268,8 @@ export default function WorldTour2004Page() {
             </div>
           )}
 
-          {/* You May Also Like */}
-          <div className="border-t border-neutral-200 mt-8 pt-8 space-y-6">
+          {/* You May Also Like — hidden for now (only 2 items in the shop) */}
+          <div className="hidden">
             <p className="text-xs font-light text-neutral-500 uppercase tracking-wide">YOU MAY ALSO LIKE</p>
             <div className="grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
               {RELATED_PRODUCTS.map((product) => (

@@ -29,7 +29,7 @@ const EARLY_ACCESS_PRODUCTS = [
     name: "NOS ORIGINES TEE",
     price: "145 USD",
     image: "/nostee1.png",
-    modelImage: "/nostee2.png",
+    modelImage: "/nostee3.png",
     tag: "NEW",
     available: true,
   },

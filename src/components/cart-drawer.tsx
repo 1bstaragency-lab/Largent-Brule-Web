@@ -308,10 +308,6 @@ function CartDrawer({
       {/* Hype "checkout line" queue overlay */}
       {inQueue && (
         <div className="fixed inset-0 z-[3000] bg-[#faf9f6] flex flex-col items-center justify-center px-6 sm:px-8 text-center">
-          <div className="absolute top-0 left-0 right-0 flex items-center justify-center p-5 sm:p-6 border-b border-black/10">
-            <span className="text-[15px] sm:text-[16px] font-medium tracking-tight">Checkout line</span>
-          </div>
-
           {/* Brand logo */}
           <div className="relative w-52 h-20 sm:w-64 sm:h-24 mb-6 sm:mb-8">
             <Image

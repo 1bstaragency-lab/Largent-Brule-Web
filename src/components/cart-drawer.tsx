@@ -3,10 +3,12 @@
 import { useState, useEffect, createContext, useContext, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { getTopDwell } from "@/hooks/useDwell";
 import { pickRandomCatalogItem, type CatalogItem } from "@/lib/catalog";
+import { recordPaceEvent, computeQueueWaitMs } from "@/lib/session-pace";
 
 // Public shape used by product pages: `addItem({ id, name, price, image, ... })`.
 // `id` is the product_id / handle (e.g. "bomber"). Variant is optional.
@@ -77,14 +79,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [showAdded, setShowAdded] = useState(false);
   const [isReady, setIsReady] = useState(false);
+  const pathname = usePathname();
+
+  // Record a session "movement" event on every page change — feeds the
+  // adaptive checkout-line wait (swift shoppers wait less).
+  useEffect(() => {
+    recordPaceEvent();
+  }, [pathname]);
 
   // Hydrate from the server on first mount. This also mints the
-  // lb_session cookie + cart row on first ever page load.
-  // Short-circuited when NEXT_PUBLIC_CART_TRACKING isn't "on" so the
-  // locked storefront doesn't generate empty carts on every visit.
+  // lb_session cookie + cart row on first ever page load. Cart tracking is
+  // always on now (storefront is live), so we always hydrate.
   useEffect(() => {
     const trackingOn =
-      (process.env.NEXT_PUBLIC_CART_TRACKING || "").toLowerCase() === "on";
+      (process.env.NEXT_PUBLIC_CART_TRACKING || "on").toLowerCase() !== "off";
     if (!trackingOn) {
       setIsReady(true);
       return;
@@ -108,6 +116,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const addItem = useCallback(async (input: ProductCartInput) => {
+    recordPaceEvent(); // adding to bag counts as a movement event
     // Open the drawer + flash badge immediately for snappy UX.
     setIsOpen(true);
     setShowAdded(true);
@@ -274,7 +283,6 @@ function CartDrawer({
   const [checkoutError, setCheckoutError] = useState("");
   // Hype "checkout line" queue shown for a few seconds before redirect.
   const [inQueue, setInQueue] = useState(false);
-  const QUEUE_MS = 5000;
 
   const proceedToCheckout = async () => {
     setCheckoutLoading(true);
@@ -284,10 +292,12 @@ function CartDrawer({
       const j = await res.json();
       if (j.ok && j.url) {
         // Show the "you're in line" queue, then auto-load checkout.
+        // Wait adapts to session pace: swift shoppers ~5s, slow ~30s.
+        const waitMs = computeQueueWaitMs();
         setInQueue(true);
         setTimeout(() => {
           window.location.href = j.url;
-        }, QUEUE_MS);
+        }, waitMs);
       } else if (j.error === "unmapped_items") {
         setCheckoutError(
           "Some items aren't synced to Shopify yet. Remove and re-add them once available."

@@ -272,6 +272,9 @@ function CartDrawer({
   const subtotal = items.reduce((acc, item) => acc + (item.priceCents / 100) * item.quantity, 0);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
+  // Hype "checkout line" queue shown for a few seconds before redirect.
+  const [inQueue, setInQueue] = useState(false);
+  const QUEUE_MS = 5000;
 
   const proceedToCheckout = async () => {
     setCheckoutLoading(true);
@@ -280,7 +283,11 @@ function CartDrawer({
       const res = await fetch("/api/cart/checkout-url", { method: "POST" });
       const j = await res.json();
       if (j.ok && j.url) {
-        window.location.href = j.url;
+        // Show the "you're in line" queue, then auto-load checkout.
+        setInQueue(true);
+        setTimeout(() => {
+          window.location.href = j.url;
+        }, QUEUE_MS);
       } else if (j.error === "unmapped_items") {
         setCheckoutError(
           "Some items aren't synced to Shopify yet. Remove and re-add them once available."
@@ -298,6 +305,53 @@ function CartDrawer({
 
   return (
     <>
+      {/* Hype "checkout line" queue overlay */}
+      {inQueue && (
+        <div className="fixed inset-0 z-[3000] bg-[#faf9f6] flex flex-col items-center justify-center px-6 sm:px-8 text-center">
+          <div className="absolute top-0 left-0 right-0 flex items-center justify-center p-5 sm:p-6 border-b border-black/10">
+            <span className="text-[15px] sm:text-[16px] font-medium tracking-tight">Checkout line</span>
+          </div>
+
+          {/* Brand logo */}
+          <div className="relative w-52 h-20 sm:w-64 sm:h-24 mb-6 sm:mb-8">
+            <Image
+              src="/logo_script_final.png"
+              alt="L'argent Brûlé"
+              fill
+              className="object-contain"
+              unoptimized
+            />
+          </div>
+
+          {/* Animated wave bars (deep burgundy) */}
+          <div className="flex items-end gap-1.5 h-14 sm:h-16 mb-9 sm:mb-10">
+            {[0, 1, 2, 3, 4, 5].map((i) => (
+              <motion.span
+                key={i}
+                className="w-1.5 rounded-full bg-[#4a0404]"
+                animate={{ height: ["14px", "56px", "14px"] }}
+                transition={{
+                  duration: 1,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: i * 0.12,
+                }}
+              />
+            ))}
+          </div>
+
+          <h3 className="text-[20px] sm:text-[22px] font-medium mb-5 sm:mb-6 tracking-tight">
+            You&apos;re in line to check out
+          </h3>
+          <p className="text-[11px] sm:text-[12px] uppercase tracking-[0.12em] leading-relaxed text-neutral-600 max-w-xs sm:max-w-sm mb-4">
+            Due to high traffic, you&apos;ll need to wait a few minutes. When it&apos;s your turn, checkout will load automatically.
+          </p>
+          <p className="text-[11px] sm:text-[12px] uppercase tracking-[0.12em] leading-relaxed text-neutral-600 max-w-xs sm:max-w-sm">
+            To keep your spot, please keep this window open and don&apos;t refresh.
+          </p>
+        </div>
+      )}
+
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/10 backdrop-blur-[2px] z-[2100] transition-opacity duration-500"

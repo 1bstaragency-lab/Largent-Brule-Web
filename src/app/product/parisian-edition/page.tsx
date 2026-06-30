@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/components/cart-drawer";
+import { SizeChart } from "@/components/size-chart";
 import { cn } from "@/lib/utils";
 
 const PRODUCT = {
@@ -435,42 +436,15 @@ export default function ParisianEditionPage() {
 
       {/* Size Guide Modal */}
       {showSizeGuide && (
-        <div className="fixed inset-0 bg-black/20 z-50 flex items-center justify-center p-4" onClick={() => setShowSizeGuide(false)}>
-          <div
-            className="bg-white rounded-lg p-6 md:p-8 max-w-sm w-full animate-in fade-in zoom-in duration-300 max-h-[90vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="text-sm md:text-base font-semibold uppercase tracking-wider mb-4">SIZE GUIDE</h2>
-
-            <div className="grid grid-cols-2 gap-3 mb-4">
-              {[
-                { size: "XS", width: 18, length: 27 },
-                { size: "S", width: 19, length: 28 },
-                { size: "M", width: 20, length: 29 },
-                { size: "L", width: 21, length: 30 },
-                { size: "XL", width: 22, length: 31 },
-                { size: "XXL", width: 23, length: 32 },
-              ].map((s) => (
-                <div key={s.size} className="border border-neutral-200 p-2 rounded text-center text-xs">
-                  <p className="font-semibold">{s.size}</p>
-                  <p className="text-[9px] text-neutral-600 mt-1">W: {s.width}"</p>
-                  <p className="text-[9px] text-neutral-600">L: {s.length}"</p>
-                </div>
-              ))}
-            </div>
-
-            <p className="text-[10px] text-neutral-600 text-center mb-4">
-              All measurements are approximate and taken from the center of the garment.
-            </p>
-
-            <button
-              onClick={() => setShowSizeGuide(false)}
-              className="w-full h-10 bg-black text-white text-xs font-semibold uppercase tracking-wider rounded hover:bg-neutral-800 transition-colors"
-            >
-              Close
-            </button>
-          </div>
-        </div>
+        <SizeChart
+          sizes={[
+            { size: "S", length: 24, chestWidth: 25 },
+            { size: "M", length: 24.5, chestWidth: 26 },
+            { size: "L", length: 25, chestWidth: 27 },
+            { size: "XL", length: 25.5, chestWidth: 28 },
+          ]}
+          onClose={() => setShowSizeGuide(false)}
+        />
       )}
     </div>
   );

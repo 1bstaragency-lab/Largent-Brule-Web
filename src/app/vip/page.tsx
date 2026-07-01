@@ -106,15 +106,17 @@ export default function EarlyAccessPage() {
             />
           </Link>
 
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover"
-          >
-            <source src="/home vip entry.mp4" type="video/mp4" />
-          </video>
+          <div className="w-full h-full border-4 border-amber-950">
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover"
+            >
+              <source src="/vip-entry.mp4" type="video/mp4" />
+            </video>
+          </div>
 
           <button
             onClick={() => setVideoWatched(true)}

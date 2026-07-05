@@ -112,6 +112,7 @@ export default function EarlyAccessPage() {
               muted
               loop
               playsInline
+              preload="auto"
               className="w-full h-full object-cover"
             >
               <source src="/vip-entry.mp4" type="video/mp4" />

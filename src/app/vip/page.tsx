@@ -49,6 +49,7 @@ export default function EarlyAccessPage() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
   const [videoWatched, setVideoWatched] = useState(false);
+  const [showIntro, setShowIntro] = useState(true);
 
   const getEarlyAccessCode = () => {
     if (groupId === null) return "SS26"; // Default code for /vip
@@ -65,6 +66,10 @@ export default function EarlyAccessPage() {
       setIsAuthenticated(true);
     }
     setIsLoaded(true);
+
+    // Hide intro after 1.5 seconds
+    const timer = setTimeout(() => setShowIntro(false), 1500);
+    return () => clearTimeout(timer);
   }, []);
 
   const handleAccessSubmit = (e: React.FormEvent) => {
@@ -89,6 +94,23 @@ export default function EarlyAccessPage() {
 
   if (!isLoaded) {
     return <div className="w-full min-h-screen bg-white" />;
+  }
+
+  // Intro screen
+  if (showIntro) {
+    return (
+      <div className="w-full min-h-screen bg-white flex items-center justify-center fixed inset-0 z-50 animate-out fade-out duration-500 delay-1000">
+        <Image
+          src="/lb vip logo.png"
+          alt="L'argent Brûlé"
+          width={200}
+          height={100}
+          className="object-contain"
+          priority
+          unoptimized
+        />
+      </div>
+    );
   }
 
   if (!isAuthenticated && !showPassword && !videoWatched) {

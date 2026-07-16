@@ -11,7 +11,7 @@ import { HomepageCarousel } from "@/components/homepage-carousel";
 // ← change this to whatever password you want
 const SITE_PASSWORD = "SS26";
 
-const LAUNCH_DATE = new Date("2026-08-13T23:59:59");
+const LAUNCH_DATE = new Date("2026-08-01T23:59:59");
 
 const NAV_LINKS = [
   { label: "Lookbook", href: "/lookbook" },

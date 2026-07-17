@@ -21,10 +21,10 @@ const NAV_LINKS = [
 ];
 
 function formatPhone(raw: string): string {
-  const digits = raw.replace(/\D/g, "").slice(0, 10);
-  if (digits.length <= 3) return digits;
-  if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
-  return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+  const hasPlus = raw.startsWith("+");
+  const digits = raw.replace(/\D/g, "");
+  const prefix = hasPlus ? "+" : "";
+  return prefix + digits;
 }
 
 function useCountdown() {
@@ -144,8 +144,8 @@ export default function Home() {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     const digits = phone.replace(/\D/g, "");
-    if (digits.length < 10) {
-      setPhoneError("Enter your full 10-digit number including area code.");
+    if (digits.length < 7) {
+      setPhoneError("Enter a valid phone number (at least 7 digits).");
       return;
     }
     setStep("phoneLoading");
@@ -332,14 +332,12 @@ export default function Home() {
           <div className={`flex items-center border rounded-sm bg-white px-3 sm:px-4 py-2.5 sm:py-3 gap-3 ${
             phoneError ? "border-red-400" : "border-neutral-300 focus-within:border-neutral-500"
           }`}>
-            <span className="text-base sm:text-lg leading-none">🇺🇸</span>
-            <span className="text-[10px] sm:text-[11px] text-neutral-400">+1</span>
-            <div className="w-px h-4 bg-neutral-200" />
+            <span className="text-base sm:text-lg leading-none">🌍</span>
             <input
               type="tel"
               value={phone}
               onChange={handlePhoneChange}
-              placeholder="Phone Number"
+              placeholder="+1234567890 or +33..."
               className="flex-1 text-[12px] sm:text-[13px] font-light text-black bg-transparent outline-none placeholder:text-neutral-400"
             />
           </div>

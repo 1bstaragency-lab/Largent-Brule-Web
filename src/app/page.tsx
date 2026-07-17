@@ -21,10 +21,7 @@ const NAV_LINKS = [
 ];
 
 function formatPhone(raw: string): string {
-  const hasPlus = raw.startsWith("+");
-  const digits = raw.replace(/\D/g, "");
-  const prefix = hasPlus ? "+" : "";
-  return prefix + digits;
+  return raw.replace(/\D/g, "");
 }
 
 function useCountdown() {
@@ -71,9 +68,34 @@ export default function Home() {
       setLogoTaps(0);
     }
   };
+  const [countryCode, setCountryCode] = useState("+1");
+  const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
   const [carouselVideoUrl, setCarouselVideoUrl] = useState<string | null>(null);
+
+  const countries = [
+    { code: "+1", flag: "🇺🇸", name: "USA/Canada" },
+    { code: "+33", flag: "🇫🇷", name: "France" },
+    { code: "+44", flag: "🇬🇧", name: "UK" },
+    { code: "+49", flag: "🇩🇪", name: "Germany" },
+    { code: "+39", flag: "🇮🇹", name: "Italy" },
+    { code: "+34", flag: "🇪🇸", name: "Spain" },
+    { code: "+31", flag: "🇳🇱", name: "Netherlands" },
+    { code: "+41", flag: "🇨🇭", name: "Switzerland" },
+    { code: "+43", flag: "🇦🇹", name: "Austria" },
+    { code: "+32", flag: "🇧🇪", name: "Belgium" },
+    { code: "+46", flag: "🇸🇪", name: "Sweden" },
+    { code: "+47", flag: "🇳🇴", name: "Norway" },
+    { code: "+45", flag: "🇩🇰", name: "Denmark" },
+    { code: "+358", flag: "🇫🇮", name: "Finland" },
+    { code: "+48", flag: "🇵🇱", name: "Poland" },
+    { code: "+61", flag: "🇦🇺", name: "Australia" },
+    { code: "+81", flag: "🇯🇵", name: "Japan" },
+    { code: "+86", flag: "🇨🇳", name: "China" },
+    { code: "+91", flag: "🇮🇳", name: "India" },
+    { code: "+55", flag: "🇧🇷", name: "Brazil" },
+  ];
   // Two-step flow:
   //   phone   → entering phone     phoneLoading → posting phone
   //   email   → entering email     emailLoading → posting email
@@ -148,18 +170,19 @@ export default function Home() {
       setPhoneError("Enter a valid phone number (at least 7 digits).");
       return;
     }
+    const fullPhoneNumber = countryCode + digits;
     setStep("phoneLoading");
     try {
       const { error } = await supabase
         .from("early_access")
-        .insert([{ phone_number: digits }]);
+        .insert([{ phone_number: fullPhoneNumber }]);
       if (error && error.code !== "23505") {
         setPhoneError(error.message);
         setStep("phone");
       } else {
         // Link phone to the browser's cart session in the background.
-        capturePhone(digits);
-        setSubmittedDigits(digits);
+        capturePhone(fullPhoneNumber);
+        setSubmittedDigits(fullPhoneNumber);
         setStep("email");
       }
     } catch {
@@ -329,17 +352,48 @@ export default function Home() {
       {/* Step 1 — Phone signup (only pre-countdown). */}
       {!isComplete && (step === "phone" || step === "phoneLoading") && (
         <form onSubmit={handleSignup} className="w-full max-w-sm flex flex-col gap-2 sm:gap-3">
-          <div className={`flex items-center border rounded-sm bg-white px-3 sm:px-4 py-2.5 sm:py-3 gap-3 ${
-            phoneError ? "border-red-400" : "border-neutral-300 focus-within:border-neutral-500"
-          }`}>
-            <span className="text-base sm:text-lg leading-none">🌍</span>
-            <input
-              type="tel"
-              value={phone}
-              onChange={handlePhoneChange}
-              placeholder="+1234567890 or +33..."
-              className="flex-1 text-[12px] sm:text-[13px] font-light text-black bg-transparent outline-none placeholder:text-neutral-400"
-            />
+          <div className="relative">
+            <div className={`flex items-center border rounded-sm bg-white px-3 sm:px-4 py-2.5 sm:py-3 gap-2 ${
+              phoneError ? "border-red-400" : "border-neutral-300 focus-within:border-neutral-500"
+            }`}>
+              <button
+                type="button"
+                onClick={() => setShowCountryDropdown(!showCountryDropdown)}
+                className="flex items-center gap-1.5 px-2 py-1 hover:bg-neutral-50 rounded transition-colors"
+              >
+                <span className="text-base sm:text-lg">{countries.find(c => c.code === countryCode)?.flag}</span>
+                <span className="text-[10px] sm:text-[11px] text-neutral-600 font-medium">{countryCode}</span>
+              </button>
+              <div className="w-px h-4 bg-neutral-200" />
+              <input
+                type="tel"
+                value={phone}
+                onChange={handlePhoneChange}
+                placeholder="1234567890"
+                className="flex-1 text-[12px] sm:text-[13px] font-light text-black bg-transparent outline-none placeholder:text-neutral-400"
+              />
+            </div>
+            {showCountryDropdown && (
+              <div className="absolute top-full left-0 w-full mt-1 bg-white border border-neutral-300 rounded-sm shadow-lg z-10 max-h-48 overflow-y-auto">
+                {countries.map((c) => (
+                  <button
+                    key={c.code}
+                    type="button"
+                    onClick={() => {
+                      setCountryCode(c.code);
+                      setShowCountryDropdown(false);
+                    }}
+                    className={`w-full text-left px-3 sm:px-4 py-2 text-[11px] sm:text-[12px] flex items-center gap-2 hover:bg-neutral-50 transition-colors ${
+                      countryCode === c.code ? "bg-neutral-100" : ""
+                    }`}
+                  >
+                    <span className="text-base">{c.flag}</span>
+                    <span className="font-medium">{c.code}</span>
+                    <span className="text-neutral-500">{c.name}</span>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           {phoneError && (
             <p className="text-[9px] text-red-400 tracking-[0.1em] uppercase leading-relaxed">{phoneError}</p>

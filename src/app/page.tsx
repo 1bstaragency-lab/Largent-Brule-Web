@@ -258,6 +258,7 @@ export default function Home() {
           src="/logo_script_final.png"
           alt="L'Argent Brûlé"
           fill
+          sizes="288px"
           className="object-contain"
           priority
         />

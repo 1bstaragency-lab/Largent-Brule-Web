@@ -12,10 +12,11 @@ export function Sidebar() {
     <aside className="w-[250px] h-screen sticky top-0 p-10 flex flex-col border-r border-border bg-background z-50">
       <div className="relative w-full h-44 mb-16 px-2">
         <Link href="/" className="relative block w-full h-full">
-          <Image 
-            src="/logo_script_final.png" 
-            alt="L'argent Brûlé" 
-            fill 
+          <Image
+            src="/logo_script_final.png"
+            alt="L'argent Brûlé"
+            fill
+            sizes="230px"
             className="object-contain object-left"
           />
         </Link>

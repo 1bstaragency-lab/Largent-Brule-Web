@@ -61,6 +61,7 @@ export function MobileNavbar() {
                 src="/logo_script_final.png"
                 alt="L'ARGENT BRÛLÉ"
                 fill
+                sizes="320px"
                 className="object-contain"
                 priority
               />

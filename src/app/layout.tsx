@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Great_Vibes } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { CartProvider } from "@/components/cart-drawer";
 import { CartToggle } from "@/components/cart-toggle";
@@ -54,6 +55,35 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${greatVibes.variable} font-sans antialiased bg-white overflow-x-hidden`}>
+        {/* Brevo PushOwl SDK — headless install (site is Next.js on Vercel,
+            Shopify is backend-only). See docs.pushowl.com "Using PushOwl on
+            a Headless Store". Requires /pushowl/service-worker.js at root. */}
+        <Script id="pushowl-init" strategy="afterInteractive">
+          {`
+            window.pushowl = window.pushowl || {
+              queue: [],
+              trigger: function (taskName, taskData) {
+                return new Promise((resolve, reject) => {
+                  this.queue.push({ taskName, taskData, promise: { resolve, reject } });
+                });
+              },
+              init: function () {
+                const subdomain = 'th0stz-kz';
+                const platform = 'shopify';
+                this.subdomain = subdomain;
+                var s = document.createElement('script');
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = 'https://cdn.pushowl.com/sdks/pushowl-sdk.js?subdomain=' + subdomain +
+                  '&environment=production&shop=' + subdomain + '.my' + platform + '.com' +
+                  '&platform=' + platform;
+                var x = document.getElementsByTagName('script')[0];
+                x.parentNode.insertBefore(s, x);
+              }
+            };
+            window.pushowl.init();
+          `}
+        </Script>
         <CartProvider>
           <CartToggle />
           <RootLayoutClient>{children}</RootLayoutClient>

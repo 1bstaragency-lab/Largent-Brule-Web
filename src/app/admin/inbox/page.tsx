@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { blooioListChats } from '@/lib/blooio';
-import { normalizePhone, supabaseAdmin } from '@/lib/supabase-admin';
+import { supabaseAdmin } from '@/lib/supabase-admin';
+import { toE164 } from '@/lib/phone';
 import SyncOptOutsButton from './sync-opt-outs-button';
 
 // The Blooio account is shared with other brands (e.g. GrounduP). To keep
@@ -9,12 +10,6 @@ import SyncOptOutsButton from './sync-opt-outs-button';
 // early_access OR sent_messages. Anything outside that set belongs to a
 // sibling project and is hidden by default. Hidden count surfaced for
 // transparency.
-function toE164(rawDigits: string): string | null {
-  const d = rawDigits.replace(/\D/g, '');
-  if (d.length === 11 && d.startsWith('1')) return `+${d}`;
-  if (d.length === 10) return `+1${d}`;
-  return null;
-}
 
 async function getData() {
   const [chatsResult, optsResult, subsResult, sentResult] = await Promise.all([
@@ -31,11 +26,11 @@ async function getData() {
   // Build the L'B-known phone set as E.164.
   const known = new Set<string>();
   for (const r of (subsResult.data || []) as { phone_number: string }[]) {
-    const e164 = toE164(normalizePhone(r.phone_number));
+    const e164 = toE164(r.phone_number);
     if (e164) known.add(e164);
   }
   for (const r of (sentResult.data || []) as { phone_number: string }[]) {
-    const e164 = toE164(normalizePhone(r.phone_number));
+    const e164 = toE164(r.phone_number);
     if (e164) known.add(e164);
   }
 

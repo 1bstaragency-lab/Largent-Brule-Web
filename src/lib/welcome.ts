@@ -6,10 +6,6 @@
 export const WELCOME_BODY =
   "welcome to club l’argent brûlé.\nvip access — approved.\n\nnews, updates & early releases land here first.\n\n— L’B";
 
-// E.164 helper used by every admin send path.
-export function toE164(rawDigits: string): string | null {
-  const d = rawDigits.replace(/\D/g, '');
-  if (d.length === 11 && d.startsWith('1')) return `+${d}`;
-  if (d.length === 10) return `+1${d}`;
-  return null;
-}
+// E.164 helper used by every admin send path — international-aware
+// implementation lives in src/lib/phone.ts.
+export { toE164 } from './phone';

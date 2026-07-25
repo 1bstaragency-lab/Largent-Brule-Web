@@ -4,22 +4,13 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Menu, X, Search } from "lucide-react";
-import { PolaroidPhoto } from "./polaroid-photo";
-import { LookbookScroll } from "./lookbook-scroll";
 
-// Placeholder lookbook photos — swap `src` for real uploads whenever
-// they're ready. Rotation/caption can be edited freely per photo.
-const LOOKBOOK_PHOTOS = [
-  { src: "/community_3.jpg", alt: "Paris street, leather carpenters", caption: "Paris — 2026", rotation: -4 },
-  { src: "/community_1.jpg", alt: "Studio flat-lay", caption: "Studio", rotation: 3 },
-  { src: "/hf_20260521_073327_f5f42ea1-bbdd-412c-b885-c5c43a1e1c5b.png", alt: "Editorial still", caption: "Archive fitting", rotation: -2 },
-  { src: "/email/hero-model.jpg", alt: "L'argent Brûlé model", caption: "Look 004", rotation: 5 },
-  { src: "/hf_20260521_073334_bad353eb-813a-426f-9939-b78904e74044.png", alt: "Leather pants detail", caption: "Detail", rotation: -5 },
-  { src: "/email/campaign-lockup.jpg", alt: "Campaign", caption: "Los Angeles", rotation: 2 },
-];
+// Single composite image (the polaroid collage, all laid out as one
+// flat graphic) — swap this path once the real upload is ready.
+const WORLD_IMAGE = "/community_3.jpg";
 
 const FEATURED_PRODUCTS = [
-  { handle: "leather-pants", name: "BEAUTÉ DU CUIR CARPENTERS", price: "239.99 USD", image: "/pants_product.png" },
+  { handle: "leather-pants", name: "BEAUTÉ DU CUIR CARPENTERS", price: "300 USD", image: "/pants_product.png" },
   { handle: "parisian-edition", name: "PARISIAN EDITION TEE", price: "145 USD", image: "/parsian tee.png" },
   { handle: "nos-origines-tee", name: "NOS ORIGINES TEE", price: "145 USD", image: "/nostee1.png" },
 ];
@@ -82,7 +73,7 @@ export function HomepageLive() {
         </div>
       )}
 
-      {/* ============ LOOKBOOK WORLD — POLAROID GRID ============ */}
+      {/* ============ LOOKBOOK WORLD — SINGLE COMPOSITE IMAGE ============ */}
       <section className="w-full bg-[#e8e2d0] py-10 sm:py-14 px-4 sm:px-8">
         {/* Caption bar — eyebrow / drop title / delivery number */}
         <div className="max-w-5xl mx-auto flex items-start justify-between mb-8 sm:mb-12 text-[10px] sm:text-[11px] uppercase tracking-[0.15em] font-medium text-neutral-800">
@@ -96,24 +87,17 @@ export function HomepageLive() {
           <span>Delivery 003</span>
         </div>
 
-        {/* Scattered polaroid grid */}
-        <div className="max-w-5xl mx-auto grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-10 sm:gap-x-10 sm:gap-y-14 place-items-center py-4">
-          {LOOKBOOK_PHOTOS.map((photo, idx) => (
-            <PolaroidPhoto
-              key={idx}
-              src={photo.src}
-              alt={photo.alt}
-              caption={photo.caption}
-              rotation={photo.rotation}
-              priority={idx < 3}
-              className="w-full max-w-[220px]"
-            />
-          ))}
+        {/* One composite graphic — the whole polaroid collage baked in as a single image */}
+        <div className="max-w-5xl mx-auto relative w-full aspect-[4/3] sm:aspect-[16/9]">
+          <Image
+            src={WORLD_IMAGE}
+            alt="L'argent Brûlé — S/S 26 archive"
+            fill
+            className="object-contain"
+            sizes="(max-width: 1024px) 100vw, 800px"
+          />
         </div>
       </section>
-
-      {/* ============ LOOKBOOK — SCROLL-THROUGH LOOKS ============ */}
-      <LookbookScroll />
 
       {/* ============ FEATURED PRODUCTS ============ */}
       <section className="max-w-6xl mx-auto px-4 sm:px-8 py-16 sm:py-24">
@@ -156,8 +140,8 @@ export function HomepageLive() {
 
       {/* ============ FOOTER ============ */}
       <footer className="w-full bg-black text-white py-14 px-8 text-center space-y-6">
-        <div className="relative w-32 h-10 mx-auto opacity-90">
-          <Image src="/logo_script_final.png" alt="L'argent Brûlé" fill sizes="128px" className="object-contain invert" />
+        <div className="relative w-56 h-16 sm:w-64 sm:h-20 mx-auto opacity-90">
+          <Image src="/logo_script_final.png" alt="L'argent Brûlé" fill sizes="256px" className="object-contain invert" />
         </div>
         <nav className="flex items-center justify-center gap-6 text-[10px] uppercase tracking-[0.25em] text-neutral-400">
           {NAV_LINKS.map((link, i) => (

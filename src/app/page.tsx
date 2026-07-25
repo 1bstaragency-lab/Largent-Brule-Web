@@ -7,6 +7,12 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { ChevronDown } from "lucide-react";
 import { HomepageCarousel } from "@/components/homepage-carousel";
+import { HomepageLive } from "@/components/homepage-live";
+
+// TEMP (local design work only): skips the countdown/VIP gate entirely
+// and renders the real post-launch homepage instead. MUST be false
+// before deploying — production should still show the countdown.
+const SHOW_LIVE_HOMEPAGE = true;
 
 // ← change this to whatever password you want
 const SITE_PASSWORD = "SS26";
@@ -221,6 +227,10 @@ export default function Home() {
   const handleEmailSkip = () => {
     setStep("success");
   };
+
+  if (SHOW_LIVE_HOMEPAGE) {
+    return <HomepageLive />;
+  }
 
   return (
     <div className="fixed inset-0 z-[110] bg-[#f5f3ef] flex flex-col items-center justify-center px-6 py-6 sm:py-10 font-sans overflow-y-auto">

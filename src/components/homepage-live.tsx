@@ -1,16 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X, Search } from "lucide-react";
+import { Menu, X, Search, ChevronLeft, ChevronRight } from "lucide-react";
 
 // Single composite image (the polaroid collage, all laid out as one
 // flat graphic).
 const WORLD_IMAGE = "/lookbook-world-collage.jpg";
 
+// Paly-reference full-height model shots shown directly under the collage.
+const MODEL_SHOTS = [
+  { handle: "lemondrop-raglan", name: "L'ARGENT BRÛLÉ RAGLAN", price: "165 USD", image: "/model-raglan.jpg" },
+  { handle: "parisian-edition", name: "PARISIAN EDITION TEE", price: "145 USD", image: "/model-parisian-tee.jpg" },
+];
+
 const FEATURED_PRODUCTS = [
   { handle: "leather-pants", name: "BEAUTÉ DU CUIR CARPENTERS", price: "300 USD", image: "/pants_product.png" },
+  { handle: "lemondrop-raglan", name: "LEMONDROP RAGLAN", price: "165 USD", image: "/lemondrop main.png" },
   { handle: "parisian-edition", name: "PARISIAN EDITION TEE", price: "145 USD", image: "/parsian tee.png" },
   { handle: "nos-origines-tee", name: "NOS ORIGINES TEE", price: "145 USD", image: "/nostee1.png" },
 ];
@@ -23,12 +30,109 @@ const NAV_LINKS = [
 ];
 
 /**
+ * Fanned product carousel — center card large/opaque, side cards
+ * smaller/faded, straight row (no arch/rotation). Images only, no
+ * text. Arrows + dots to navigate; every card still links to its
+ * product page.
+ */
+function FanGallery({ products }: { products: typeof FEATURED_PRODUCTS }) {
+  const [active, setActive] = useState(Math.floor((products.length - 1) / 2));
+
+  const go = (dir: 1 | -1) => {
+    setActive((prev) => Math.max(0, Math.min(products.length - 1, prev + dir)));
+  };
+
+  return (
+    <div className="relative flex items-center justify-center h-[340px] sm:h-[440px]">
+      <button
+        onClick={() => go(-1)}
+        aria-label="Previous"
+        className="absolute left-2 sm:left-6 z-20 w-9 h-9 rounded-full bg-white/90 border border-neutral-200 flex items-center justify-center hover:bg-white transition-colors disabled:opacity-30"
+        disabled={active === 0}
+      >
+        <ChevronLeft size={16} strokeWidth={1.5} />
+      </button>
+
+      <div className="relative w-full h-full flex items-center justify-center">
+        {products.map((p, i) => {
+          const distance = i - active;
+          const abs = Math.abs(distance);
+          const scale = distance === 0 ? 1 : abs === 1 ? 0.82 : 0.68;
+          const opacity = distance === 0 ? 1 : abs === 1 ? 0.55 : 0.28;
+          const translateX = distance * (abs === 0 ? 0 : 105);
+          return (
+            <Link
+              key={p.handle}
+              href={`/product/${p.handle}`}
+              className="absolute w-[150px] h-[220px] sm:w-[220px] sm:h-[320px] transition-all duration-500 ease-out"
+              style={{
+                transform: `translateX(${translateX}px) scale(${scale})`,
+                opacity,
+                zIndex: 10 - abs,
+              }}
+              onMouseEnter={() => setActive(i)}
+            >
+              <div className="relative w-full h-full">
+                <Image
+                  src={p.image}
+                  alt={p.name}
+                  fill
+                  className="object-contain"
+                  sizes="220px"
+                />
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+
+      <button
+        onClick={() => go(1)}
+        aria-label="Next"
+        className="absolute right-2 sm:right-6 z-20 w-9 h-9 rounded-full bg-white/90 border border-neutral-200 flex items-center justify-center hover:bg-white transition-colors disabled:opacity-30"
+        disabled={active === products.length - 1}
+      >
+        <ChevronRight size={16} strokeWidth={1.5} />
+      </button>
+
+      <div className="absolute -bottom-2 sm:bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-2">
+        {products.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActive(i)}
+            aria-label={`Go to slide ${i + 1}`}
+            className={`w-1.5 h-1.5 rounded-full transition-colors ${
+              i === active ? "bg-black" : "bg-neutral-300"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/**
  * The real post-launch homepage. Renders full-bleed (opts out of the
  * persistent sidebar/mobile-navbar, matching how product/VIP pages
  * behave) so the lookbook imagery isn't squeezed by the left rail.
+ *
+ * `minimal` — used by the "Browse Anyway" sneak-peek route reachable
+ * from the still-locked countdown page: shows the header + framed
+ * collage only, with a Lookbook link below it. No products, no
+ * manifesto, no footer.
  */
-export function HomepageLive() {
+export function HomepageLive({ minimal = false }: { minimal?: boolean }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  // Price stays hidden until the shopper meaningfully engages: instant on
+  // mouse hover (desktop), or a 2s+ hold on touch devices (no hover state).
+  const [pantsPriceRevealed, setPantsPriceRevealed] = useState(false);
+  const dwellTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const startDwell = () => {
+    dwellTimer.current = setTimeout(() => setPantsPriceRevealed(true), 2000);
+  };
+  const cancelDwell = () => {
+    if (dwellTimer.current) clearTimeout(dwellTimer.current);
+  };
 
   return (
     <div
@@ -75,16 +179,14 @@ export function HomepageLive() {
 
       {/* ============ LOOKBOOK WORLD — SINGLE COMPOSITE IMAGE ============ */}
       <section className="w-full bg-[#faf6ef] py-10 sm:py-14 px-4 sm:px-8">
-        {/* Caption bar — eyebrow / drop title / delivery number */}
-        <div className="max-w-5xl mx-auto flex items-start justify-between mb-8 sm:mb-12 text-[10px] sm:text-[11px] uppercase tracking-[0.15em] font-medium text-neutral-800">
-          <span>Archive N&deg;004</span>
-          <span className="text-center leading-relaxed">
+        {/* Caption — drop title */}
+        <div className="max-w-5xl mx-auto text-center mb-8 sm:mb-12 text-[10px] sm:text-[11px] uppercase tracking-[0.15em] font-medium text-neutral-800">
+          <span className="leading-relaxed">
             S/S 26<br />
             <span className="normal-case tracking-normal italic text-neutral-600 text-[10px] sm:text-[12px]" style={{ fontFamily: "Georgia, serif" }}>
               Paris — Los Angeles
             </span>
           </span>
-          <span>Delivery 003</span>
         </div>
 
         {/* One composite graphic — the whole polaroid collage baked in as a single
@@ -109,64 +211,168 @@ export function HomepageLive() {
             </div>
           </div>
         </div>
-      </section>
 
-      {/* ============ FEATURED PRODUCTS ============ */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-8 py-16 sm:py-24">
-        <h2 className="text-center text-[13px] sm:text-[15px] uppercase tracking-[0.4em] font-medium mb-10 sm:mb-16">
-          The Collection
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6">
-          {FEATURED_PRODUCTS.map((p) => (
-            <Link key={p.handle} href={`/product/${p.handle}`} className="group block space-y-3">
-              <div className="aspect-[3/4] relative overflow-hidden flex items-center justify-center p-6">
-                <Image
-                  src={p.image}
-                  alt={p.name}
-                  fill
-                  className="object-contain p-6 transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 640px) 100vw, 33vw"
-                />
-              </div>
-              <div className="text-center space-y-1">
-                <p className="text-[11px] uppercase tracking-[0.2em] font-medium">{p.name}</p>
-                <p className="text-[11px] text-neutral-500">{p.price}</p>
-              </div>
+        {/* Minimal ("Browse Anyway") mode: just a Lookbook link below the
+            collage — no products, no manifesto, no footer. */}
+        {minimal && (
+          <div className="text-center mt-10 sm:mt-14">
+            <Link
+              href="/lookbook"
+              className="inline-block border-b border-black text-[11px] uppercase font-bold tracking-[0.35em] pb-1 hover:text-neutral-500 hover:border-neutral-500 transition-colors"
+            >
+              View Lookbook
             </Link>
+          </div>
+        )}
+      </section>
+
+      {/* ============ MODEL SHOTS — FULL HEIGHT, PALY-STYLE ============ */}
+      <section className="w-full pt-10 sm:pt-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2">
+          {MODEL_SHOTS.map((shot) => (
+            <div key={shot.handle} className="relative">
+              <div className="relative w-full aspect-[1696/2528]">
+                <Image
+                  src={shot.image}
+                  alt={shot.name}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 600px"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-white/25 backdrop-blur-md border-t border-white/40 px-3 sm:px-4 py-2.5 sm:py-3">
+                  <p className="text-[10px] sm:text-[12px] uppercase tracking-[0.1em] font-bold text-white" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.4)" }}>
+                    {shot.name}
+                  </p>
+                  <p className="text-[9px] sm:text-[11px] text-white/90 mt-0.5" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.4)" }}>
+                    {shot.price}
+                  </p>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* ============ MANIFESTO BAND ============ */}
-      <section className="w-full bg-[#faf6ef] py-16 sm:py-20 px-8 sm:px-16">
-        <p
-          className="max-w-lg mx-auto text-center italic text-[13px] sm:text-[14px] leading-loose text-neutral-600"
-          style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
-        >
-          Limited quantities. Custom-milled fabrics. Cut and sewn from the ground up.
-          Hand-distressed and perfected between Paris and Los Angeles, each L&apos;argent
-          Brûlé piece is built with the precision of traditional European craftsmanship
-          and the soul of vintage archives.
-        </p>
-      </section>
+      {!minimal && (
+        <>
+          {/* ============ FEATURED PRODUCTS — FANNED GALLERY ============ */}
+          <section className="py-16 sm:py-24">
+            <h2 className="text-center text-[13px] sm:text-[15px] uppercase tracking-[0.4em] font-medium mb-10 sm:mb-16 px-4">
+              Printemps-Été
+            </h2>
+            <FanGallery products={FEATURED_PRODUCTS} />
+          </section>
 
-      {/* ============ FOOTER ============ */}
-      <footer className="w-full bg-black text-white py-14 px-8 text-center space-y-6">
-        <div className="relative w-56 h-16 sm:w-64 sm:h-20 mx-auto opacity-90">
-          <Image src="/logo_script_final.png" alt="L'argent Brûlé" fill sizes="256px" className="object-contain invert" />
-        </div>
-        <nav className="flex items-center justify-center gap-6 text-[10px] uppercase tracking-[0.25em] text-neutral-400">
-          {NAV_LINKS.map((link, i) => (
-            <span key={link.href} className="flex items-center gap-6">
-              <Link href={link.href} className="hover:text-white transition-colors">{link.label}</Link>
-              {i < NAV_LINKS.length - 1 && <span className="text-neutral-700">—</span>}
-            </span>
-          ))}
-        </nav>
-        <p className="text-[9px] text-neutral-600 tracking-[0.1em]">
-          L&apos;argent Brûlé &nbsp;—&nbsp; Los Angeles | Paris, France
-        </p>
-      </footer>
+          {/* ============ PANTS + DOBERMAN — FULL HEIGHT SIDE MOMENT ============
+              Desktop: pants (hover-reveal price) left, doberman right, side by side.
+              Mobile: doberman first (full width), then the back-view pants shot
+              with an always-visible frosted glass caption (no hover on touch). */}
+          <section className="w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2">
+              {/* Doberman — decorative only, no link, no hover. Shown first on mobile. */}
+              <div className="order-1 sm:order-2">
+                <div className="py-3 sm:py-4 px-2 h-[3.25rem] sm:h-[3.75rem] hidden sm:block" />
+                <div className="relative w-full aspect-[1696/2528]">
+                  <Image
+                    src="/model-doberman.jpg"
+                    alt="L'argent Brûlé"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, 600px"
+                  />
+                </div>
+              </div>
+
+              {/* Pants — desktop version: flat product shot, price hidden until
+                  hover (mouse) or a 2s+ hold (touch). Hidden on mobile. */}
+              <Link
+                href="/product/leather-pants"
+                className="order-2 sm:order-1 hidden sm:block bg-[#faf6ef]"
+                onMouseEnter={() => setPantsPriceRevealed(true)}
+                onMouseLeave={() => setPantsPriceRevealed(false)}
+                onTouchStart={startDwell}
+                onTouchEnd={cancelDwell}
+              >
+                <div className="text-center py-3 sm:py-4 px-2 h-[3.25rem] sm:h-[3.75rem] flex flex-col items-center justify-center">
+                  <p className="text-[9px] sm:text-[11px] uppercase tracking-[0.15em] font-medium">
+                    BEAUTÉ DU CUIR CARPENTERS
+                  </p>
+                  <p
+                    className={`text-[9px] sm:text-[10px] text-neutral-500 mt-1 transition-opacity duration-300 ${
+                      pantsPriceRevealed ? "opacity-100" : "opacity-0"
+                    }`}
+                  >
+                    300 USD
+                  </p>
+                </div>
+                <div className="relative w-full aspect-[1696/2528]">
+                  <Image
+                    src="/pants_product.png"
+                    alt="Beauté du Cuir Carpenters"
+                    fill
+                    className="object-contain p-6 sm:p-10"
+                    sizes="600px"
+                  />
+                </div>
+              </Link>
+
+              {/* Pants — mobile version: back-view lifestyle shot, name+price
+                  always visible in a frosted glass bar (matches the model
+                  shots below the collage). Hidden on sm+. */}
+              <Link href="/product/leather-pants" className="order-2 sm:hidden block">
+                <div className="relative w-full aspect-[1696/2528]">
+                  <Image
+                    src="/pants-back-view.jpg"
+                    alt="Beauté du Cuir Carpenters"
+                    fill
+                    className="object-cover"
+                    sizes="100vw"
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 bg-white/25 backdrop-blur-md border-t border-white/40 px-3 py-2.5">
+                    <p className="text-[10px] uppercase tracking-[0.1em] font-bold text-white" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.4)" }}>
+                      BEAUTÉ DU CUIR CARPENTERS
+                    </p>
+                    <p className="text-[9px] text-white/90 mt-0.5" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.4)" }}>
+                      300 USD
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          </section>
+
+          {/* ============ MANIFESTO BAND ============ */}
+          <section className="w-full bg-[#faf6ef] py-16 sm:py-20 px-8 sm:px-16">
+            <p
+              className="max-w-lg mx-auto text-center italic text-[13px] sm:text-[14px] leading-loose text-neutral-600"
+              style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
+            >
+              Limited quantities. Custom-milled fabrics. Cut and sewn from the ground up.
+              Hand-distressed and perfected between Paris and Los Angeles, each L&apos;argent
+              Brûlé piece is built with the precision of traditional European craftsmanship
+              and the soul of vintage archives.
+            </p>
+          </section>
+
+          {/* ============ FOOTER ============ */}
+          <footer className="w-full bg-black text-white py-14 px-8 text-center space-y-6">
+            <div className="relative w-56 h-16 sm:w-64 sm:h-20 mx-auto opacity-90">
+              <Image src="/logo_script_final.png" alt="L'argent Brûlé" fill sizes="256px" className="object-contain invert" />
+            </div>
+            <nav className="flex items-center justify-center gap-6 text-[10px] uppercase tracking-[0.25em] text-neutral-400">
+              {NAV_LINKS.map((link, i) => (
+                <span key={link.href} className="flex items-center gap-6">
+                  <Link href={link.href} className="hover:text-white transition-colors">{link.label}</Link>
+                  {i < NAV_LINKS.length - 1 && <span className="text-neutral-700">—</span>}
+                </span>
+              ))}
+            </nav>
+            <p className="text-[9px] text-neutral-600 tracking-[0.1em]">
+              L&apos;argent Brûlé &nbsp;—&nbsp; Los Angeles | Paris, France
+            </p>
+          </footer>
+        </>
+      )}
     </div>
   );
 }

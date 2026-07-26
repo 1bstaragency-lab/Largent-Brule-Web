@@ -12,12 +12,13 @@ export function RootLayoutClient({ children }: { children: React.ReactNode }) {
   // the real site nav once live) — the global chrome would just sit
   // underneath it, invisible but still clickable/tabbable.
   const isHomePage = pathname === "/";
-  const hidesGlobalNav = isVipPage || isHomePage;
+  const isPreviewPage = pathname === "/preview";
+  const hidesGlobalNav = isVipPage || isHomePage || isPreviewPage;
 
   return (
     <div className="w-full min-h-screen relative">
       {/* Desktop Sidebar - Hidden on Mobile and Product Pages */}
-      {!isProductPage && !isHomePage && (
+      {!isProductPage && !isHomePage && !isPreviewPage && (
         <div className="hidden lg:block fixed left-0 top-0 w-64 h-screen border-r border-neutral-100 bg-white overflow-y-auto z-[90]">
           <Sidebar />
         </div>
@@ -31,7 +32,7 @@ export function RootLayoutClient({ children }: { children: React.ReactNode }) {
       )}
 
       {/* Main Content Area */}
-      <main className={`w-full ${!isProductPage && !isHomePage ? "lg:pl-64" : ""} ${!hidesGlobalNav ? "pt-20" : ""} lg:pt-0 bg-white`}>
+      <main className={`w-full ${!isProductPage && !isHomePage && !isPreviewPage ? "lg:pl-64" : ""} ${!hidesGlobalNav ? "pt-20" : ""} lg:pt-0 bg-white`}>
         {children}
       </main>
     </div>

@@ -1,32 +1,9 @@
 "use client";
 
-import Link from "next/link";
-import { useState, useEffect } from "react";
-
-const collections = [
-  {
-    slug: "classics",
-    label: "CLASSICS",
-    description: "The permanent archive. Foundational silhouettes built to last.",
-    image: "/leather_pants_front.png",
-  },
-  {
-    slug: "ss26",
-    label: "S/S 26",
-    description: "Spring / Summer 2026. The new season.",
-    image: "/hoodie_front_v16.png",
-  },
-];
+import { useCountdown } from "@/lib/countdown";
 
 export default function CollectionsPage() {
-  const [showSneakPeek, setShowSneakPeek] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSneakPeek(true);
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, []);
+  const { timeLeft } = useCountdown();
 
   return (
     <div className="px-4 sm:px-10 pb-40">
@@ -41,30 +18,41 @@ export default function CollectionsPage() {
         <p className="opacity-50 text-[11px] tracking-[0.2em] uppercase max-w-md leading-relaxed">
           The shop is closed as we prepare the new collection. Join VIP for early access.
         </p>
-        
-        <form 
+
+        <div className="flex items-center justify-around gap-3 border border-neutral-300 px-4 py-3">
+          {[
+            { val: timeLeft.days, label: "Days" },
+            { val: timeLeft.hours, label: "Hrs" },
+            { val: timeLeft.minutes, label: "Min" },
+            { val: timeLeft.seconds, label: "Sec" },
+          ].map((unit, i, arr) => (
+            <div key={unit.label} className="flex items-center gap-2 sm:gap-3">
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-base sm:text-lg font-light tracking-[0.1em]">{unit.val}</span>
+                <span className="text-[7px] text-neutral-400 uppercase tracking-[0.3em]">{unit.label}</span>
+              </div>
+              {i < arr.length - 1 && <span className="text-neutral-300 font-thin mb-3">:</span>}
+            </div>
+          ))}
+        </div>
+
+        <form
           className="w-full max-w-sm space-y-4"
           onSubmit={(e) => { e.preventDefault(); alert("Thanks for subscribing."); }}
         >
-          <input 
-            type="tel" 
-            placeholder="PHONE NUMBER" 
+          <input
+            type="tel"
+            placeholder="PHONE NUMBER"
             className="w-full h-[52px] bg-neutral-50 text-black text-[11px] font-medium tracking-[0.2em] px-4 outline-none border border-transparent focus:border-black transition-colors"
             required
           />
-          <button 
+          <button
             type="submit"
             className="w-full h-[52px] bg-black text-white text-[11px] font-bold tracking-[0.4em] uppercase hover:bg-neutral-800 transition-colors"
           >
             NOTIFY ME
           </button>
         </form>
-
-        <div className={`transition-opacity duration-1000 ${showSneakPeek ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-          <Link href="/product/leather-pants" className="inline-block border-b border-black text-[10px] uppercase font-bold tracking-[0.3em] pb-1 hover:text-neutral-500 hover:border-neutral-500 transition-colors">
-            TAKE A SNEAK PEEK
-          </Link>
-        </div>
       </div>
     </div>
   );

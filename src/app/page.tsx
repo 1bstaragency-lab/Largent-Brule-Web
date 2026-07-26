@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import { ChevronDown } from "lucide-react";
 import { HomepageCarousel } from "@/components/homepage-carousel";
@@ -30,7 +29,6 @@ function formatPhone(raw: string): string {
 }
 
 export default function Home() {
-  const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -38,6 +36,7 @@ export default function Home() {
   const [showPassword, setShowPassword] = useState(false);
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState(false);
+  const [accessGranted, setAccessGranted] = useState(false);
 
   const handleLogoTap = () => {
     const next = logoTaps + 1;
@@ -88,6 +87,12 @@ export default function Home() {
 
   const { timeLeft, isComplete } = useCountdown();
 
+  // Once someone has entered the password, keep them past the gate on
+  // future visits/reloads without re-prompting.
+  useEffect(() => {
+    if (localStorage.getItem("lb_access") === "true") setAccessGranted(true);
+  }, []);
+
   // Close dropdown on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -116,7 +121,7 @@ export default function Home() {
     e.preventDefault();
     if (password.trim().toUpperCase() === SITE_PASSWORD) {
       localStorage.setItem("lb_access", "true");
-      router.push("/collections");
+      setAccessGranted(true);
     } else {
       setPasswordError(true);
       setPassword("");
@@ -201,7 +206,9 @@ export default function Home() {
     setStep("success");
   };
 
-  if (SHOW_LIVE_HOMEPAGE) {
+  // Real site unlocks here — via the correct password, or automatically
+  // once the countdown reaches zero.
+  if (SHOW_LIVE_HOMEPAGE || accessGranted || isComplete) {
     return <HomepageLive />;
   }
 
@@ -264,51 +271,36 @@ export default function Home() {
         <HomepageCarousel />
       )}
 
-      {/* Pre-countdown heading + countdown — disappear once LAUNCH_DATE passes. */}
-      {!isComplete && (
-        <>
-          <div className="text-center mb-6 sm:mb-10 space-y-1.5 sm:space-y-2">
-            <p className="text-[8px] sm:text-[9px] text-neutral-500 uppercase tracking-[0.5em] sm:tracking-[0.6em] font-light">
-              S/S 26 Collection
-            </p>
-            <h1 className="text-[11px] sm:text-[13px] font-medium uppercase tracking-[0.4em] sm:tracking-[0.5em] text-black">
-              VIP Early Access
-            </h1>
+      {/* Heading + countdown. Once LAUNCH_DATE passes the component above
+          this early-returns into the real homepage, so this only ever
+          renders pre-launch. */}
+      <div className="text-center mb-6 sm:mb-10 space-y-1.5 sm:space-y-2">
+        <p className="text-[8px] sm:text-[9px] text-neutral-500 uppercase tracking-[0.5em] sm:tracking-[0.6em] font-light">
+          S/S 26 Collection
+        </p>
+        <h1 className="text-[11px] sm:text-[13px] font-medium uppercase tracking-[0.4em] sm:tracking-[0.5em] text-black">
+          VIP Early Access
+        </h1>
+      </div>
+      <div className="w-full max-w-sm border border-neutral-300 px-4 sm:px-6 py-4 sm:py-6 flex items-center justify-around mb-6 sm:mb-10">
+        {[
+          { val: timeLeft.days, label: "Days" },
+          { val: timeLeft.hours, label: "Hrs" },
+          { val: timeLeft.minutes, label: "Min" },
+          { val: timeLeft.seconds, label: "Sec" },
+        ].map((unit, i, arr) => (
+          <div key={unit.label} className="flex items-center gap-2 sm:gap-3 md:gap-6">
+            <div className="flex flex-col items-center gap-1 sm:gap-2">
+              <span className="text-xl sm:text-3xl font-light tracking-[0.1em]">{unit.val}</span>
+              <span className="text-[7px] text-neutral-400 uppercase tracking-[0.3em] sm:tracking-[0.4em]">{unit.label}</span>
+            </div>
+            {i < arr.length - 1 && <span className="text-neutral-300 font-thin mb-3 sm:mb-4">:</span>}
           </div>
-          <div className="w-full max-w-sm border border-neutral-300 px-4 sm:px-6 py-4 sm:py-6 flex items-center justify-around mb-6 sm:mb-10">
-            {[
-              { val: timeLeft.days, label: "Days" },
-              { val: timeLeft.hours, label: "Hrs" },
-              { val: timeLeft.minutes, label: "Min" },
-              { val: timeLeft.seconds, label: "Sec" },
-            ].map((unit, i, arr) => (
-              <div key={unit.label} className="flex items-center gap-2 sm:gap-3 md:gap-6">
-                <div className="flex flex-col items-center gap-1 sm:gap-2">
-                  <span className="text-xl sm:text-3xl font-light tracking-[0.1em]">{unit.val}</span>
-                  <span className="text-[7px] text-neutral-400 uppercase tracking-[0.3em] sm:tracking-[0.4em]">{unit.label}</span>
-                </div>
-                {i < arr.length - 1 && <span className="text-neutral-300 font-thin mb-3 sm:mb-4">:</span>}
-              </div>
-            ))}
-          </div>
-        </>
-      )}
+        ))}
+      </div>
 
-      {/* Post-countdown closed state — heading + visible password field. */}
-      {isComplete && (
-        <div className="text-center mb-6 sm:mb-8 space-y-2 max-w-sm">
-          <h1 className="text-[12px] sm:text-[14px] font-bold uppercase tracking-[0.4em] sm:tracking-[0.5em] text-black">
-            Website is Closed
-          </h1>
-          <p className="text-[9px] sm:text-[10px] text-neutral-500 uppercase tracking-[0.3em] sm:tracking-[0.4em] font-light leading-relaxed">
-            Early Access Rolling Out Soon
-          </p>
-        </div>
-      )}
-
-      {/* Password — visible by default once countdown completes; otherwise
-          hidden behind the 5-tap-logo secret. */}
-      {(showPassword || isComplete) && <form onSubmit={handleEnter} className="w-full max-w-sm mb-3">
+      {/* Password — hidden behind the 5-tap-logo secret. */}
+      {showPassword && <form onSubmit={handleEnter} className="w-full max-w-sm mb-3">
         <div className="flex gap-2">
           <input
             type="password"
@@ -333,8 +325,8 @@ export default function Home() {
         )}
       </form>}
 
-      {/* Step 1 — Phone signup (only pre-countdown). */}
-      {!isComplete && (step === "phone" || step === "phoneLoading") && (
+      {/* Step 1 — Phone signup */}
+      {(step === "phone" || step === "phoneLoading") && (
         <form onSubmit={handleSignup} className="w-full max-w-sm flex flex-col gap-2 sm:gap-3">
           <div className="relative">
             <div className={`flex items-center border rounded-sm bg-white px-3 sm:px-4 py-2.5 sm:py-3 gap-2 ${
@@ -400,7 +392,7 @@ export default function Home() {
       )}
 
       {/* Step 2 — Email capture */}
-      {!isComplete && (step === "email" || step === "emailLoading") && (
+      {(step === "email" || step === "emailLoading") && (
         <form onSubmit={handleEmailSubmit} className="w-full max-w-sm flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-2 duration-500">
           <p className="text-[10px] text-neutral-500 uppercase tracking-[0.4em] text-center mb-1">
             Phone added — add your email
@@ -445,7 +437,7 @@ export default function Home() {
       )}
 
       {/* Final success */}
-      {!isComplete && step === "success" && (
+      {step === "success" && (
         <div className="w-full max-w-sm animate-in fade-in slide-in-from-bottom-2 duration-500">
           <div className="w-full py-4 rounded-sm text-center bg-neutral-200 text-neutral-600">
             <span className="text-[11px] tracking-[0.4em] uppercase font-medium">

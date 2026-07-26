@@ -20,6 +20,7 @@ const FEATURED_PRODUCTS = [
   { handle: "lemondrop-raglan", name: "LEMONDROP RAGLAN", price: "165 USD", image: "/lemondrop main.png" },
   { handle: "parisian-edition", name: "PARISIAN EDITION TEE", price: "145 USD", image: "/parsian tee.png" },
   { handle: "nos-origines-tee", name: "NOS ORIGINES TEE", price: "145 USD", image: "/nostee1.png" },
+  { handle: "world-tour-2004", name: "WORLD TOUR 2004 TEE", price: "145 USD", image: "/2004.png" },
 ];
 
 const NAV_LINKS = [

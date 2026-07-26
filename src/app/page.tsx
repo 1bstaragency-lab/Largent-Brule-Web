@@ -12,7 +12,7 @@ import { useCountdown } from "@/lib/countdown";
 // TEMP (local design work only): skips the countdown/VIP gate entirely
 // and renders the real post-launch homepage instead. MUST be false
 // before deploying — production should still show the countdown.
-const SHOW_LIVE_HOMEPAGE = true;
+const SHOW_LIVE_HOMEPAGE = false;
 
 // ← change this to whatever password you want
 const SITE_PASSWORD = "SS26";

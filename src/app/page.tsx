@@ -482,6 +482,14 @@ export default function Home() {
         </div>
       )}
 
+      {/* Sneak-peek escape hatch — collections/checkout stay locked. */}
+      <Link
+        href="/preview"
+        className="mt-6 sm:mt-8 text-[9px] text-neutral-400 uppercase tracking-[0.35em] hover:text-black transition-colors"
+      >
+        Browse Anyway
+      </Link>
+
     </div>
   );
 }

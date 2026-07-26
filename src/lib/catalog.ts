@@ -28,7 +28,7 @@ export const CATALOG: CatalogItem[] = [
     handle: "leather-pants",
     name: '"BEAUTÉ DU CUIR" CARPENTERS',
     image: "/leather_pants_front.png",
-    priceText: "240 USD",
+    priceText: "300 USD",
   },
 ];
 

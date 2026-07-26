@@ -32,11 +32,11 @@ export function HomepageLive() {
 
   return (
     <div
-      className="fixed inset-0 z-[110] w-full min-h-screen bg-white overflow-y-auto"
+      className="fixed inset-0 z-[110] w-full min-h-screen bg-[#faf6ef] overflow-y-auto"
       style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}
     >
       {/* ============ TOP NAV ============ */}
-      <header className="sticky top-0 z-40 w-full h-16 bg-white/95 backdrop-blur-sm border-b border-neutral-200 flex items-center justify-between px-5 sm:px-8">
+      <header className="sticky top-0 z-40 w-full h-16 bg-[#faf6ef]/95 backdrop-blur-sm border-b border-neutral-200 flex items-center justify-between px-5 sm:px-8">
         <button onClick={() => setMenuOpen(true)} aria-label="Open menu">
           <Menu size={20} strokeWidth={1.5} />
         </button>
@@ -52,7 +52,7 @@ export function HomepageLive() {
 
       {/* Mobile menu overlay */}
       {menuOpen && (
-        <div className="fixed inset-0 z-50 bg-white flex flex-col">
+        <div className="fixed inset-0 z-50 bg-[#faf6ef] flex flex-col">
           <div className="h-16 flex items-center justify-end px-5 sm:px-8 border-b border-neutral-200">
             <button onClick={() => setMenuOpen(false)} aria-label="Close menu">
               <X size={22} strokeWidth={1.5} />
@@ -74,7 +74,7 @@ export function HomepageLive() {
       )}
 
       {/* ============ LOOKBOOK WORLD — SINGLE COMPOSITE IMAGE ============ */}
-      <section className="w-full bg-white py-10 sm:py-14 px-4 sm:px-8">
+      <section className="w-full bg-[#faf6ef] py-10 sm:py-14 px-4 sm:px-8">
         {/* Caption bar — eyebrow / drop title / delivery number */}
         <div className="max-w-5xl mx-auto flex items-start justify-between mb-8 sm:mb-12 text-[10px] sm:text-[11px] uppercase tracking-[0.15em] font-medium text-neutral-800">
           <span>Archive N&deg;004</span>
@@ -119,7 +119,7 @@ export function HomepageLive() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6">
           {FEATURED_PRODUCTS.map((p) => (
             <Link key={p.handle} href={`/product/${p.handle}`} className="group block space-y-3">
-              <div className="aspect-[3/4] bg-neutral-50 relative overflow-hidden flex items-center justify-center p-6">
+              <div className="aspect-[3/4] relative overflow-hidden flex items-center justify-center p-6">
                 <Image
                   src={p.image}
                   alt={p.name}
@@ -138,7 +138,7 @@ export function HomepageLive() {
       </section>
 
       {/* ============ MANIFESTO BAND ============ */}
-      <section className="w-full bg-white py-16 sm:py-20 px-8 sm:px-16 border-t border-neutral-200">
+      <section className="w-full bg-[#faf6ef] py-16 sm:py-20 px-8 sm:px-16">
         <p
           className="max-w-lg mx-auto text-center italic text-[13px] sm:text-[14px] leading-loose text-neutral-600"
           style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}

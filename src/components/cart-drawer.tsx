@@ -117,10 +117,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addItem = useCallback(async (input: ProductCartInput) => {
     recordPaceEvent(); // adding to bag counts as a movement event
-    // Open the drawer + flash badge immediately for snappy UX.
-    setIsOpen(true);
+    // Show the small "added" confirmation toast instead of popping the
+    // full drawer open — less disruptive, keeps the shopper on the page.
     setShowAdded(true);
-    setTimeout(() => setShowAdded(false), 3000);
+    setTimeout(() => setShowAdded(false), 5000);
 
     const priceCents =
       Math.max(0, parseInt((input.price || "").replace(/[^0-9]/g, ""), 10) || 0) * 100;
@@ -177,6 +177,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         setIsOpen={setIsOpen}
         items={items}
         showAdded={showAdded}
+        setShowAdded={setShowAdded}
         removeItem={removeItem}
       />
     </CartContext.Provider>
@@ -270,12 +271,15 @@ function CartDrawer({
   isOpen,
   setIsOpen,
   items,
+  showAdded,
+  setShowAdded,
   removeItem,
 }: {
   isOpen: boolean;
   setIsOpen: (o: boolean) => void;
   items: CartItem[];
   showAdded: boolean;
+  setShowAdded: (v: boolean) => void;
   removeItem: (id: string) => Promise<void>;
 }) {
   const subtotal = items.reduce((acc, item) => acc + (item.priceCents / 100) * item.quantity, 0);
@@ -357,6 +361,45 @@ function CartDrawer({
           </p>
         </div>
       )}
+
+      {/* Small "added to cart" confirmation toast — replaces auto-opening
+          the full drawer. Sits above the CartToggle bag button. Outer div
+          handles static horizontal centering; framer-motion only touches
+          y/opacity on the inner div so the two transforms don't clobber
+          each other. pointerEvents is set directly from state rather than
+          via the `animate` object (not a real animatable CSS property). */}
+      <div
+        className="fixed bottom-5 left-1/2 -translate-x-1/2 z-[2500] w-[calc(100%-2.5rem)] max-w-sm"
+        style={{ pointerEvents: showAdded ? "auto" : "none" }}
+      >
+      <motion.div
+        initial={false}
+        animate={showAdded ? { y: 0, opacity: 1 } : { y: 40, opacity: 0 }}
+        transition={{ duration: 0.35, ease: "easeOut" }}
+        className="bg-white border border-neutral-200 shadow-xl px-6 py-5 space-y-4"
+      >
+        <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-center">
+          Added to Cart Successfully
+        </p>
+        <div className="flex gap-3">
+          <button
+            onClick={() => setShowAdded(false)}
+            className="flex-1 h-[42px] border border-black text-[10px] font-bold uppercase tracking-[0.25em] hover:bg-neutral-50 transition-colors"
+          >
+            Keep Shopping
+          </button>
+          <button
+            onClick={() => {
+              setShowAdded(false);
+              setIsOpen(true);
+            }}
+            className="flex-1 h-[42px] bg-black text-white text-[10px] font-bold uppercase tracking-[0.25em] hover:bg-neutral-800 transition-colors"
+          >
+            Checkout Now
+          </button>
+        </div>
+      </motion.div>
+      </div>
 
       {isOpen && (
         <div

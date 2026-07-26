@@ -13,10 +13,10 @@ export function CartToggle() {
     <button 
       onClick={() => setIsOpen(true)}
       className={cn(
-        "fixed top-28 lg:top-12 right-6 lg:right-10 z-[3000] flex items-center gap-2 group transition-all duration-300 p-1 px-2 rounded-full border border-white/10 shadow-lg",
-        showAdded 
-          ? "bg-[#4a0404] opacity-0 scale-95" 
-          : "bg-[#4a0404]/80 backdrop-blur-md hover:bg-[#4a0404] text-white opacity-100 scale-100"
+        "fixed top-28 lg:top-12 right-6 lg:right-10 z-[3000] flex items-center gap-2 group transition-all duration-300 p-1 px-2 rounded-full border border-white/10 shadow-lg text-white opacity-100",
+        showAdded
+          ? "bg-[#4a0404] scale-110"
+          : "bg-[#4a0404]/80 backdrop-blur-md hover:bg-[#4a0404] scale-100"
       )}
     >
       <div className="flex flex-col items-end">

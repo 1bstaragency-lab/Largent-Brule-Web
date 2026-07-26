@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 const PRODUCT = {
   id: "leather-pants",
   title: "BEAUTÉ DU CUIR CARPENTERS",
-  price: 240,
+  price: 300,
   currency: "USD",
   description: "Premium leather carpenter pants crafted with the finest materials. A luxe, timeless silhouette that blends utility with refined elegance.",
   specs: [
@@ -37,6 +37,18 @@ const SIZES = [
   { value: "5", label: '36–38"', variantId: "47948430606487" },
 ];
 
+// Separate Preorder listing (Shopify product "Beauté du Cuir" Carpenters —
+// Preorder, gid://shopify/Product/9678766866583). Same sizes, discounted
+// price, untracked inventory (always purchasable) — ships in 4-6 weeks.
+const PREORDER_PRICE = 239.99;
+const PREORDER_SIZES: Record<string, string> = {
+  "1": "48047531196567",
+  "2": "48047531229335",
+  "3": "48047531262103",
+  "4": "48047531294871",
+  "5": "48047531327639",
+};
+
 const RELATED_PRODUCTS = [
   {
     id: "world-tour-2004",
@@ -62,6 +74,7 @@ const RELATED_PRODUCTS = [
 export default function LeatherPantsPage() {
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [addingState, setAddingState] = useState<"idle" | "adding" | "added" | "error">("idle");
+  const [preorderState, setPreorderState] = useState<"idle" | "adding" | "added" | "error">("idle");
   const [errMsg, setErrMsg] = useState("");
   const [cartCount, setCartCount] = useState(0);
   const [displayImage, setDisplayImage] = useState(PRODUCT.heroImage);
@@ -102,6 +115,40 @@ export default function LeatherPantsPage() {
     } catch (e) {
       setErrMsg(e instanceof Error ? e.message : "Could not add to cart");
       setAddingState("error");
+    }
+  };
+
+  const handlePreorder = async () => {
+    if (!selectedSize) {
+      setErrMsg("Please select a size");
+      setPreorderState("error");
+      return;
+    }
+
+    const preorderVariantId = PREORDER_SIZES[selectedSize];
+    if (!preorderVariantId) {
+      setErrMsg("This size isn't available for preorder yet — contact us for a custom order.");
+      setPreorderState("error");
+      return;
+    }
+
+    const sizeObj = SIZES.find((s) => s.value === selectedSize);
+    setPreorderState("adding");
+    setErrMsg("");
+    try {
+      await addItem({
+        id: `${PRODUCT.id}-preorder`,
+        name: `${PRODUCT.title} — PREORDER`,
+        price: `${PREORDER_PRICE}`,
+        image: PRODUCT.heroImage,
+        variant: `Size ${sizeObj?.value} (${sizeObj?.label}) — Ships in 4-6 weeks`,
+        shopify_variant_legacy_id: preorderVariantId,
+      });
+      setPreorderState("added");
+      setTimeout(() => setPreorderState("idle"), 1500);
+    } catch (e) {
+      setErrMsg(e instanceof Error ? e.message : "Could not add preorder to cart");
+      setPreorderState("error");
     }
   };
 
@@ -209,6 +256,22 @@ export default function LeatherPantsPage() {
             >
               {addingState === "added" ? "ADDED ✓" : "ADD TO BAG"}
             </button>
+
+            <button
+              onClick={handlePreorder}
+              disabled={!selectedSize || preorderState === "adding"}
+              className={cn(
+                "w-full h-12 md:h-11 text-sm font-semibold uppercase tracking-widest transition-all border",
+                preorderState === "added"
+                  ? "bg-green-600 text-white border-green-600"
+                  : "bg-white text-black border-black hover:bg-neutral-50 disabled:opacity-50"
+              )}
+            >
+              {preorderState === "added" ? "PREORDERED ✓" : `PREORDER — $${PREORDER_PRICE} USD`}
+            </button>
+            <p className="text-[10px] font-light text-neutral-500 text-center -mt-1">
+              Preorder ships in 4–6 weeks
+            </p>
 
             <button className="w-full h-12 md:h-11 border border-black text-sm font-semibold uppercase tracking-widest hover:bg-neutral-50 transition-colors">
               WISHLIST
@@ -390,6 +453,25 @@ export default function LeatherPantsPage() {
               <button className="flex-1 h-11 border border-black text-[12px] font-semibold uppercase tracking-widest hover:bg-neutral-50 transition-colors">
                 WISHLIST
               </button>
+            </div>
+
+            {/* Preorder */}
+            <div className="space-y-1.5">
+              <button
+                onClick={handlePreorder}
+                disabled={!selectedSize || preorderState === "adding"}
+                className={cn(
+                  "w-full h-11 text-[12px] font-semibold uppercase tracking-widest transition-all border",
+                  preorderState === "added"
+                    ? "bg-green-600 text-white border-green-600"
+                    : "bg-white text-black border-black hover:bg-neutral-50 disabled:opacity-50"
+                )}
+              >
+                {preorderState === "added" ? "PREORDERED ✓" : `PREORDER — $${PREORDER_PRICE} USD`}
+              </button>
+              <p className="text-[10px] font-light text-neutral-500 text-center">
+                Preorder ships in 4–6 weeks
+              </p>
             </div>
 
             {errMsg && (

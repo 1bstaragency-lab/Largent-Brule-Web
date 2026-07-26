@@ -44,7 +44,7 @@ const HARDCODED: Record<
     description: "The permanent archive. Foundational silhouettes built to last.",
     products: [
       // Bomber turned off for now.
-      { id: "leather-pants", name: "BEAUTÉ DU CUIR CARPENTERS", price: "240 USD", image: "/leather_pants_front.png", tag: "ARCHIVE" },
+      { id: "leather-pants", name: "BEAUTÉ DU CUIR CARPENTERS", price: "300 USD", image: "/leather_pants_front.png", tag: "ARCHIVE" },
     ],
   },
   ss26: {

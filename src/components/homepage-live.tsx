@@ -6,8 +6,8 @@ import Link from "next/link";
 import { Menu, X, Search } from "lucide-react";
 
 // Single composite image (the polaroid collage, all laid out as one
-// flat graphic) — swap this path once the real upload is ready.
-const WORLD_IMAGE = "/community_3.jpg";
+// flat graphic).
+const WORLD_IMAGE = "/lookbook-world-collage.jpg";
 
 const FEATURED_PRODUCTS = [
   { handle: "leather-pants", name: "BEAUTÉ DU CUIR CARPENTERS", price: "300 USD", image: "/pants_product.png" },

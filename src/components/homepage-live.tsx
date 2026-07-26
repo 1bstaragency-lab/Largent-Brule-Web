@@ -74,7 +74,7 @@ export function HomepageLive() {
       )}
 
       {/* ============ LOOKBOOK WORLD — SINGLE COMPOSITE IMAGE ============ */}
-      <section className="w-full bg-[#e8e2d0] py-10 sm:py-14 px-4 sm:px-8">
+      <section className="w-full bg-white py-10 sm:py-14 px-4 sm:px-8">
         {/* Caption bar — eyebrow / drop title / delivery number */}
         <div className="max-w-5xl mx-auto flex items-start justify-between mb-8 sm:mb-12 text-[10px] sm:text-[11px] uppercase tracking-[0.15em] font-medium text-neutral-800">
           <span>Archive N&deg;004</span>
@@ -87,15 +87,27 @@ export function HomepageLive() {
           <span>Delivery 003</span>
         </div>
 
-        {/* One composite graphic — the whole polaroid collage baked in as a single image */}
-        <div className="max-w-5xl mx-auto relative w-full aspect-[4/3] sm:aspect-[16/9]">
-          <Image
-            src={WORLD_IMAGE}
-            alt="L'argent Brûlé — S/S 26 archive"
-            fill
-            className="object-contain"
-            sizes="(max-width: 1024px) 100vw, 800px"
-          />
+        {/* One composite graphic — the whole polaroid collage baked in as a single
+            image, set in an ornate gold gallery frame (pure CSS gradient + bevel,
+            no external texture) with a cream mat between frame and photo. */}
+        <div
+          className="max-w-5xl mx-auto p-3 sm:p-4"
+          style={{
+            background: "linear-gradient(135deg, #7a5a1e 0%, #d4af37 12%, #f9e79f 25%, #b8860b 38%, #fff0b3 50%, #8b6914 62%, #f4d160 75%, #a9781f 88%, #d4af37 100%)",
+            boxShadow: "inset 0 0 0 2px rgba(0,0,0,0.35), inset 0 2px 4px rgba(255,255,255,0.5), inset 0 -2px 4px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.25)",
+          }}
+        >
+          <div className="bg-[#faf6ef] p-2 sm:p-3">
+            <div className="relative w-full aspect-[2752/1536]">
+              <Image
+                src={WORLD_IMAGE}
+                alt="L'argent Brûlé — S/S 26 archive"
+                fill
+                className="object-contain"
+                sizes="(max-width: 1024px) 100vw, 800px"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -126,7 +138,7 @@ export function HomepageLive() {
       </section>
 
       {/* ============ MANIFESTO BAND ============ */}
-      <section className="w-full bg-[#f1ebdd] py-16 sm:py-20 px-8 sm:px-16">
+      <section className="w-full bg-white py-16 sm:py-20 px-8 sm:px-16 border-t border-neutral-200">
         <p
           className="max-w-lg mx-auto text-center italic text-[13px] sm:text-[14px] leading-loose text-neutral-600"
           style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}

@@ -22,6 +22,9 @@ const NAV_LINKS = [
   { label: "FAQ", href: "/faq" },
 ];
 
+// Sampled directly from the polaroid collage background.
+const BURGUNDY = "#630F33";
+
 /**
  * The real post-launch homepage. Renders full-bleed (opts out of the
  * persistent sidebar/mobile-navbar, matching how product/VIP pages
@@ -32,17 +35,20 @@ export function HomepageLive() {
 
   return (
     <div
-      className="fixed inset-0 z-[110] w-full min-h-screen bg-white overflow-y-auto"
-      style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}
+      className="fixed inset-0 z-[110] w-full min-h-screen overflow-y-auto"
+      style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", backgroundColor: BURGUNDY }}
     >
       {/* ============ TOP NAV ============ */}
-      <header className="sticky top-0 z-40 w-full h-16 bg-white/95 backdrop-blur-sm border-b border-neutral-200 flex items-center justify-between px-5 sm:px-8">
+      <header
+        className="sticky top-0 z-40 w-full h-16 backdrop-blur-sm border-b border-white/10 flex items-center justify-between px-5 sm:px-8 text-white"
+        style={{ backgroundColor: `${BURGUNDY}f2` }}
+      >
         <button onClick={() => setMenuOpen(true)} aria-label="Open menu">
           <Menu size={20} strokeWidth={1.5} />
         </button>
 
         <Link href="/" className="relative w-40 h-10 sm:w-48 sm:h-12">
-          <Image src="/logo_script_final.png" alt="L'argent Brûlé" fill sizes="192px" className="object-contain" priority />
+          <Image src="/logo_script_final.png" alt="L'argent Brûlé" fill sizes="192px" className="object-contain invert" priority />
         </Link>
 
         <button aria-label="Search">
@@ -52,8 +58,8 @@ export function HomepageLive() {
 
       {/* Mobile menu overlay */}
       {menuOpen && (
-        <div className="fixed inset-0 z-50 bg-white flex flex-col">
-          <div className="h-16 flex items-center justify-end px-5 sm:px-8 border-b border-neutral-200">
+        <div className="fixed inset-0 z-50 flex flex-col text-white" style={{ backgroundColor: BURGUNDY }}>
+          <div className="h-16 flex items-center justify-end px-5 sm:px-8 border-b border-white/10">
             <button onClick={() => setMenuOpen(false)} aria-label="Close menu">
               <X size={22} strokeWidth={1.5} />
             </button>
@@ -64,7 +70,7 @@ export function HomepageLive() {
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className="text-[13px] uppercase tracking-[0.4em] font-medium hover:opacity-50 transition-opacity"
+                className="text-[13px] uppercase tracking-[0.4em] font-medium hover:opacity-70 transition-opacity"
               >
                 {link.label}
               </Link>
@@ -74,13 +80,13 @@ export function HomepageLive() {
       )}
 
       {/* ============ LOOKBOOK WORLD — SINGLE COMPOSITE IMAGE ============ */}
-      <section className="w-full bg-[#e8e2d0] py-10 sm:py-14 px-4 sm:px-8">
+      <section className="w-full py-10 sm:py-14 px-4 sm:px-8">
         {/* Caption bar — eyebrow / drop title / delivery number */}
-        <div className="max-w-5xl mx-auto flex items-start justify-between mb-8 sm:mb-12 text-[10px] sm:text-[11px] uppercase tracking-[0.15em] font-medium text-neutral-800">
+        <div className="max-w-5xl mx-auto flex items-start justify-between mb-8 sm:mb-12 text-[10px] sm:text-[11px] uppercase tracking-[0.15em] font-medium text-white">
           <span>Archive N&deg;004</span>
           <span className="text-center leading-relaxed">
             S/S 26<br />
-            <span className="normal-case tracking-normal italic text-neutral-600 text-[10px] sm:text-[12px]" style={{ fontFamily: "Georgia, serif" }}>
+            <span className="normal-case tracking-normal italic text-white/70 text-[10px] sm:text-[12px]" style={{ fontFamily: "Georgia, serif" }}>
               Paris — Los Angeles
             </span>
           </span>
@@ -101,13 +107,13 @@ export function HomepageLive() {
 
       {/* ============ FEATURED PRODUCTS ============ */}
       <section className="max-w-6xl mx-auto px-4 sm:px-8 py-16 sm:py-24">
-        <h2 className="text-center text-[13px] sm:text-[15px] uppercase tracking-[0.4em] font-medium mb-10 sm:mb-16">
+        <h2 className="text-center text-[13px] sm:text-[15px] uppercase tracking-[0.4em] font-medium mb-10 sm:mb-16 text-white">
           The Collection
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-6">
           {FEATURED_PRODUCTS.map((p) => (
             <Link key={p.handle} href={`/product/${p.handle}`} className="group block space-y-3">
-              <div className="aspect-[3/4] bg-neutral-50 relative overflow-hidden flex items-center justify-center p-6">
+              <div className="aspect-[3/4] bg-[#faf6ef] relative overflow-hidden flex items-center justify-center p-6">
                 <Image
                   src={p.image}
                   alt={p.name}
@@ -117,8 +123,8 @@ export function HomepageLive() {
                 />
               </div>
               <div className="text-center space-y-1">
-                <p className="text-[11px] uppercase tracking-[0.2em] font-medium">{p.name}</p>
-                <p className="text-[11px] text-neutral-500">{p.price}</p>
+                <p className="text-[11px] uppercase tracking-[0.2em] font-medium text-white">{p.name}</p>
+                <p className="text-[11px] text-white/60">{p.price}</p>
               </div>
             </Link>
           ))}
@@ -126,9 +132,9 @@ export function HomepageLive() {
       </section>
 
       {/* ============ MANIFESTO BAND ============ */}
-      <section className="w-full bg-[#f1ebdd] py-16 sm:py-20 px-8 sm:px-16">
+      <section className="w-full py-16 sm:py-20 px-8 sm:px-16 border-t border-b border-white/10">
         <p
-          className="max-w-lg mx-auto text-center italic text-[13px] sm:text-[14px] leading-loose text-neutral-600"
+          className="max-w-lg mx-auto text-center italic text-[13px] sm:text-[14px] leading-loose text-white/80"
           style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
         >
           Limited quantities. Custom-milled fabrics. Cut and sewn from the ground up.
@@ -139,19 +145,19 @@ export function HomepageLive() {
       </section>
 
       {/* ============ FOOTER ============ */}
-      <footer className="w-full bg-black text-white py-14 px-8 text-center space-y-6">
+      <footer className="w-full text-white py-14 px-8 text-center space-y-6">
         <div className="relative w-56 h-16 sm:w-64 sm:h-20 mx-auto opacity-90">
           <Image src="/logo_script_final.png" alt="L'argent Brûlé" fill sizes="256px" className="object-contain invert" />
         </div>
-        <nav className="flex items-center justify-center gap-6 text-[10px] uppercase tracking-[0.25em] text-neutral-400">
+        <nav className="flex items-center justify-center gap-6 text-[10px] uppercase tracking-[0.25em] text-white/60">
           {NAV_LINKS.map((link, i) => (
             <span key={link.href} className="flex items-center gap-6">
               <Link href={link.href} className="hover:text-white transition-colors">{link.label}</Link>
-              {i < NAV_LINKS.length - 1 && <span className="text-neutral-700">—</span>}
+              {i < NAV_LINKS.length - 1 && <span className="text-white/20">—</span>}
             </span>
           ))}
         </nav>
-        <p className="text-[9px] text-neutral-600 tracking-[0.1em]">
+        <p className="text-[9px] text-white/40 tracking-[0.1em]">
           L&apos;argent Brûlé &nbsp;—&nbsp; Los Angeles | Paris, France
         </p>
       </footer>

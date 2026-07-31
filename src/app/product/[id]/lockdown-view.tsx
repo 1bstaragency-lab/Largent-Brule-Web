@@ -47,7 +47,7 @@ const productData: Record<string, any> = {
     ]
   },
   raglan: {
-    name: "L'ARGENT BRÛLÉ RAGLAN LONG-SLEEVE TEE",
+    name: "NOTRE MODÈLE RAGLAN",
     price: "87 USD",
     colors: [
       { 

@@ -14,7 +14,7 @@ export const CATALOG: CatalogItem[] = [
   // Bomber turned off for now — excluded from "you may also like" suggestions.
   {
     handle: "raglan",
-    name: "L'ARGENT BRÛLÉ RAGLAN LONG-SLEEVE TEE",
+    name: "NOTRE MODÈLE RAGLAN",
     image: "/raglan_front_white_v2.png",
     priceText: "87 USD",
   },

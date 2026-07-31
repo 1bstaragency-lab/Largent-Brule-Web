@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 const PRODUCT = {
   id: "lemondrop-raglan",
-  title: "LEMONDROP RAGLAN",
+  title: "NOTRE MODÈLE RAGLAN",
   price: 165,
   currency: "USD",
   description: "Lightweight long sleeve raglan tee. Crafted with premium breathable fabric and signature raglan sleeves for an effortless, comfortable fit.",

@@ -45,7 +45,7 @@ const RELATED_PRODUCTS = [
   {
     id: "lemondrop-raglan",
     title: "NOTRE MODÈLE RAGLAN",
-    price: 165,
+    price: 130,
     image: "/lemondrop main.png",
   },
   {

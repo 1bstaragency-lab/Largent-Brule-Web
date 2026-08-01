@@ -13,6 +13,7 @@ const WORLD_IMAGE = "/lookbook-world-collage.jpg";
 const MODEL_SHOTS = [
   { handle: "lemondrop-raglan", name: "NOTRE MODÈLE RAGLAN", price: "130 USD", image: "/model-raglan.jpg" },
   { handle: "parisian-edition", name: "PARISIAN EDITION TEE", price: "145 USD", image: "/model-parisian-tee.jpg" },
+  { handle: "distressed-logo-tee", name: "DISTRESSED LOGO TEE", price: "100 USD", image: "/distressed-tee-model-front.jpg" },
 ];
 
 const FEATURED_PRODUCTS = [

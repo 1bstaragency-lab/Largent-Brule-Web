@@ -11,16 +11,16 @@ const PRODUCT = {
   title: "DISTRESSED LOGO TEE",
   price: 100,
   currency: "USD",
-  description: "Boxy, cropped cotton tee with a vintage-distressed wash and the signature wordmark print. Made to order.",
+  description: "Boxy, cropped cotton tee with the signature wordmark print. Each piece is hand-distressed one at a time, so the wash and wear pattern is unique to that individual garment. Made to order.",
   specs: [
     "100% cotton",
     "Boxy, cropped fit",
-    "Vintage distressed wash",
+    "Hand-distressed, one of one",
     "Screen-printed wordmark",
   ],
-  heroImage: "/distressed-tee-flat.jpg",
+  heroImage: "/distressed-tee-model-front.jpg",
   galleryImages: [
-    "/distressed-tee-model-front.jpg",
+    "/distressed-tee-flat.jpg",
     "/distressed-tee-model-back.jpg",
     "/distressed-tee-detail.jpg",
   ],
@@ -28,10 +28,11 @@ const PRODUCT = {
 
 // Sizes wired to the Shopify "Distressed Logo Tee" variants (made to order).
 const SIZES = [
-  { value: "S", label: "S", variantId: "48092586803351" },
-  { value: "M", label: "M", variantId: "48092586836119" },
-  { value: "L", label: "L", variantId: "48092586868887" },
-  { value: "XL", label: "XL", variantId: "48092586901655" },
+  { value: "1", label: "S", variantId: "48092586803351" },
+  { value: "2", label: "M", variantId: "48092586836119" },
+  { value: "3", label: "L", variantId: "48092586868887" },
+  { value: "4", label: "XL", variantId: "48092586901655" },
+  { value: "5", label: "XXL", variantId: "48092629598359" },
 ];
 
 const RELATED_PRODUCTS = [

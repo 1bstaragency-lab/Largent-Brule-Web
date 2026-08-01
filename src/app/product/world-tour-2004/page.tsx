@@ -11,14 +11,14 @@ const PRODUCT = {
   title: "WORLD TOUR 2004 TEE",
   price: 145,
   currency: "USD",
-  description: "Lightweight enzyme-treated cut and sewn tee. Boxy, slightly cropped fit with distressed vintage wash for an authentic retro aesthetic.",
+  description: "Lightweight enzyme-treated cut and sewn tee. Boxy, slightly cropped fit with a distressed vintage wash. Each piece is hand-distressed one at a time, so the wash and wear pattern is unique to that individual garment.",
   specs: [
     "Lightweight fabric",
     "Enzyme treatment",
     "Cut and sewn construction",
     "Boxy fit",
     "Slightly cropped",
-    "Distressed vintage wash",
+    "Hand-distressed, one of one",
   ],
   heroImage: "/2004.png",
   galleryImages: [

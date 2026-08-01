@@ -19,7 +19,6 @@ const FEATURED_PRODUCTS = [
   { handle: "leather-pants", name: "BEAUTÉ DU CUIR CARPENTERS", price: "300 USD", image: "/pants_product.png" },
   { handle: "lemondrop-raglan", name: "NOTRE MODÈLE RAGLAN", price: "130 USD", image: "/lemondrop main.png" },
   { handle: "parisian-edition", name: "PARISIAN EDITION TEE", price: "145 USD", image: "/parsian tee.png" },
-  { handle: "nos-origines-tee", name: "NOS ORIGINES TEE", price: "145 USD", image: "/nostee1.png" },
   { handle: "world-tour-2004", name: "WORLD TOUR 2004 TEE", price: "145 USD", image: "/2004.png" },
 ];
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const LAUNCH_DATE = new Date("2026-08-01T23:59:59");
+export const LAUNCH_DATE = new Date("2026-08-01T13:30:00-04:00"); // 1:30 PM EDT (Eastern)
 
 export function useCountdown() {
   const [timeLeft, setTimeLeft] = useState({ days: "00", hours: "00", minutes: "00", seconds: "00" });

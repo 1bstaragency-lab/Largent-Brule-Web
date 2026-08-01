@@ -20,7 +20,7 @@ const PRODUCT = {
   ],
   heroImage: "/distressed-tee-model-front.jpg",
   galleryImages: [
-    "/distressed-tee-flat.jpg",
+    "/distressed-tee-flat.png",
     "/distressed-tee-model-back.jpg",
     "/distressed-tee-detail.jpg",
   ],

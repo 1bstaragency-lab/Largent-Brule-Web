@@ -13,7 +13,6 @@ const WORLD_IMAGE = "/lookbook-world-collage.jpg";
 const MODEL_SHOTS = [
   { handle: "lemondrop-raglan", name: "NOTRE MODÈLE RAGLAN", price: "130 USD", image: "/model-raglan.jpg" },
   { handle: "parisian-edition", name: "PARISIAN EDITION TEE", price: "145 USD", image: "/model-parisian-tee.jpg" },
-  { handle: "distressed-logo-tee", name: "DISTRESSED LOGO TEE", price: "100 USD", image: "/distressed-tee-model-front.jpg" },
 ];
 
 const FEATURED_PRODUCTS = [
@@ -21,7 +20,7 @@ const FEATURED_PRODUCTS = [
   { handle: "lemondrop-raglan", name: "NOTRE MODÈLE RAGLAN", price: "130 USD", image: "/lemondrop main.png" },
   { handle: "parisian-edition", name: "PARISIAN EDITION TEE", price: "145 USD", image: "/parsian tee.png" },
   { handle: "world-tour-2004", name: "WORLD TOUR 2004 TEE", price: "145 USD", image: "/2004.png" },
-  { handle: "distressed-logo-tee", name: "DISTRESSED LOGO TEE", price: "100 USD", image: "/distressed-tee-flat.jpg" },
+  { handle: "distressed-logo-tee", name: "DISTRESSED LOGO TEE", price: "100 USD", image: "/distressed-tee-flat.png" },
 ];
 
 const NAV_LINKS = [

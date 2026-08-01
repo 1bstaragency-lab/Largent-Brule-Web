@@ -229,7 +229,7 @@ export default function WorldTour2004Page() {
 
             <div className="space-y-2 pt-2">
               <p className="text-xs font-light text-neutral-600">100% authentic materials. Crafted with premium construction.</p>
-              <p className="text-xs font-light text-neutral-600">Free shipping on orders over $150 USD. All items ship within 2-3 business days.</p>
+              <p className="text-xs font-light text-neutral-600">Free shipping on orders over $150 USD. All items ship within 1-3 weeks.</p>
             </div>
           </div>
 
@@ -319,7 +319,7 @@ export default function WorldTour2004Page() {
 
             <p className="font-light text-neutral-600">100% authentic materials. Crafted with premium construction.</p>
 
-            <p className="font-light text-neutral-600">Free shipping on orders over $150 USD. All items ship within 2-3 business days.</p>
+            <p className="font-light text-neutral-600">Free shipping on orders over $150 USD. All items ship within 1-3 weeks.</p>
           </div>
         </div>
 

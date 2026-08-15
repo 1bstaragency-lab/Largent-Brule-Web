@@ -60,13 +60,17 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+function formatDollars(cents: number): string {
+  const dollars = cents / 100;
+  return Number.isInteger(dollars) ? `${dollars}` : dollars.toFixed(2);
+}
+
 function fromServer(row: ServerCartItem): CartItem {
-  const dollars = Math.floor(row.price_cents / 100);
   return {
     id: row.id,
     productId: row.product_id,
     name: row.product_name,
-    price: `${dollars} USD`,
+    price: `${formatDollars(row.price_cents)} USD`,
     image: row.image_url || "",
     variant: row.variant || undefined,
     quantity: row.quantity,
@@ -122,8 +126,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setShowAdded(true);
     setTimeout(() => setShowAdded(false), 5000);
 
-    const priceCents =
-      Math.max(0, parseInt((input.price || "").replace(/[^0-9]/g, ""), 10) || 0) * 100;
+    const priceCents = Math.max(
+      0,
+      Math.round((parseFloat((input.price || "").replace(/[^0-9.]/g, "")) || 0) * 100)
+    );
 
     try {
       const res = await fetch("/api/cart", {
@@ -282,7 +288,8 @@ function CartDrawer({
   setShowAdded: (v: boolean) => void;
   removeItem: (id: string) => Promise<void>;
 }) {
-  const subtotal = items.reduce((acc, item) => acc + (item.priceCents / 100) * item.quantity, 0);
+  const subtotalCents = items.reduce((acc, item) => acc + item.priceCents * item.quantity, 0);
+  const subtotal = formatDollars(subtotalCents);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [checkoutError, setCheckoutError] = useState("");
   // Hype "checkout line" queue shown for a few seconds before redirect.

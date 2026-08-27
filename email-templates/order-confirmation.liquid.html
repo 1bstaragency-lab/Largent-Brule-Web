@@ -1,0 +1,332 @@
+<!--
+  L'ARGENT BR&Ucirc;L&Eacute; &mdash; Order Confirmation email
+  Install: Shopify Admin &rarr; Settings &rarr; Notifications &rarr; Order confirmation &rarr; Edit code
+  Suggested Subject: Your L'argent Br&ucirc;l&eacute; order {{ order.name }} is confirmed
+  Table-based layout + inline styles for cross-client email support.
+  System fonts only (Helvetica Neue / Helvetica / Arial, Georgia) &mdash; no
+  webfonts, since most email clients strip @import / <link> fonts.
+-->
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>{{ shop.name }} &mdash; Order {{ order.name }}</title>
+<!--[if mso]>
+<style>
+  table { border-collapse: collapse; }
+  .fallback-font { font-family: Arial, sans-serif !important; }
+</style>
+<![endif]-->
+<style>
+  body, table, td { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+  body { margin: 0; padding: 0; width: 100% !important; background-color: #faf6ef; }
+  img { border: 0; line-height: 100%; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; }
+  a { color: #4a0404; }
+  .hairline { border-top: 1px solid #e6e0d2; }
+  @media only screen and (max-width: 600px) {
+    .email-container { width: 100% !important; }
+    .stack { display: block !important; width: 100% !important; }
+    .stack-pad { padding-left: 0 !important; padding-top: 24px !important; }
+    .px { padding-left: 20px !important; padding-right: 20px !important; }
+    .item-thumb { width: 64px !important; }
+    .h1 { font-size: 20px !important; }
+  }
+</style>
+</head>
+<body style="margin:0; padding:0; background-color:#faf6ef;">
+  <!-- Preheader (hidden preview text) -->
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#faf6ef; opacity:0;">
+    Your order {{ order.name }} is confirmed &mdash; thank you for shopping L'argent Br&ucirc;l&eacute;. All items ship within 1-3 weeks.
+    &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#faf6ef;">
+    <tr>
+      <td align="center" style="padding: 40px 16px;">
+        <table role="presentation" class="email-container" width="600" cellpadding="0" cellspacing="0" style="width:600px; max-width:600px; background-color:#ffffff;">
+
+          <!-- ===== HEADER ===== -->
+          <tr>
+            <td align="center" style="padding: 44px 40px 28px;">
+              <img src="https://largentbrule.com/logo_script_final.png" width="200" alt="L'argent Br&ucirc;l&eacute;" style="display:block; width:200px; height:auto;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 0 40px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td height="3" style="line-height:3px; font-size:3px; background-color:#d4af37; background-image:linear-gradient(90deg,#7a5a1e 0%,#d4af37 20%,#f9e79f 40%,#b8860b 60%,#f4d160 80%,#a9781f 100%);">&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" class="px" style="padding: 24px 40px 0;">
+              <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:#4a0404;">
+                Order Confirmed
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" class="px" style="padding: 10px 40px 0;">
+              <p class="h1" style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:22px; font-weight:500; letter-spacing:0.5px; color:#111111;">
+                Merci{% if order.customer.first_name %}, {{ order.customer.first_name }}{% endif %}.
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" class="px" style="padding: 8px 40px 0;">
+              <p style="margin:0; font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:13px; color:#6b6b6b;">
+                Order {{ order.name }} &nbsp;&mdash;&nbsp; {{ order.created_at | date: "%B %d, %Y" }}
+              </p>
+            </td>
+          </tr>
+
+          <!-- ===== STATUS TRACKER =====
+               This notification always fires the moment an order is placed,
+               so "Purchased" is always the active step here &mdash; the other
+               three are always upcoming. If a live-updating tracker is ever
+               wanted, it would need to move to the shipping/fulfillment
+               notifications instead, driven by order.fulfillment_status. -->
+          <tr>
+            <td class="px" style="padding: 32px 40px 0;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td width="1%" align="center" valign="top" style="white-space:nowrap;">
+                    <div style="width:10px; height:10px; margin:0 auto; border-radius:50%; background-color:#4a0404; box-shadow:0 0 0 4px rgba(74,4,4,0.14);">&nbsp;</div>
+                    <p style="margin:10px 0 0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#4a0404; white-space:nowrap;">Purchased</p>
+                  </td>
+                  <td valign="top" style="padding-top:4px;">
+                    <div style="height:1.5px; line-height:1.5px; font-size:1.5px; background-color:#e6e0d2;">&nbsp;</div>
+                  </td>
+                  <td width="1%" align="center" valign="top" style="white-space:nowrap;">
+                    <div style="width:10px; height:10px; margin:0 auto; border-radius:50%; background-color:#faf6ef; border:1.5px solid #d8d0bd;">&nbsp;</div>
+                    <p style="margin:10px 0 0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:10px; font-weight:500; letter-spacing:1.5px; text-transform:uppercase; color:#b7b0a0; white-space:nowrap;">Packing</p>
+                  </td>
+                  <td valign="top" style="padding-top:4px;">
+                    <div style="height:1.5px; line-height:1.5px; font-size:1.5px; background-color:#e6e0d2;">&nbsp;</div>
+                  </td>
+                  <td width="1%" align="center" valign="top" style="white-space:nowrap;">
+                    <div style="width:10px; height:10px; margin:0 auto; border-radius:50%; background-color:#faf6ef; border:1.5px solid #d8d0bd;">&nbsp;</div>
+                    <p style="margin:10px 0 0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:10px; font-weight:500; letter-spacing:1.5px; text-transform:uppercase; color:#b7b0a0; white-space:nowrap;">Shipped</p>
+                  </td>
+                  <td valign="top" style="padding-top:4px;">
+                    <div style="height:1.5px; line-height:1.5px; font-size:1.5px; background-color:#e6e0d2;">&nbsp;</div>
+                  </td>
+                  <td width="1%" align="center" valign="top" style="white-space:nowrap;">
+                    <div style="width:10px; height:10px; margin:0 auto; border-radius:50%; background-color:#faf6ef; border:1.5px solid #d8d0bd;">&nbsp;</div>
+                    <p style="margin:10px 0 0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:10px; font-weight:500; letter-spacing:1.5px; text-transform:uppercase; color:#b7b0a0; white-space:nowrap;">Delivered</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== INTRO COPY ===== -->
+          <tr>
+            <td class="px" style="padding: 26px 40px 0;">
+              <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:14px; line-height:22px; color:#333333;">
+                Your pieces are being prepared. We'll send a shipping notification the moment your order leaves our hands &mdash; until then, here's everything you ordered.
+              </p>
+            </td>
+          </tr>
+
+          <!-- ===== LINE ITEMS ===== -->
+          <tr>
+            <td class="px" style="padding: 28px 40px 0;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                {% for line_item in order.line_items %}
+                <tr>
+                  <td class="hairline" style="padding: 18px 0;" colspan="2">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td class="item-thumb" width="72" valign="top" style="width:72px;">
+                          {% if line_item.image %}
+                          <img src="{{ line_item.image | image_url: width: 200 }}" width="72" alt="{{ line_item.title | escape }}" style="display:block; width:72px; height:auto; background-color:#faf6ef;">
+                          {% endif %}
+                        </td>
+                        <td valign="top" style="padding-left:16px;">
+                          <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:#111111;">
+                            {{ line_item.title }}
+                          </p>
+                          {% if line_item.variant_title != blank %}
+                          <p style="margin:4px 0 0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; color:#8a8a8a;">
+                            {{ line_item.variant_title }}
+                          </p>
+                          {% endif %}
+                          <p style="margin:4px 0 0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; color:#8a8a8a;">
+                            Qty {{ line_item.quantity }}
+                          </p>
+                        </td>
+                        <td valign="top" align="right" style="white-space:nowrap;">
+                          <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:13px; color:#111111;">
+                            {{ line_item.line_price | money }}
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                {% endfor %}
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== TOTALS ===== -->
+          <tr>
+            <td class="px" style="padding: 4px 40px 0;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="padding: 10px 0 0;" align="left">
+                    <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; color:#6b6b6b;">Subtotal</p>
+                  </td>
+                  <td style="padding: 10px 0 0;" align="right">
+                    <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; color:#333333;">{{ order.subtotal_price | money }}</p>
+                  </td>
+                </tr>
+                {% if order.requires_shipping %}
+                <tr>
+                  <td style="padding: 6px 0 0;" align="left">
+                    <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; color:#6b6b6b;">Shipping</p>
+                  </td>
+                  <td style="padding: 6px 0 0;" align="right">
+                    <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; color:#333333;">
+                      {% if order.shipping_price == 0 %}Free{% else %}{{ order.shipping_price | money }}{% endif %}
+                    </p>
+                  </td>
+                </tr>
+                {% endif %}
+                {% if order.total_discounts > 0 %}
+                <tr>
+                  <td style="padding: 6px 0 0;" align="left">
+                    <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; color:#6b6b6b;">Discount</p>
+                  </td>
+                  <td style="padding: 6px 0 0;" align="right">
+                    <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; color:#4a0404;">&minus;{{ order.total_discounts | money }}</p>
+                  </td>
+                </tr>
+                {% endif %}
+                {% if order.tax_price > 0 %}
+                <tr>
+                  <td style="padding: 6px 0 0;" align="left">
+                    <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; color:#6b6b6b;">Tax</p>
+                  </td>
+                  <td style="padding: 6px 0 0;" align="right">
+                    <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; color:#333333;">{{ order.tax_price | money }}</p>
+                  </td>
+                </tr>
+                {% endif %}
+                <tr>
+                  <td class="hairline" style="padding: 14px 0 0;" colspan="2">&nbsp;</td>
+                </tr>
+                <tr>
+                  <td style="padding: 6px 0 0;" align="left">
+                    <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:13px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:#111111;">Total</p>
+                  </td>
+                  <td style="padding: 6px 0 0;" align="right">
+                    <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:15px; font-weight:700; color:#4a0404;">{{ order.total_price | money }}</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== CTA ===== -->
+          <tr>
+            <td align="center" class="px" style="padding: 34px 40px 0;">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center" style="background-color:#4a0404;">
+                    <a href="{{ order.order_status_url }}" target="_blank" style="display:inline-block; padding:16px 40px; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#ffffff; text-decoration:none;">
+                      View Your Order
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== FULFILLMENT NOTE ===== -->
+          <tr>
+            <td align="center" class="px" style="padding: 22px 40px 0;">
+              <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:11px; letter-spacing:0.3px; color:#8a8a8a;">
+                All items ship within 1-3 weeks. Free shipping and free returns on all orders.
+              </p>
+            </td>
+          </tr>
+
+          <!-- ===== ADDRESSES ===== -->
+          {% if order.shipping_address or order.billing_address %}
+          <tr>
+            <td class="px" style="padding: 40px 40px 0;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  {% if order.shipping_address %}
+                  <td class="stack" valign="top" width="50%" style="width:50%;">
+                    <p style="margin:0 0 8px; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#4a0404;">
+                      Shipping To
+                    </p>
+                    <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; line-height:20px; color:#333333;">
+                      {{ order.shipping_address | format_address }}
+                    </p>
+                  </td>
+                  {% endif %}
+                  {% if order.billing_address %}
+                  <td class="stack stack-pad" valign="top" width="50%" style="width:50%; padding-left:24px;">
+                    <p style="margin:0 0 8px; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#4a0404;">
+                      Billing To
+                    </p>
+                    <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; line-height:20px; color:#333333;">
+                      {{ order.billing_address | format_address }}
+                    </p>
+                  </td>
+                  {% endif %}
+                </tr>
+              </table>
+            </td>
+          </tr>
+          {% endif %}
+
+          <!-- ===== FOOTER ===== -->
+          <tr>
+            <td style="padding: 44px 40px 0;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td class="hairline" style="padding:0;">&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" style="padding: 28px 40px 8px;">
+              <img src="https://largentbrule.com/logo_script_final.png" width="120" alt="L'argent Br&ucirc;l&eacute;" style="display:block; width:120px; height:auto; opacity:0.9;">
+            </td>
+          </tr>
+          <tr>
+            <td align="center" style="padding: 0 40px 6px;">
+              <p style="margin:0; font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:11px; color:#8a8a8a;">
+                Paris &mdash; Los Angeles
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" style="padding: 14px 40px 44px;">
+              <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:10px; letter-spacing:0.3px; line-height:18px; color:#a3a3a3;">
+                Questions about your order? Reply to this email or contact
+                <a href="mailto:{{ shop.email }}" style="color:#4a0404; text-decoration:underline;">{{ shop.email }}</a>.
+                <br>
+                {{ "now" | date: "%Y" }} {{ shop.name }}. All rights reserved.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

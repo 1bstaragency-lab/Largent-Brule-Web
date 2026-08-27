@@ -1,0 +1,306 @@
+<!--
+  L'ARGENT BR&Ucirc;L&Eacute; &mdash; Shipping Confirmation email
+  Install: Shopify Admin &rarr; Settings &rarr; Notifications &rarr; Shipping confirmation &rarr; Edit code
+  Suggested Subject: Your order {{ name }} has shipped
+  Same visual system as order-confirmation.liquid.html. The tracker here
+  shows Purchased + Packing as done, Shipped as the active step, Delivered
+  pending &mdash; accurate for the moment this notification actually fires
+  (when the order is marked fulfilled).
+  Uses the `fulfillment` object, not `order.line_items` directly, so a
+  partial shipment only lists what's actually in THIS box.
+-->
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+<title>{{ shop.name }} &mdash; Order {{ order.name }} shipped</title>
+<!--[if mso]>
+<style>
+  table { border-collapse: collapse; }
+  .fallback-font { font-family: Arial, sans-serif !important; }
+</style>
+<![endif]-->
+<style>
+  body, table, td { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+  body { margin: 0; padding: 0; width: 100% !important; background-color: #faf6ef; }
+  img { border: 0; line-height: 100%; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; }
+  a { color: #4a0404; }
+  .hairline { border-top: 1px solid #e6e0d2; }
+  @media only screen and (max-width: 600px) {
+    .email-container { width: 100% !important; }
+    .stack { display: block !important; width: 100% !important; }
+    .stack-pad { padding-left: 0 !important; padding-top: 24px !important; }
+    .px { padding-left: 20px !important; padding-right: 20px !important; }
+    .item-thumb { width: 64px !important; }
+    .h1 { font-size: 20px !important; }
+  }
+</style>
+</head>
+<body style="margin:0; padding:0; background-color:#faf6ef;">
+  {% assign order_item_count = 0 %}
+  {% for li in order.line_items %}{% assign order_item_count = order_item_count | plus: li.quantity %}{% endfor %}
+  {% assign is_partial_shipment = false %}
+  {% if fulfillment.item_count < order_item_count %}{% assign is_partial_shipment = true %}{% endif %}
+
+  <!-- Preheader (hidden preview text) -->
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:#faf6ef; opacity:0;">
+    {% if is_partial_shipment %}Part of{% else %}Your{% endif %} order {{ order.name }} has shipped &mdash; here is your tracking information.
+    &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#faf6ef;">
+    <tr>
+      <td align="center" style="padding: 40px 16px;">
+        <table role="presentation" class="email-container" width="600" cellpadding="0" cellspacing="0" style="width:600px; max-width:600px; background-color:#ffffff;">
+
+          <!-- ===== HEADER ===== -->
+          <tr>
+            <td align="center" style="padding: 44px 40px 28px;">
+              <img src="https://largentbrule.com/logo_script_final.png" width="200" alt="L'argent Br&ucirc;l&eacute;" style="display:block; width:200px; height:auto;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding: 0 40px;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td height="3" style="line-height:3px; font-size:3px; background-color:#d4af37; background-image:linear-gradient(90deg,#7a5a1e 0%,#d4af37 20%,#f9e79f 40%,#b8860b 60%,#f4d160 80%,#a9781f 100%);">&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" class="px" style="padding: 24px 40px 0;">
+              <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:#4a0404;">
+                Order Shipped
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" class="px" style="padding: 10px 40px 0;">
+              <p class="h1" style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:22px; font-weight:500; letter-spacing:0.5px; color:#111111;">
+                {% if order.customer.first_name %}It's on its way, {{ order.customer.first_name }}.{% else %}It's on its way.{% endif %}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" class="px" style="padding: 8px 40px 0;">
+              <p style="margin:0; font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:13px; color:#6b6b6b;">
+                Order {{ order.name }} &nbsp;&mdash;&nbsp; shipped {{ fulfillment.created_at | date: "%B %d, %Y" }}
+              </p>
+            </td>
+          </tr>
+
+          <!-- ===== STATUS TRACKER =====
+               Fires when the order is marked fulfilled, so Purchased and
+               Packing are always done, Shipped is always the active step,
+               and Delivered is always upcoming here. -->
+          <tr>
+            <td class="px" style="padding: 32px 40px 0;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td width="1%" align="center" valign="top" style="white-space:nowrap;">
+                    <div style="width:10px; height:10px; margin:0 auto; border-radius:50%; background-color:#4a0404;">&nbsp;</div>
+                    <p style="margin:10px 0 0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:10px; font-weight:500; letter-spacing:1.5px; text-transform:uppercase; color:#4a0404; white-space:nowrap;">Purchased</p>
+                  </td>
+                  <td valign="top" style="padding-top:4px;">
+                    <div style="height:1.5px; line-height:1.5px; font-size:1.5px; background-color:#4a0404;">&nbsp;</div>
+                  </td>
+                  <td width="1%" align="center" valign="top" style="white-space:nowrap;">
+                    <div style="width:10px; height:10px; margin:0 auto; border-radius:50%; background-color:#4a0404;">&nbsp;</div>
+                    <p style="margin:10px 0 0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:10px; font-weight:500; letter-spacing:1.5px; text-transform:uppercase; color:#4a0404; white-space:nowrap;">Packing</p>
+                  </td>
+                  <td valign="top" style="padding-top:4px;">
+                    <div style="height:1.5px; line-height:1.5px; font-size:1.5px; background-color:#4a0404;">&nbsp;</div>
+                  </td>
+                  <td width="1%" align="center" valign="top" style="white-space:nowrap;">
+                    <div style="width:10px; height:10px; margin:0 auto; border-radius:50%; background-color:#4a0404; box-shadow:0 0 0 4px rgba(74,4,4,0.14);">&nbsp;</div>
+                    <p style="margin:10px 0 0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#4a0404; white-space:nowrap;">Shipped</p>
+                  </td>
+                  <td valign="top" style="padding-top:4px;">
+                    <div style="height:1.5px; line-height:1.5px; font-size:1.5px; background-color:#e6e0d2;">&nbsp;</div>
+                  </td>
+                  <td width="1%" align="center" valign="top" style="white-space:nowrap;">
+                    <div style="width:10px; height:10px; margin:0 auto; border-radius:50%; background-color:#faf6ef; border:1.5px solid #d8d0bd;">&nbsp;</div>
+                    <p style="margin:10px 0 0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:10px; font-weight:500; letter-spacing:1.5px; text-transform:uppercase; color:#b7b0a0; white-space:nowrap;">Delivered</p>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== INTRO COPY ===== -->
+          <tr>
+            <td class="px" style="padding: 26px 40px 0;">
+              <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:14px; line-height:22px; color:#333333;">
+                {% if is_partial_shipment %}
+                  Part of your order is on the move. The rest of your items will ship separately as they're ready.
+                {% else %}
+                  Your package is on the move. Track it below to see exactly where it is.
+                {% endif %}
+              </p>
+            </td>
+          </tr>
+
+          <!-- ===== EDITORIAL MOMENT =====
+               Full-bleed lifestyle shot, no side padding, matching the
+               site's own full-bleed "side moment" treatment. One image,
+               kept to a single deliberate pause rather than several, to
+               stay restrained. -->
+          <tr>
+            <td style="padding: 28px 0 0;">
+              <img src="https://largentbrule.com/email-doberman.jpg" width="600" alt="L'argent Br&ucirc;l&eacute; &mdash; Paris, Los Angeles" style="display:block; width:100%; max-width:600px; height:auto;">
+            </td>
+          </tr>
+
+          <!-- ===== TRACKING CARD ===== -->
+          {% if fulfillment.tracking_number %}
+          <tr>
+            <td class="px" style="padding: 24px 40px 0;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#faf6ef;">
+                <tr>
+                  <td style="padding: 22px 24px;">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td valign="top">
+                          {% if fulfillment.tracking_company %}
+                          <p style="margin:0 0 6px; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#4a0404;">
+                            {{ fulfillment.tracking_company }}
+                          </p>
+                          {% endif %}
+                          <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:14px; letter-spacing:0.5px; color:#111111;">
+                            {{ fulfillment.tracking_number }}
+                          </p>
+                        </td>
+                        <td valign="middle" align="right">
+                          <table role="presentation" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td align="center" style="background-color:#4a0404;">
+                                <a href="{{ fulfillment.tracking_url }}" target="_blank" style="display:inline-block; padding:13px 24px; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#ffffff; text-decoration:none; white-space:nowrap;">
+                                  Track Package
+                                </a>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          {% endif %}
+
+          <!-- ===== ITEMS IN THIS SHIPMENT ===== -->
+          <tr>
+            <td class="px" style="padding: 28px 40px 0;">
+              <p style="margin:0 0 14px; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#4a0404;">
+                {% if is_partial_shipment %}In This Shipment{% else %}What Shipped{% endif %}
+              </p>
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                {% for entry in fulfillment.fulfillment_line_items %}
+                <tr>
+                  <td class="hairline" style="padding: 18px 0;" colspan="2">
+                    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td class="item-thumb" width="72" valign="top" style="width:72px;">
+                          {% if entry.line_item.image %}
+                          <img src="{{ entry.line_item.image | image_url: width: 200 }}" width="72" alt="{{ entry.line_item.title | escape }}" style="display:block; width:72px; height:auto; background-color:#faf6ef;">
+                          {% endif %}
+                        </td>
+                        <td valign="top" style="padding-left:16px;">
+                          <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:#111111;">
+                            {{ entry.line_item.title }}
+                          </p>
+                          {% if entry.line_item.variant_title != blank %}
+                          <p style="margin:4px 0 0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; color:#8a8a8a;">
+                            {{ entry.line_item.variant_title }}
+                          </p>
+                          {% endif %}
+                          <p style="margin:4px 0 0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; color:#8a8a8a;">
+                            Qty {{ entry.quantity }}
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+                {% endfor %}
+              </table>
+            </td>
+          </tr>
+
+          <!-- ===== CTA (fallback when there is no tracking number yet) ===== -->
+          {% unless fulfillment.tracking_number %}
+          <tr>
+            <td align="center" class="px" style="padding: 30px 40px 0;">
+              <table role="presentation" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center" style="background-color:#4a0404;">
+                    <a href="{{ order.order_status_url }}" target="_blank" style="display:inline-block; padding:16px 40px; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:11px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#ffffff; text-decoration:none;">
+                      View Your Order
+                    </a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          {% endunless %}
+
+          <!-- ===== SHIPPING ADDRESS ===== -->
+          {% if order.shipping_address %}
+          <tr>
+            <td class="px" style="padding: 36px 40px 0;">
+              <p style="margin:0 0 8px; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#4a0404;">
+                Shipping To
+              </p>
+              <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:12px; line-height:20px; color:#333333;">
+                {{ order.shipping_address | format_address }}
+              </p>
+            </td>
+          </tr>
+          {% endif %}
+
+          <!-- ===== FOOTER ===== -->
+          <tr>
+            <td style="padding: 44px 40px 0;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td class="hairline" style="padding:0;">&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" style="padding: 28px 40px 8px;">
+              <img src="https://largentbrule.com/logo_script_final.png" width="120" alt="L'argent Br&ucirc;l&eacute;" style="display:block; width:120px; height:auto; opacity:0.9;">
+            </td>
+          </tr>
+          <tr>
+            <td align="center" style="padding: 0 40px 6px;">
+              <p style="margin:0; font-family:Georgia,'Times New Roman',serif; font-style:italic; font-size:11px; color:#8a8a8a;">
+                Paris &mdash; Los Angeles
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" style="padding: 14px 40px 44px;">
+              <p style="margin:0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:10px; letter-spacing:0.3px; line-height:18px; color:#a3a3a3;">
+                Questions about your shipment? Reply to this email or contact
+                <a href="mailto:{{ shop.email }}" style="color:#4a0404; text-decoration:underline;">{{ shop.email }}</a>.
+                <br>
+                {{ "now" | date: "%Y" }} {{ shop.name }}. All rights reserved.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

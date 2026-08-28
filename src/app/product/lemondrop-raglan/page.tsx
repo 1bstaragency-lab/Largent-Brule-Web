@@ -231,7 +231,7 @@ export default function LemonDropRaglanPage() {
               Model is 6'1" and wears size L. <button onClick={() => setShowSizeGuide(true)} className="underline cursor-pointer hover:opacity-60">SIZE GUIDE</button>
             </p>
             <p className="text-xs font-light text-neutral-600">
-              Free shipping on orders over $150 USD and free returns on all orders.
+              Free shipping on orders over $150 USD.
             </p>
           </div>
 
@@ -392,7 +392,7 @@ export default function LemonDropRaglanPage() {
                 Model is 6'1" and wears size L. <button onClick={() => setShowSizeGuide(true)} className="underline cursor-pointer hover:opacity-60">SIZE GUIDE</button>
               </p>
               <p className="text-[11px] font-light text-neutral-600">
-                Free shipping on orders over $150 USD and free returns on all orders.
+                Free shipping on orders over $150 USD.
               </p>
             </div>
 

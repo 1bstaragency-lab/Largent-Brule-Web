@@ -35,6 +35,16 @@
     .item-thumb { width: 64px !important; }
     .h1 { font-size: 20px !important; }
   }
+  /* Pulsing halo on the tracker's current step. CSS animation, not GIF/JS
+     -- clients that support it (Apple Mail, iOS Mail, many webmail apps)
+     show a gentle live pulse; clients that don't (Outlook desktop) just
+     show the plain static dot underneath, which is already correct. */
+  @keyframes trackPulse {
+    0%   { box-shadow: 0 0 0 4px rgba(74,4,4,0.16); }
+    70%  { box-shadow: 0 0 0 10px rgba(74,4,4,0); }
+    100% { box-shadow: 0 0 0 4px rgba(74,4,4,0.16); }
+  }
+  .track-pulse { animation: trackPulse 2s ease-in-out infinite; }
 </style>
 </head>
 <body style="margin:0; padding:0; background-color:#faf6ef;">
@@ -97,7 +107,7 @@
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td width="1%" align="center" valign="top" style="white-space:nowrap;">
-                    <div style="width:10px; height:10px; margin:0 auto; border-radius:50%; background-color:#4a0404; box-shadow:0 0 0 4px rgba(74,4,4,0.14);">&nbsp;</div>
+                    <div class="track-pulse" style="width:10px; height:10px; margin:0 auto; border-radius:50%; background-color:#4a0404; box-shadow:0 0 0 4px rgba(74,4,4,0.16);">&nbsp;</div>
                     <p style="margin:10px 0 0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#4a0404; white-space:nowrap;">Purchased</p>
                   </td>
                   <td valign="top" style="padding-top:4px;">

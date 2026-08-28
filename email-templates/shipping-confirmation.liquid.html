@@ -38,6 +38,16 @@
     .item-thumb { width: 64px !important; }
     .h1 { font-size: 20px !important; }
   }
+  /* Pulsing halo on the tracker's current step. CSS animation, not GIF/JS
+     -- clients that support it (Apple Mail, iOS Mail, many webmail apps)
+     show a gentle live pulse; clients that don't (Outlook desktop) just
+     show the plain static dot underneath, which is already correct. */
+  @keyframes trackPulse {
+    0%   { box-shadow: 0 0 0 4px rgba(74,4,4,0.16); }
+    70%  { box-shadow: 0 0 0 10px rgba(74,4,4,0); }
+    100% { box-shadow: 0 0 0 4px rgba(74,4,4,0.16); }
+  }
+  .track-pulse { animation: trackPulse 2s ease-in-out infinite; }
 </style>
 </head>
 <body style="margin:0; padding:0; background-color:#faf6ef;">
@@ -117,7 +127,7 @@
                     <div style="height:1.5px; line-height:1.5px; font-size:1.5px; background-color:#4a0404;">&nbsp;</div>
                   </td>
                   <td width="1%" align="center" valign="top" style="white-space:nowrap;">
-                    <div style="width:10px; height:10px; margin:0 auto; border-radius:50%; background-color:#4a0404; box-shadow:0 0 0 4px rgba(74,4,4,0.14);">&nbsp;</div>
+                    <div class="track-pulse" style="width:10px; height:10px; margin:0 auto; border-radius:50%; background-color:#4a0404; box-shadow:0 0 0 4px rgba(74,4,4,0.16);">&nbsp;</div>
                     <p style="margin:10px 0 0; font-family:'Helvetica Neue',Helvetica,Arial,sans-serif; font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#4a0404; white-space:nowrap;">Shipped</p>
                   </td>
                   <td valign="top" style="padding-top:4px;">
@@ -145,33 +155,11 @@
             </td>
           </tr>
 
-          <!-- ===== UNBOXING ANIMATION =====
-               Animated GIF, not CSS/JS animation &mdash; GIF is the only
-               animation format every email client (incl. Outlook desktop)
-               opens without help, degrading gracefully to a static frame
-               where GIF animation itself isn't supported.
-               The logo is printed directly on the ribbon fabric itself
-               (all 4 visible ribbon segments), not a hanging tag: built by
-               perspective-warping the real logo PNG onto the ribbon's exact
-               3D angle in a single locked-off still (so the print never
-               warps or garbles), then animated with a slow held zoom rather
-               than a dynamic untie, since re-tracking printed fabric through
-               a real untying motion isn't reliable. Background is color-
-               matched and vignetted to the page's exact cream (#faf6ef) at
-               the edges so the GIF has no visible rectangle against the
-               page. -->
-          <tr>
-            <td align="center" class="px" style="padding: 26px 40px 0;">
-              <img src="https://largentbrule.com/email-unboxing-v2.gif" width="300" alt="Your order, ribbon printed with our logo, picked up for delivery" style="display:block; width:300px; max-width:100%; height:auto;">
-            </td>
-          </tr>
-
           <!-- ===== EDITORIAL MOMENT =====
                Smaller centered inset (not full-bleed) so it reads as a
-               quiet accent under the unboxing animation above, not a
-               second competing hero. -->
+               quiet accent rather than a second competing hero. -->
           <tr>
-            <td align="center" class="px" style="padding: 28px 40px 0;">
+            <td align="center" class="px" style="padding: 30px 40px 0;">
               <img src="https://largentbrule.com/email-doberman.jpg" width="360" alt="L'argent Br&ucirc;l&eacute; &mdash; Paris, Los Angeles" style="display:block; width:360px; max-width:100%; height:auto;">
             </td>
           </tr>
